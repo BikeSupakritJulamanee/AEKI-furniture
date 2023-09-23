@@ -267,7 +267,7 @@ function Transportation() {
                         <Image onClick={() => handleShowEditModal(company)}
                             className="img"
                             src={imageList.find((url) => url.includes(company.img))}
-                            style={{ width: '200px', height: '160px' }}
+                            style={{ width: '180px', height: '120px' }}
                         />
                     </span>
                 ))}

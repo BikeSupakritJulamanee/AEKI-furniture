@@ -29,7 +29,7 @@ function Nav() {
                         <Navbar.Brand href="/adminhomepage"> <div className='Brand' >ผลิตภัณฑ์ของคุณ</div></Navbar.Brand>
                         <Navbar.Brand href="/add_products"> <div className='Brand' >เพิ่มผลิตภัณฑ์</div></Navbar.Brand>
                         <Navbar.Brand href='/product_list' > <div className='Brand' >รายการสินค้าทั้งหมด</div></Navbar.Brand>
-                        <Navbar.Brand> <div className='Brand' >รายการสั่งซื้อ</div></Navbar.Brand>
+                        <Navbar.Brand href='/order_list' > <div className='Brand' >รายการสั่งซื้อ</div></Navbar.Brand>
                         <Navbar.Brand href='/transportation' >  <div className='Brand' >บริษัทขนส่ง</div></Navbar.Brand>
                     </Offcanvas.Body>
                 </Offcanvas>

@@ -29,6 +29,7 @@ import Add_Products from './administrator/Add_Products.jsx';
 import Edit_Products from './administrator/Edit_Products.jsx'
 import Product_List from './administrator/Product_List.jsx';
 import Transportation from './administrator/Transportation.jsx';
+import Order_List from './administrator/Order_List.jsx';
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: '/transportation',
     element: <Transportation />
+  },
+  {
+    path: '/order_list',
+    element: <Order_List/>
   }
 
 ]);
