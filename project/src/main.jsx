@@ -28,6 +28,7 @@ import Create from './administrator/Create.jsx';
 import Add_Products from './administrator/Add_Products.jsx';
 import Edit_Products from './administrator/Edit_Products.jsx'
 import Product_List from './administrator/Product_List.jsx';
+import Transportation from './administrator/Transportation.jsx';
 
 const router = createBrowserRouter([
   {
@@ -66,7 +67,12 @@ const router = createBrowserRouter([
   {
     path: '/product_list',
     element: <Product_List />
+  },
+  {
+    path: '/transportation',
+    element: <Transportation />
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
