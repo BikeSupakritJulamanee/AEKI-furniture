@@ -14,7 +14,7 @@ import {
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
 import Nav from "./Nav";
-import style from "./style/style.css";
+
 
 function EditProducts() {
   const location = useLocation();

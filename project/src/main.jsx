@@ -30,6 +30,7 @@ import Edit_Products from './administrator/Edit_Products.jsx'
 import Product_List from './administrator/Product_List.jsx';
 import Transportation from './administrator/Transportation.jsx';
 import Order_List from './administrator/Order_List.jsx';
+import ViewOrder from './administrator/ViewOrder.jsx';
 
 const router = createBrowserRouter([
   {
@@ -75,7 +76,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/order_list',
-    element: <Order_List/>
+    element: <Order_List />
+  },
+  {
+    path: '/view_order',
+    element: <ViewOrder />
   }
 
 ]);
