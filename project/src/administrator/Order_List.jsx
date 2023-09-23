@@ -9,12 +9,21 @@ import {
     getDocs,
     doc, // Corrected function name
     getDoc,
+    updateDoc
 } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
 function Order_List() {
     const [state, setState] = useState([]);
     const [select, setSelect] = useState('');
+
+    const handleEditSubmit = async (id) => {
+        const companyDocRef = doc(db, 'state', id);
+        await updateDoc(companyDocRef, {
+            status: 'จัดส่งสำเร็จ'
+        });
+        alert('Success')
+    };
 
     const fetchState = async () => {
         try {
@@ -65,8 +74,7 @@ function Order_List() {
                     onChange={(e) => setSelect(e.target.value)}
                 >
                     <option value=''>สถานะ</option>
-                    <option value='สั่งซื้อเเล้ว'>สั่งซื้อเเล้ว</option>
-                    <option value='กำลังเตรียมพัสดุ'>กำลังเตรียมพัสดุ</option>
+                    <option value='รอดำเนินการจัดส่ง'>รอดำเนินการจัดส่ง</option>
                     <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
                 </Form.Select> <hr />
                 <Table striped bordered hover>
@@ -74,11 +82,12 @@ function Order_List() {
                         <tr>
                             <th>รหัสคำสั่งซื้อ</th>
                             <th>ผู้สั่งซื้อ</th>
-                            <th>ที่อยู่ผู้รับ</th>
-                            <th>ยอดต้องชำระ + ค่าขนส่ง</th>
-                            <th>ใช้บริการขนส่ง</th>
+                            <th>รหัสที่อยู่ผู้รับ</th>
+                            <th>ยอดต้องชำระ</th>
+                            <th>รหัสบริการขนส่ง</th>
                             <th>รหัสสินค้า</th>
                             <th>จำนวน</th>
+                            <th color='red' >เปลี่ยนสถานะ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,7 +108,7 @@ function Order_List() {
                                         <div key={i}>{productId}</div>
                                     ))}
                                 </td>
-                                <td><Button variant='dark' >Submit</Button></td>
+                                <td><Button onClick={() => handleEditSubmit(s.id)}>เลื่อนสถานะ</Button></td>
                                 <td> <Link
                                     to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&gmail=${encodeURIComponent(
                                         s.order.gmail
