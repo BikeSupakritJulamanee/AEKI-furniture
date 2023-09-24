@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import Nav from './Nav';
-import { Container, Table, Button, Form } from 'react-bootstrap';
-import { db } from '../firebase';
+import React, { useState, useEffect } from "react";
+import Nav from "./Nav";
+import { Container, Table, Button, Form } from "react-bootstrap";
+import { db } from "../firebase";
 import {
   query,
   collection,
@@ -10,35 +10,29 @@ import {
   deleteDoc,
   doc,
   orderBy,
-} from 'firebase/firestore';
-import { Link } from 'react-router-dom';
+} from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 function Product_List() {
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [select, setSelect] = useState('');
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [select, setSelect] = useState("");
+  // const navigate = useNavigate();
   const fetchProducts = async () => {
     try {
       let q;
 
-      if (select !== '') {
+      if (select !== "") {
+        q = query(collection(db, "products"), where("type", "==", select));
+      } else if (searchTerm !== "") {
         q = query(
-          collection(db, 'products'),
-          where('type', '==', select)
-        );
-      } else if (searchTerm !== '') {
-        q = query(
-          collection(db, 'products'),
-          where('name', '>=', searchTerm),
-          orderBy('name')
+          collection(db, "products"),
+          where("name", ">=", searchTerm),
+          orderBy("name")
         );
       } else {
         // Fetch all products when neither search term nor category is selected
-        q = query(
-          collection(db, 'products'),
-          orderBy('name')
-        );
+        q = query(collection(db, "products"), orderBy("name"));
       }
 
       const querySnapshot = await getDocs(q);
@@ -48,20 +42,20 @@ function Product_List() {
       }));
       setProducts(newData);
     } catch (error) {
-      console.error('Error fetching product data:', error);
+      console.error("Error fetching product data:", error);
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      const productDocRef = doc(db, 'products', id);
+      const productDocRef = doc(db, "products", id);
       await deleteDoc(productDocRef);
-      console.log('Document successfully deleted!');
-      alert('Document successfully deleted!');
+      console.log("Document successfully deleted!");
+      alert("Document successfully deleted!");
       fetchProducts(); // Refresh the product list after deletion
     } catch (error) {
-      console.error('Error deleting document: ', error);
-      alert('Error deleting document: ' + error.message);
+      console.error("Error deleting document: ", error);
+      alert("Error deleting document: " + error.message);
     }
   };
 
@@ -74,28 +68,28 @@ function Product_List() {
       <Nav />
       {select}
       <Container>
-        <Form.Group className='search_group'>
+        <Form.Group className="search_group">
           <Form.Control
-            className='search_bar'
-            type='text'
-            placeholder='Search by product name'
+            className="search_bar"
+            type="text"
+            placeholder="Search by product name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Button className='search_btn' onClick={fetchProducts}>
+          <Button className="search_btn" onClick={fetchProducts}>
             Search
           </Button>
         </Form.Group>
         <hr />
 
         <Form.Select
-          aria-label='Default select example'
+          aria-label="Default select example"
           onChange={(e) => setSelect(e.target.value)}
         >
-          <option value=''>Select a category</option>
-          <option value='ของตกเเต่งบ้าน'>ของตกเเต่งบ้าน</option>
-          <option value='เตียง'>เตียง</option>
-          <option value='เก้าอี้'>เก้าอี้</option>
+          <option value="">Select a category</option>
+          <option value="ของตกเเต่งบ้าน">ของตกเเต่งบ้าน</option>
+          <option value="เตียง">เตียง</option>
+          <option value="เก้าอี้">เก้าอี้</option>
         </Form.Select>
 
         <hr />
@@ -130,14 +124,38 @@ function Product_List() {
                       product.description
                     )}&image=${encodeURIComponent(product.img)}&price=${encodeURIComponent(
                       product.price
-                    )}`}
-                    target='_blank'
+                    )}`}E
+                    // target='_blank'
+                  >
+                    <Button>
+                    Edit
+                    </Button>
+                  </Link>
+
+                  {/* <span
+                    onClick={() => {
+                      navigate(
+                        `/edit_products?id=${encodeURIComponent(
+                          product.id
+                        )}&name=${encodeURIComponent(
+                          product.name
+                        )}&quantity=${encodeURIComponent(
+                          product.quantity
+                        )}&description=${encodeURIComponent(
+                          product.description
+                        )}&image=${encodeURIComponent(
+                          product.img
+                        )}&price=${encodeURIComponent(product.price)}`
+                      );
+                    }}
                   >
                     Edit
-                  </Link>
+                  </span>                                                                                             */}
                 </td>
                 <td>
-                  <Button onClick={() => handleDelete(product.id)}>Delete</Button>
+                  <Button onClick={() => handleDelete(product.id)}>
+                    Delete
+                  </Button>
                 </td>
               </tr>
             ))}
