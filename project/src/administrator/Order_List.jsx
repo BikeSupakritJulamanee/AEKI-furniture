@@ -14,7 +14,7 @@ import {
 import { Link } from 'react-router-dom';
 
 function Order_List() {
-    const [state, setState] = useState([]);
+    const [shipping, setShipping] = useState([]);
     const [select, setSelect] = useState('');
 
     const handleEditSubmit = async (id) => {
@@ -28,7 +28,7 @@ function Order_List() {
     const fetchState = async () => {
         try {
             const q = query(
-                collection(db, 'state'),
+                collection(db, 'shipping'),
                 where('status', '==', select)
             );
             const querySnapshot = await getDocs(q);
@@ -55,7 +55,7 @@ function Order_List() {
                 }
             }
 
-            setState(newData);
+            setShipping(newData);
         } catch (error) {
             console.error('Error fetching state data:', error);
         }
@@ -91,7 +91,7 @@ function Order_List() {
                         </tr>
                     </thead>
                     <tbody>
-                        {state.map((s, index) => (
+                        {shipping.map((s, index) => (
                             <tr key={index}>
                                 <td>{s.order.id}</td>
                                 <td>{s.order.gmail}</td>
