@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Container, Button, Form, Row, Col, Image } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Button, Form, Row, Col, Image, Modal, Spinner } from "react-bootstrap";
 import { db } from "../firebase"; // database
-import { collection, addDoc } from "firebase/firestore"; // firestore
+import { collection, addDoc, query, getDocs } from "firebase/firestore"; // firestore
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storageRef } from "../firebase";
 import Nav from "./Nav";
 import img1 from "./image/add.jpg";
 
-import style from "./style/style.css";
+import "./style/product_forrm.css";
 
 function Add_Products() {
   const [name, setName] = useState("");
@@ -61,15 +61,83 @@ function Add_Products() {
     setType("");
   };
 
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [productType, setProductType] = useState('');
+
+  const [productTypeList, setProductTypeList] = useState([]);
+
+  const handleShowAddModal = () => setShowAddModal(true);
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+    clearFormFields();
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+
+    const createProduct = await addDoc(collection(db, 'type'), {
+      productType: productType,
+    });
+
+    handleCloseAddModal();
+  };
+
+  useEffect(() => {
+    fetchType();
+  }, []);
+
+  const fetchType = async () => {
+    try {
+      const q = query(collection(db, 'type'));
+
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setProductTypeList(newData);
+    } catch (error) {
+      console.error('Error fetching account data:', error);
+    }
+  };
+
   return (
     <>
       <Nav />
 
       <hr />
+      <Modal centered show={showAddModal} onHide={handleCloseAddModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>เพิ่มประเภทสินค้า</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleAddSubmit}>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="ประเภทสินค้า"
+                value={productType}
+                onChange={(e) => setProductType(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Button type="submit"><Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />เพิ่ม</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
 
       <Container>
         <Row>
           <Col md={10} className="sizecon">
+            <Button variant="dark" onClick={handleShowAddModal} >
+              &#43;เพิ่มประเภทสินค้า
+            </Button>
             <div className="contact_inner">
               <Row>
                 <Col md={10}>
@@ -79,62 +147,76 @@ function Add_Products() {
                       <p>ทำการเพิ่มสินค้า</p>
                       <Form onSubmit={handleSubmit}>
                         <Form.Group>
-                          <Form.Label>Name</Form.Label>
+                          <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
                             type="text"
                             className="input-small"
                             placeholder="Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            required
                           />
                         </Form.Group>
 
                         <Form.Group>
-                          <Form.Label>Description</Form.Label>
+                          <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
                             type="text"
                             className="input-small"
                             placeholder="Description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                            required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Quantity</Form.Label>
+                          <Form.Label>จำนวน</Form.Label>
                           <Form.Control
                             className="input-small"
                             placeholder="Quantity"
                             type="number"
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
+                            required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Price</Form.Label>
+                          <Form.Label>ราคา</Form.Label>
                           <Form.Control
                             className="input-small"
                             placeholder="Price"
                             type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
+                            required
                           />
                         </Form.Group>
-                        <Form.Group>
-                          <Form.Label>Type</Form.Label>
+                        <Form.Group controlId="exampleForm.SelectCustom">
+                          <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
+                            as="select"
                             className="input-small"
                             placeholder="Type"
-                            type="text"
                             value={type}
                             onChange={(e) => setType(e.target.value)}
-                          />
+                            required
+                          >
+                            <option value={'ไม่มีประเภท'} >กรุณาเลือกประเภท</option>
+                            {productTypeList.map((typeObj, index) => (
+                              <option key={index} value={typeObj.productType}>
+                                {typeObj.productType}
+                              </option>
+                            ))}
+                          </Form.Control>
                         </Form.Group>
+
                         <Form.Group>
-                          <Form.Label>Image</Form.Label>
+                          <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
                             lassName="input-small"
                             type="file"
                             onChange={handleFileChange}
+                            required
                           />
                         </Form.Group>
 

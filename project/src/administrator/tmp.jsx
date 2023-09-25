@@ -20,6 +20,7 @@ function EditProducts() {
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("id");
 
+
   const [productData, setProductData] = useState({
     id: productId || "",
     name: searchParams.get("name") || "",
@@ -29,7 +30,10 @@ function EditProducts() {
     image: searchParams.get("image") || "",
     type: searchParams.get("type") || "",
   });
+  let [type, setType] = useState(productData.type);
 
+
+  const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const [productTypeList, setProductTypeList] = useState([]);
 
@@ -63,8 +67,15 @@ function EditProducts() {
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
   const [fileName, setFileName] = useState(""); // Store the file name
 
-  const [imageUpload, setImageUpload] = useState(null);
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the first selected file
 
+    if (file) {
+      setSelectedFile(file);
+      setFileName(file.name); // Set the file name
+
+    }
+  };
 
   const updateUserField = async (property, value) => {
     try {
@@ -82,7 +93,8 @@ function EditProducts() {
         const imageRef = ref(storageRef, `products/${imageUpload.name}`);
         const snapshot = await uploadBytes(imageRef, imageUpload);
         const url = await getDownloadURL(snapshot.ref);
-        setImageList((prev) => [...prev, url]);
+        await updateUserField("img", fileName);
+        setProductData((prevData) => ({ ...prevData, img: url }));
       }
     } catch (error) {
       console.error("Error updating field:", error);
@@ -109,23 +121,8 @@ function EditProducts() {
     await updateUserField("quantity", productData.quantity);
     await updateUserField("price", productData.price);
     await updateUserField("type", productData.type);
-    if (imageUpload) {
-      await updateUserField("img", fileName);
-    }
     alert("Updated");
     window.close();
-  };
-
-
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-
-    if (file) {
-      setSelectedFile(file);
-      setFileName(file.name); // Set the file name
-      setImageUpload(file); // Set the imageUpload state with the file object
-    }
   };
 
   return (
@@ -218,7 +215,7 @@ function EditProducts() {
                             }
                             required
                           >
-                            <option value={productData.type}>{productData.type}</option> {/* Default option */}
+                            <option value={type}>{type}</option> {/* Default option */}
                             {productTypeList.map((typeObj, index) => (
                               <option key={index} value={typeObj.productType}>
                                 {typeObj.productType}
@@ -227,9 +224,8 @@ function EditProducts() {
                           </Form.Control>
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>รูปภาพสินค้า</Form.Label>
+                          <Form.Label>Image</Form.Label>
                           <Form.Control
-                            lassName="input-small"
                             type="file"
                             onChange={handleFileChange}
                           />
