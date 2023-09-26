@@ -1,46 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Row, Col, Image, Modal, Spinner } from "react-bootstrap";
-import { db } from "../firebase"; // database
-import { collection, addDoc, query, getDocs } from "firebase/firestore"; // firestore
+import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
+import { db, storageRef } from "../firebase";
+import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storageRef } from "../firebase";
 import Nav from "./Nav";
 import img1 from "./image/add.jpg";
-
 import "./style/product_forrm.css";
 
 function Add_Products() {
+  // State Variables
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("");
-
-  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
-  const [fileName, setFileName] = useState(""); // Store the file name
-
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageList, setImageList] = useState([]); // Define setImageList here
+  const [imageList, setImageList] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [productType, setProductType] = useState('');
+  const [productTypeList, setProductTypeList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
+
+  // Event Handlers
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-
+    const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
-      setFileName(file.name); // Set the file name
-      setImageUpload(file); // Set the imageUpload state with the file object
+      setFileName(file.name);
+      setImageUpload(file);
     }
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
-
     const createProduct = await addDoc(collection(db, "products"), {
-      name: name,
-      description: description,
-      quantity: quantity,
-      price: price,
-      type: type,
+      name,
+      description,
+      quantity,
+      price,
+      type,
       img: fileName,
     });
 
@@ -51,7 +53,11 @@ function Add_Products() {
       setImageList((prev) => [...prev, url]);
     }
 
-    // Clear form fields after submission
+    setLoading(false)
+    clearFormFields();
+  };
+
+  const clearFormFields = () => {
     setName("");
     setDescription("");
     setQuantity("");
@@ -61,37 +67,32 @@ function Add_Products() {
     setType("");
   };
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [productType, setProductType] = useState('');
-
-  const [productTypeList, setProductTypeList] = useState([]);
-
   const handleShowAddModal = () => setShowAddModal(true);
-
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     clearFormFields();
   };
 
   const handleAddSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
-
     const createProduct = await addDoc(collection(db, 'type'), {
-      productType: productType,
+      productType,
     });
 
+    setLoading(false)
     handleCloseAddModal();
   };
 
+  // useEffect
   useEffect(() => {
     fetchType();
   }, []);
 
+  // Fetch Type
   const fetchType = async () => {
     try {
       const q = query(collection(db, 'type'));
-
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setProductTypeList(newData);
@@ -104,7 +105,6 @@ function Add_Products() {
     <>
       <Nav />
 
-      <hr />
       <Modal centered show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>
           <Modal.Title>เพิ่มประเภทสินค้า</Modal.Title>
@@ -120,14 +120,9 @@ function Add_Products() {
                 required
               />
             </Form.Group>
-
-            <Button type="submit"><Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />เพิ่ม</Button>
+            <Button type="submit" disabled={isLoading}  >
+              {isLoading ? 'Loading…' : 'เพิ่มประเภท'}
+            </Button>
           </Form>
         </Modal.Body>
       </Modal>
@@ -135,7 +130,7 @@ function Add_Products() {
       <Container>
         <Row>
           <Col md={10} className="sizecon">
-            <Button variant="dark" onClick={handleShowAddModal} >
+            <Button variant="dark" onClick={handleShowAddModal}>
               &#43;เพิ่มประเภทสินค้า
             </Button>
             <div className="contact_inner">
@@ -157,7 +152,6 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
-
                         <Form.Group>
                           <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
@@ -201,7 +195,7 @@ function Add_Products() {
                             onChange={(e) => setType(e.target.value)}
                             required
                           >
-                            <option value={'ไม่มีประเภท'} >กรุณาเลือกประเภท</option>
+                            <option value={'ไม่มีประเภท'}>กรุณาเลือกประเภท</option>
                             {productTypeList.map((typeObj, index) => (
                               <option key={index} value={typeObj.productType}>
                                 {typeObj.productType}
@@ -209,21 +203,20 @@ function Add_Products() {
                             ))}
                           </Form.Control>
                         </Form.Group>
-
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
-                            lassName="input-small"
+                            className="input-small"
                             type="file"
                             onChange={handleFileChange}
                             required
                           />
                         </Form.Group>
-
-                        <Button className="contact_form_submit" type="submit">
-                          Send
+                        <Button className="contact_form_submit" type="submit" disabled={isLoading}  >
+                          {isLoading ? 'Loading…' : 'เพิ่มผลิตภัณฑ์'}
                         </Button>
                       </Form>
+
                     </div>
                   </div>
                 </Col>
@@ -240,6 +233,6 @@ function Add_Products() {
       </Container>
     </>
   );
-}
 
+}
 export default Add_Products;

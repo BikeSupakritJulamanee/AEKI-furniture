@@ -1,61 +1,97 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { Container, Button, Form, Row, Col, Image, Modal, Spinner } from "react-bootstrap";
+import { db } from "../firebase"; // database
+import { collection, addDoc, query, getDocs } from "firebase/firestore"; // firestore
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storageRef } from "../firebase";
 import Nav from "./Nav";
+import img1 from "./image/add.jpg";
+
 import "./style/product_forrm.css";
-import { db, storageRef } from "../firebase";
 
-function EditProducts() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const productId = searchParams.get("id");
+function Add_Products() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [type, setType] = useState("");
 
-
-  const [productData, setProductData] = useState({
-    id: productId || "",
-    name: searchParams.get("name") || "",
-    description: searchParams.get("description") || "",
-    quantity: searchParams.get("quantity") || "",
-    price: searchParams.get("price") || "",
-    image: searchParams.get("image") || "",
-    type: searchParams.get("type") || "",
-  });
-  let [type, setType] = useState(productData.type);
-
+  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
+  const [fileName, setFileName] = useState(""); // Store the file name
 
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageList, setImageList] = useState([]);
+  const [imageList, setImageList] = useState([]); // Define setImageList here
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the first selected file
+
+    if (file) {
+      setSelectedFile(file);
+      setFileName(file.name); // Set the file name
+      setImageUpload(file); // Set the imageUpload state with the file object
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const createProduct = await addDoc(collection(db, "products"), {
+      name: name,
+      description: description,
+      quantity: quantity,
+      price: price,
+      type: type,
+      img: fileName,
+    });
+
+    if (imageUpload) {
+      const imageRef = ref(storageRef, `products/${imageUpload.name}`);
+      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(snapshot.ref);
+      setImageList((prev) => [...prev, url]);
+    }
+
+    // Clear form fields after submission
+    setName("");
+    setDescription("");
+    setQuantity("");
+    setPrice("");
+    setSelectedFile(null);
+    setFileName("");
+    setType("");
+  };
+
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [productType, setProductType] = useState('');
+
   const [productTypeList, setProductTypeList] = useState([]);
 
-  useEffect(() => {
-    // Fetch image list from Firebase Storage
-    const imageListRef = ref(storageRef, "products/");
-    listAll(imageListRef)
-      .then((response) =>
-        Promise.all(response.items.map((item) => getDownloadURL(item)))
-      )
-      .then((urls) => setImageList(urls))
-      .catch((error) => console.error("Error listing images:", error));
-  }, []);
+  const handleShowAddModal = () => setShowAddModal(true);
+
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+    clearFormFields();
+  };
+
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+
+    const createProduct = await addDoc(collection(db, 'type'), {
+      productType: productType,
+    });
+
+    handleCloseAddModal();
+  };
 
   useEffect(() => {
-    // Fetch product types
     fetchType();
   }, []);
 
   const fetchType = async () => {
     try {
       const q = query(collection(db, 'type'));
+
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setProductTypeList(newData);
@@ -64,158 +100,108 @@ function EditProducts() {
     }
   };
 
-  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
-  const [fileName, setFileName] = useState(""); // Store the file name
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
-
-    if (file) {
-      setSelectedFile(file);
-      setFileName(file.name); // Set the file name
-
-    }
-  };
-
-  const updateUserField = async (property, value) => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(db, "products"), where("name", "==", productData.name))
-      );
-
-      if (!querySnapshot.empty) {
-        const productRef = querySnapshot.docs[0].ref;
-        await updateDoc(productRef, { [property]: value });
-        setProductData({ ...productData, [property]: value });
-      }
-
-      if (imageUpload) {
-        const imageRef = ref(storageRef, `products/${imageUpload.name}`);
-        const snapshot = await uploadBytes(imageRef, imageUpload);
-        const url = await getDownloadURL(snapshot.ref);
-        await updateUserField("img", fileName);
-        setProductData((prevData) => ({ ...prevData, img: url }));
-      }
-    } catch (error) {
-      console.error("Error updating field:", error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const productDocRef = doc(db, "products", productId);
-      await deleteDoc(productDocRef);
-      console.log("Document successfully deleted!");
-      alert("Document successfully deleted!");
-      window.close();
-    } catch (error) {
-      console.error("Error deleting document: ", error);
-      alert("Error deleting document: " + error.message);
-    }
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    await updateUserField("name", productData.name);
-    await updateUserField("description", productData.description);
-    await updateUserField("quantity", productData.quantity);
-    await updateUserField("price", productData.price);
-    await updateUserField("type", productData.type);
-    alert("Updated");
-    window.close();
-  };
-
   return (
     <>
       <Nav />
+
+      <hr />
+      <Modal centered show={showAddModal} onHide={handleCloseAddModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>เพิ่มประเภทสินค้า</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleAddSubmit}>
+            <Form.Group>
+              <Form.Control
+                type="text"
+                placeholder="ประเภทสินค้า"
+                value={productType}
+                onChange={(e) => setProductType(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Button type="submit"><Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />เพิ่ม</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
       <Container>
         <Row>
           <Col md={10} className="sizecon">
+            <Button variant="dark" onClick={handleShowAddModal} >
+              &#43;เพิ่มประเภทสินค้า
+            </Button>
             <div className="contact_inner">
               <Row>
                 <Col md={10}>
                   <div className="contact_form_inner">
                     <div className="contact_field">
-                      <h3>แก้ไขผลิตภัณฑ์</h3>
-                      <p>ทำการแก้ไขสินค้า</p>
-                      <Form onSubmit={handleUpdate}>
+                      <h3>เพิ่มผลิตภัณฑ์</h3>
+                      <p>ทำการเพิ่มสินค้า</p>
+                      <Form onSubmit={handleSubmit}>
                         <Form.Group>
-                          <Form.Label>Name</Form.Label>
+                          <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
                             type="text"
+                            className="input-small"
                             placeholder="Name"
-                            value={productData.name}
-                            onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                name: e.target.value,
-                              })
-                            }
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                           />
                         </Form.Group>
+
                         <Form.Group>
-                          <Form.Label>Description</Form.Label>
+                          <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
                             type="text"
+                            className="input-small"
                             placeholder="Description"
-                            value={productData.description}
-                            onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                description: e.target.value,
-                              })
-                            }
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Quantity</Form.Label>
+                          <Form.Label>จำนวน</Form.Label>
                           <Form.Control
-                            type="number"
+                            className="input-small"
                             placeholder="Quantity"
-                            value={productData.quantity}
-                            onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                quantity: e.target.value,
-                              })
-                            }
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(e.target.value)}
                             required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Price</Form.Label>
+                          <Form.Label>ราคา</Form.Label>
                           <Form.Control
-                            type="number"
+                            className="input-small"
                             placeholder="Price"
-                            value={productData.price}
-                            onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                price: e.target.value,
-                              })
-                            }
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                             required
                           />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.SelectCustom">
                           <Form.Label>ประเภทสินค้า</Form.Label>
-                          {productData.type}
                           <Form.Control
                             as="select"
                             className="input-small"
                             placeholder="Type"
-
-                            onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                type: e.target.value,
-                              })
-                            }
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
                             required
                           >
-                            <option value={type}>{type}</option> {/* Default option */}
+                            <option value={'ไม่มีประเภท'} >กรุณาเลือกประเภท</option>
                             {productTypeList.map((typeObj, index) => (
                               <option key={index} value={typeObj.productType}>
                                 {typeObj.productType}
@@ -223,29 +209,20 @@ function EditProducts() {
                             ))}
                           </Form.Control>
                         </Form.Group>
+
                         <Form.Group>
-                          <Form.Label>Image</Form.Label>
+                          <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
+                            lassName="input-small"
                             type="file"
                             onChange={handleFileChange}
+                            required
                           />
                         </Form.Group>
-                        <br />
-                        <Button
-                          type="submit"
-                          className="contact_form_submit"
-                          variant="success"
-                        >
-                          Update
-                        </Button>
-                        <Button
-                          onClick={handleDelete}
-                          className="contact_form_submit2"
-                          variant="danger"
-                        >
-                          delete
-                        </Button>
 
+                        <Button className="contact_form_submit" type="submit">
+                          Send
+                        </Button>
                       </Form>
                     </div>
                   </div>
@@ -255,10 +232,7 @@ function EditProducts() {
                 </Col>
               </Row>
               <div>
-                <Image
-                  className="resize3"
-                  src={imageList.find((url) => url.includes(productData.image))}
-                />
+                <Image src={img1} alt="Image 1" className="resize4" />
               </div>
             </div>
           </Col>
@@ -268,4 +242,4 @@ function EditProducts() {
   );
 }
 
-export default EditProducts;
+export default Add_Products;
