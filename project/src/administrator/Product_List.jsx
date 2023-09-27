@@ -118,14 +118,24 @@ function Product_List() {
                 <td>{product.type}</td>
                 <td>
                   <Link
-                    to={`/edit_products?id=${encodeURIComponent(product.id)}&name=${encodeURIComponent(
+                    to={`/edit_products?id=${encodeURIComponent(
+                      product.id
+                    )}&name=${encodeURIComponent(
                       product.name
-                    )}&quantity=${encodeURIComponent(product.quantity)}&description=${encodeURIComponent(
+                    )}&quantity=${encodeURIComponent(
+                      product.quantity
+                    )}&description=${encodeURIComponent(
                       product.description
-                    )}&image=${encodeURIComponent(product.img)}&price=${encodeURIComponent(
+                    )}&image=${encodeURIComponent(
+                      product.img
+                    )}&price=${encodeURIComponent(
                       product.price
-                    )}`} E
-                  // target='_blank'
+                    )}&type=${encodeURIComponent(
+                      product.type
+                    )}&attribute=${encodeURIComponent(
+                      product.attribute
+                    )}
+                  `} target="_blank"
                   >
                     <Button>
                       Edit
