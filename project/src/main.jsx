@@ -22,6 +22,8 @@ import {
 import Register from './component/Register.jsx'
 import Login from './component/Login.jsx'
 import Home from './component/Home.jsx'
+//User
+import Product_detail from './component/Product_detail.jsx';
 
 import AdminHomePage from './administrator/AdminHomePage.jsx'
 import Create from './administrator/Create.jsx';
@@ -48,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: '/home',
     element: <ProtectedRoute><Home /></ProtectedRoute>
+  },
+  {
+    path: '/product_detail',
+    element: <ProtectedRoute><Product_detail /></ProtectedRoute>
   },
 
   {

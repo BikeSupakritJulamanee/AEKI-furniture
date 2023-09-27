@@ -21,37 +21,41 @@ function Register() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
-  const [product_id,setproduct_id]=useState([]);
-  const [qrtproduct_id,setqrtproduct_id]=useState([]);
+  const [product_id, setproduct_id] = useState([]);
+  const [qrtproduct_id, setqrtproduct_id] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     setError('');
 
     if (!email || !password || !username || !phone_number) {
       setError('Please fill in all required fields.');
+      setLoading(false)
       return;
     }
 
     const cart_user = await addDoc(collection(db, 'cart'), {
-        product_id:product_id,
-        email:email,
-        qauntityPerProductID:qrtproduct_id,
-      });
+      product_id: product_id,
+      email: email,
+      qauntityPerProductID: qrtproduct_id,
+    });
 
     try {
       const userDocRef_Users = await addDoc(collection(db, 'user'), {
-        email:email,
-        username:username,
-        phone_number:phone_number,
+        email: email,
+        username: username,
+        phone_number: phone_number,
       });
 
       await signUp(email, password);
       navigate('/');
     } catch (err) {
       setError(err.message);
+      setLoading(false)
     }
   };
 
@@ -147,8 +151,8 @@ function Register() {
                 </Form.Group>
 
                 <div className="d-grid gap-2 justify-content-center">
-                  <Button className="custom-button-style" variant="warning" type="submit">
-                    SignUp &#8811;
+                  <Button variant="warning" className="custom-button-style" type="submit" disabled={isLoading}  >
+                    {isLoading ? 'Loading…' : 'SignUp'}
                   </Button>
                 </div>
               </Form>
