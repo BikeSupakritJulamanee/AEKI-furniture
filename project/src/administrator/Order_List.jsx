@@ -94,7 +94,7 @@ function Order_List() {
                         {shipping.map((s, index) => (
                             <tr key={index}>
                                 <td>{s.order.id}</td>
-                                <td>{s.order.gmail}</td>
+                                <td>{s.order.email}</td>
                                 <td>{s.recipientAddyID}</td>
                                 <td>{s.order.amount}</td>
                                 <td>{s.transportationID}</td>
@@ -110,7 +110,7 @@ function Order_List() {
                                 </td>
                                 <td><Button onClick={() => handleEditSubmit(s.id)}>เลื่อนสถานะ</Button></td>
                                 <td> <Link
-                                    to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&gmail=${encodeURIComponent(
+                                    to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&email=${encodeURIComponent(
                                         s.order.gmail
                                     )}&recipientAddyID=${encodeURIComponent(s.recipientAddyID)}&amount=${encodeURIComponent(
                                         s.order.amount

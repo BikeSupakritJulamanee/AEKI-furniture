@@ -14,7 +14,7 @@ function ViewOrder() {
 
     const [ShippingData, setShippingData] = useState({
         orderID: searchParams.get("orderID") || "",
-        gmail: searchParams.get("gmail") || "",
+        email: searchParams.get("email") || "",
         recipientAddyID: searchParams.get("recipientAddyID") || "",
         transportationID: searchParams.get("transportationID") || "",
         productID: searchParams.get("productID") || "",
@@ -140,7 +140,7 @@ function ViewOrder() {
                     </Col>
                     <Col>
                         <b>ส่วนผู้รับ</b> <br />
-                        ผู้ใช้: {ShippingData.gmail} <br />
+                        ผู้ใช้: {ShippingData.email} <br />
                         ผู้รับ: {recipientAddy_ID && recipientAddy_ID.recipientName} <br />
                         ติดต่อ: {recipientAddy_ID && recipientAddy_ID.phoneNumber} <br />
                         ที่อยู่การจัดส่ง: {recipientAddy_ID && recipientAddy_ID.destination} <br />
