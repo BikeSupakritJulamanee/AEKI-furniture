@@ -27,6 +27,7 @@ function EditProducts() {
     price: searchParams.get("price") || "",
     image: searchParams.get("image") || "",
     type: searchParams.get("type") || "",
+    attribute: searchParams.get("attribute") || "",
   });
 
   useEffect(() => {
@@ -70,6 +71,7 @@ function EditProducts() {
       quantity: parseInt(productData.quantity),
       price: parseInt(productData.price),
       type: productData.type,
+      attribute: productData.attribute
     });
 
     if (imageUpload) {
@@ -201,6 +203,22 @@ function EditProducts() {
                             className="input-small"
                             type="file"
                             onChange={handleFileChange}
+                          />
+                        </Form.Group>
+                        <Form.Group>
+                          <Form.Label>คุณลักษณะ</Form.Label>
+                          <Form.Control
+                            className="input-small"
+                            placeholder="Attribute"
+                            as="textarea"
+                            value={productData.attribute}
+                            required
+                            style={{
+                              height: '150px',
+                            }}
+                            onChange={(e) =>
+                              setProductData({ ...productData, attribute: e.target.value })
+                            }
                           />
                         </Form.Group>
                         <br />

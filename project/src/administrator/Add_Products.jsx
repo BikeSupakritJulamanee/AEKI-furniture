@@ -14,6 +14,7 @@ function Add_Products() {
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [type, setType] = useState("");
+  const [attribute, setAttribute] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
@@ -41,8 +42,9 @@ function Add_Products() {
       description,
       quantity: parseInt(quantity),
       price: parseInt(price),
-      type ,
+      type,
       img: fileName,
+      attribute: attribute
     });
 
     if (imageUpload) {
@@ -65,6 +67,8 @@ function Add_Products() {
     setSelectedFile(null);
     setFileName("");
     setType("");
+    setAttribute("");
+    setFileName("");
   };
 
   const handleShowAddModal = () => setShowAddModal(true);
@@ -213,6 +217,22 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
+                        <Form.Group>
+                          <Form.Label>คุณลักษณะ</Form.Label>
+                          <Form.Control
+                            className="input-small"
+                            placeholder="Attribute"
+                            as="textarea"
+                            value={attribute}
+                            onChange={(e) => setAttribute(e.target.value)}
+                            required
+                            style={{
+                              height: '150px',
+                            }}
+                          />
+                        </Form.Group>
+
+                        <Form.Group controlId="exampleForm.SelectCustom"></Form.Group>
                         <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}  >
                           {isLoading ? 'Loading…' : 'เพิ่มผลิตภัณฑ์'}
                         </Button>

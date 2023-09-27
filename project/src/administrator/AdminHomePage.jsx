@@ -82,6 +82,8 @@ function Home() {
                   product.price
                 )}&type=${encodeURIComponent(
                   product.type
+                )}&attribute=${encodeURIComponent(
+                  product.attribute
                 )}
                   `} target="_blank"
               >
