@@ -21,6 +21,8 @@ function Register() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
+  const [product_id,setproduct_id]=useState([]);
+  const [qrtproduct_id,setqrtproduct_id]=useState([]);
 
   let navigate = useNavigate();
 
@@ -33,11 +35,17 @@ function Register() {
       return;
     }
 
+    const cart_user = await addDoc(collection(db, 'cart'), {
+        product_id:product_id,
+        email:email,
+        qauntityPerProductID:qrtproduct_id,
+      });
+
     try {
-      const userDocRef_Users = await addDoc(collection(db, 'User'), {
-        email,
-        username,
-        phone_number,
+      const userDocRef_Users = await addDoc(collection(db, 'user'), {
+        email:email,
+        username:username,
+        phone_number:phone_number,
       });
 
       await signUp(email, password);

@@ -54,12 +54,12 @@ function Home() {
           <Form.Control
             className="search_bar"
             type="text"
-            placeholder="Search by product name"
+            placeholder="ค้นหาสิ่งที่คุณกำลังสนใจ"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button className="search_btn" onClick={fetchProducts}>
-            search
+            ค้นหา
           </Button>
         </Form.Group>
         <hr />

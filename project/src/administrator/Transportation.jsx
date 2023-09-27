@@ -2,35 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Container, Image, Button, Form, Modal, Card, Row, Col } from 'react-bootstrap';
 import Nav from './Nav';
 import { storageRef, db } from '../firebase';
-import {
-    getDocs,
-    collection,
-    query,
-    addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-} from 'firebase/firestore';
-import {
-    ref,
-    getDownloadURL,
-    uploadBytes,
-    listAll,
-    deleteObject,
-} from 'firebase/storage';
+import { getDocs, collection, query, addDoc, updateDoc, doc, deleteDoc, } from 'firebase/firestore';
+import { ref, getDownloadURL, uploadBytes, listAll, deleteObject } from 'firebase/storage';
 
 function Transportation() {
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-
     const [transportCompanyName, setTransportCompanyName] = useState('');
     const [shippingCost, setShippingCost] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
     const [fileName, setFileName] = useState('');
     const [imageUpload, setImageUpload] = useState(null);
     const [imageList, setImageList] = useState([]);
-
     const [selectedTransportCompany, setSelectedTransportCompany] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
     const handleCloseAddModal = () => {
         setShowAddModal(false);
@@ -68,6 +53,7 @@ function Transportation() {
     };
 
     const handleAddSubmit = async (e) => {
+        setLoading(true)
         e.preventDefault();
 
         const createProduct = await addDoc(collection(db, 'transportation'), {
@@ -82,6 +68,7 @@ function Transportation() {
             const url = await getDownloadURL(snapshot.ref);
             setImageList((prev) => [...prev, url]);
         }
+        setLoading(false)
 
         handleCloseAddModal();
     };
@@ -198,6 +185,7 @@ function Transportation() {
                                     placeholder="ชื่อบริษัทขนส่ง"
                                     value={transportCompanyName}
                                     onChange={(e) => setTransportCompanyName(e.target.value)}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -206,6 +194,7 @@ function Transportation() {
                                     placeholder="ค่าบริการ"
                                     value={shippingCost}
                                     onChange={(e) => setShippingCost(e.target.value)}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -214,9 +203,12 @@ function Transportation() {
                                     className="input-small"
                                     type="file"
                                     onChange={handleFileChange}
+                                    required
                                 />
                             </Form.Group>
-                            <Button type="submit">เพิ่ม</Button>
+                            <Button variant="success" type="submit" disabled={isLoading}  >
+                                {isLoading ? 'Loading…' : 'เพิ่มช่องทางการขนส่ง'}
+                            </Button>
                         </Form>
                     </Modal.Body>
                 </Modal>
@@ -234,6 +226,7 @@ function Transportation() {
                                     placeholder="ชื่อบริษัทขนส่ง"
                                     value={transportCompanyName}
                                     onChange={(e) => setTransportCompanyName(e.target.value)}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -242,6 +235,7 @@ function Transportation() {
                                     placeholder="ค่าบริการ"
                                     value={shippingCost}
                                     onChange={(e) => setShippingCost(e.target.value)}
+                                    required
                                 />
                             </Form.Group>
                             <Form.Group>
@@ -250,6 +244,7 @@ function Transportation() {
                                     className="input-small"
                                     type="file"
                                     onChange={handleFileChange}
+                                    required
                                 />
                             </Form.Group>
                             <Button type="submit">แก้ไข</Button>
