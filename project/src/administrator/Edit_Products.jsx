@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
+import { query, collection, where, getDocs, updateDoc, doc, deleteDoc, writeBatch } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import Nav from "./Nav";
 import "./style/product_forrm.css";
 import { db, storageRef } from "../firebase";
 
+
 function EditProducts() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get("id");
+  const [imageList, setImageList] = useState([]);
+  const [productTypeList, setProductTypeList] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
+  const [fileName, setFileName] = useState(""); // Store the file name
+  const [imageUpload, setImageUpload] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const [productData, setProductData] = useState({
     id: productId || "",
@@ -29,9 +28,6 @@ function EditProducts() {
     image: searchParams.get("image") || "",
     type: searchParams.get("type") || "",
   });
-
-  const [imageList, setImageList] = useState([]);
-  const [productTypeList, setProductTypeList] = useState([]);
 
   useEffect(() => {
     // Fetch image list from Firebase Storage
@@ -60,32 +56,38 @@ function EditProducts() {
     }
   };
 
-  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
-  const [fileName, setFileName] = useState(""); // Store the file name
+  const handleUpdate = async (e) => {
+    setLoading(true)
+    e.preventDefault();
 
-  const [imageUpload, setImageUpload] = useState(null);
+    const batch = writeBatch(db); // Create a Firestore batch
 
+    // Update Firestore data
+    const productRef = doc(db, "products", productId);
+    batch.update(productRef, {
+      name: productData.name,
+      description: productData.description,
+      quantity: parseInt(productData.quantity),
+      price: parseInt(productData.price),
+      type: productData.type,
+    });
 
-  const updateUserField = async (property, value) => {
+    if (imageUpload) {
+      // Upload the image
+      const imageRef = ref(storageRef, `products/${imageUpload.name}`);
+      const snapshot = await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(snapshot.ref);
+      setImageList((prev) => [...prev, url]);
+      batch.update(productRef, { img: fileName });
+    }
+
     try {
-      const querySnapshot = await getDocs(
-        query(collection(db, "products"), where("name", "==", productData.name))
-      );
-
-      if (!querySnapshot.empty) {
-        const productRef = querySnapshot.docs[0].ref;
-        await updateDoc(productRef, { [property]: value });
-        setProductData({ ...productData, [property]: value });
-      }
-
-      if (imageUpload) {
-        const imageRef = ref(storageRef, `products/${imageUpload.name}`);
-        const snapshot = await uploadBytes(imageRef, imageUpload);
-        const url = await getDownloadURL(snapshot.ref);
-        setImageList((prev) => [...prev, url]);
-      }
+      await batch.commit(); // Commit all updates in the batch
+      alert("เเก้ไขข้อมูลผลิตภัณฑ์สำเร็จ");
+      setLoading(true)
+      window.close();
     } catch (error) {
-      console.error("Error updating field:", error);
+      console.error("Error updating fields:", error);
     }
   };
 
@@ -94,29 +96,13 @@ function EditProducts() {
       const productDocRef = doc(db, "products", productId);
       await deleteDoc(productDocRef);
       console.log("Document successfully deleted!");
-      alert("Document successfully deleted!");
+      alert("ลบผลิตภัณฑ์สำเร็จ");
       window.close();
     } catch (error) {
       console.error("Error deleting document: ", error);
       alert("Error deleting document: " + error.message);
     }
   };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    await updateUserField("name", productData.name);
-    await updateUserField("description", productData.description);
-    await updateUserField("quantity", productData.quantity);
-    await updateUserField("price", productData.price);
-    await updateUserField("type", productData.type);
-    if (imageUpload) {
-      await updateUserField("img", fileName);
-    }
-    alert("Updated");
-    window.close();
-  };
-
-
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Get the first selected file
@@ -143,82 +129,65 @@ function EditProducts() {
                       <p>ทำการแก้ไขสินค้า</p>
                       <Form onSubmit={handleUpdate}>
                         <Form.Group>
-                          <Form.Label>Name</Form.Label>
+                          <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Name"
                             value={productData.name}
                             onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                name: e.target.value,
-                              })
+                              setProductData({ ...productData, name: e.target.value })
                             }
                             required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Description</Form.Label>
+                          <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
                             type="text"
                             placeholder="Description"
                             value={productData.description}
                             onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                description: e.target.value,
-                              })
+                              setProductData({ ...productData, description: e.target.value })
                             }
                             required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Quantity</Form.Label>
+                          <Form.Label>จำนวน</Form.Label>
                           <Form.Control
                             type="number"
                             placeholder="Quantity"
                             value={productData.quantity}
                             onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                quantity: e.target.value,
-                              })
+                              setProductData({ ...productData, quantity: e.target.value })
                             }
                             required
                           />
                         </Form.Group>
                         <Form.Group>
-                          <Form.Label>Price</Form.Label>
+                          <Form.Label>ราคา</Form.Label>
                           <Form.Control
                             type="number"
                             placeholder="Price"
                             value={productData.price}
                             onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                price: e.target.value,
-                              })
+                              setProductData({ ...productData, price: e.target.value })
                             }
                             required
                           />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.SelectCustom">
                           <Form.Label>ประเภทสินค้า</Form.Label>
-                          {productData.type}
                           <Form.Control
                             as="select"
                             className="input-small"
                             placeholder="Type"
-
+                            value={productData.type}
                             onChange={(e) =>
-                              setProductData({
-                                ...productData,
-                                type: e.target.value,
-                              })
+                              setProductData({ ...productData, type: e.target.value })
                             }
                             required
                           >
-                            <option value={productData.type}>{productData.type}</option> {/* Default option */}
                             {productTypeList.map((typeObj, index) => (
                               <option key={index} value={typeObj.productType}>
                                 {typeObj.productType}
@@ -229,18 +198,14 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
-                            lassName="input-small"
+                            className="input-small"
                             type="file"
                             onChange={handleFileChange}
                           />
                         </Form.Group>
                         <br />
-                        <Button
-                          type="submit"
-                          className="contact_form_submit"
-                          variant="success"
-                        >
-                          Update
+                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}  >
+                          {isLoading ? 'Loading…' : 'Update'}
                         </Button>
                         <Button
                           onClick={handleDelete}
@@ -249,7 +214,6 @@ function EditProducts() {
                         >
                           delete
                         </Button>
-
                       </Form>
                     </div>
                   </div>
@@ -268,6 +232,7 @@ function EditProducts() {
           </Col>
         </Row>
       </Container>
+
     </>
   );
 }

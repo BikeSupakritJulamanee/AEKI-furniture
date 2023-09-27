@@ -23,7 +23,6 @@ function Add_Products() {
   const [productTypeList, setProductTypeList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
-
   // Event Handlers
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -40,9 +39,9 @@ function Add_Products() {
     const createProduct = await addDoc(collection(db, "products"), {
       name,
       description,
-      quantity,
-      price,
-      type,
+      quantity: parseInt(quantity),
+      price: parseInt(price),
+      type ,
       img: fileName,
     });
 
@@ -52,6 +51,7 @@ function Add_Products() {
       const url = await getDownloadURL(snapshot.ref);
       setImageList((prev) => [...prev, url]);
     }
+    alert('เพิ่มผลิตภัณฑ์สำเร็จ')
 
     setLoading(false)
     clearFormFields();
@@ -79,6 +79,7 @@ function Add_Products() {
     const createProduct = await addDoc(collection(db, 'type'), {
       productType,
     });
+    alert('เพิ่มประเภทสินค้าสำเร็จ')
 
     setLoading(false)
     handleCloseAddModal();
@@ -212,7 +213,7 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
-                        <Button className="contact_form_submit" type="submit" disabled={isLoading}  >
+                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}  >
                           {isLoading ? 'Loading…' : 'เพิ่มผลิตภัณฑ์'}
                         </Button>
                       </Form>

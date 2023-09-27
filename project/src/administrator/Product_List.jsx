@@ -72,12 +72,12 @@ function Product_List() {
           <Form.Control
             className="search_bar"
             type="text"
-            placeholder="Search by product name"
+            placeholder="ค้นหาด้วยชื่อผลิตภัณฑ์"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button className="search_btn" onClick={fetchProducts}>
-            Search
+            ค้นหา
           </Button>
         </Form.Group>
         <hr />
@@ -124,33 +124,13 @@ function Product_List() {
                       product.description
                     )}&image=${encodeURIComponent(product.img)}&price=${encodeURIComponent(
                       product.price
-                    )}`}E
-                    // target='_blank'
+                    )}`} E
+                  // target='_blank'
                   >
                     <Button>
-                    Edit
+                      Edit
                     </Button>
                   </Link>
-
-                  {/* <span
-                    onClick={() => {
-                      navigate(
-                        `/edit_products?id=${encodeURIComponent(
-                          product.id
-                        )}&name=${encodeURIComponent(
-                          product.name
-                        )}&quantity=${encodeURIComponent(
-                          product.quantity
-                        )}&description=${encodeURIComponent(
-                          product.description
-                        )}&image=${encodeURIComponent(
-                          product.img
-                        )}&price=${encodeURIComponent(product.price)}`
-                      );
-                    }}
-                  >
-                    Edit
-                  </span>                                                                                             */}
                 </td>
                 <td>
                   <Button onClick={() => handleDelete(product.id)}>
