@@ -24,6 +24,11 @@ import Login from './component/Login.jsx'
 import Home from './component/Home.jsx'
 //User
 import Product_detail from './component/Product_detail.jsx';
+import UserorderList from './component/UserorderList.jsx';
+
+
+
+
 
 import AdminHomePage from './administrator/AdminHomePage.jsx'
 import Create from './administrator/Create.jsx';
@@ -54,6 +59,10 @@ const router = createBrowserRouter([
   {
     path: '/product_detail',
     element: <ProtectedRoute><Product_detail /></ProtectedRoute>
+  },
+  {
+    path: '/userorderlist',
+    element:<ProtectedRoute><UserorderList/></ProtectedRoute>
   },
 
   {

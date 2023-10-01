@@ -32,3 +32,22 @@
 .bath {
     font-size: 15px;
 }
+
+.progress_bar{
+
+    height: 20px;
+    background: rgba(255, 255, 255, 0);
+}
+
+.progress_label{
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 2vh;
+}
+
+.warning_btn{
+    width: 140px;
+    height: 60px;
+    margin: 0.5%;
+    font-weight: bold;
+}

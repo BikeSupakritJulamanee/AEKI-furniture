@@ -3,27 +3,46 @@ import { Container, Card, Image, Button, Form, Row, Col } from "react-bootstrap"
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  writeBatch,
+  doc,
+  updateDoc,
+  getDoc, // Add this import for getDoc
+} from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
+
+
+
 function Home() {
-  const { user, logOut } = useUserAuth(); // Include logOut from useUserAuth
+  const { user, logOut } = useUserAuth();
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
 
 
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectProduct, setselectProduct] = useState([]);
+  const [homecart, sethomecart] = useState([]);
+
+  const [isLoading, setLoading] = useState(false);
+
+
+
 
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate("/");
+      // Navigate logic here, but you need to import 'navigate' from your routing library.
     } catch (err) {
       console.log(err.message);
     }
   }
+
 
   useEffect(() => {
     listAll(imageListRef)
@@ -34,17 +53,133 @@ function Home() {
       .catch((error) => console.error("Error listing images:", error));
   }, []);
 
+
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [searchTerm]); // Include searchTerm in the dependency array.
 
-  const handlebuy = (e, product_id) => {
-    e.preventDefault();
-    const updatedSelectProduct = [...selectProduct];
-    updatedSelectProduct.push(product_id)
-    setselectProduct(updatedSelectProduct);
-    console.log(updatedSelectProduct);
+
+  useEffect(() => {
+    fetchCart();
+  }, [user]); // Include user in the dependency array.
+
+
+  const fetchCart = async () => {
+    if (user.email) {
+      const q = query(
+        collection(db, "cart"),
+        where("email", "==", user.email)
+      );
+
+
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      sethomecart(newData);
+
+
+
+      // You don't need to set cartID here.
+    }
   };
+
+
+  const handlebuy = async (productId, qrt) => {
+    setLoading(true)
+    try {
+      if (homecart.length === 0) {
+        console.error("Cart not found.");
+        return;
+      }
+
+      // Assuming you want to work with the first cart found.
+      const cartID = homecart[0].id;
+      const cartDocRef = doc(db, "cart", cartID);
+
+      // Get the current cart data
+      const cartDocSnapshot = await getDoc(cartDocRef);
+      const currentCartData = cartDocSnapshot.data();
+
+      // Check if the 'qauntityPerProductID' field exists and is an object
+      if (typeof currentCartData.qauntityPerProductID === 'object') {
+        // Check if productId already exists in 'qauntityPerProductID'
+        if (currentCartData.qauntityPerProductID.hasOwnProperty(productId)) {
+          // Update the quantity for the existing product
+          const updatedQrt = {
+            ...currentCartData.qauntityPerProductID,
+            [productId]: currentCartData.qauntityPerProductID[productId] + qrt,
+          };
+
+          // Update the 'qauntityPerProductID' field in the cart document
+          await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt });
+
+          console.log("Product quantity updated in cart successfully!");
+        } else {
+          // Product is not in the cart, add it
+          const updatedProductIds = [...currentCartData.product_id, productId];
+          const updatedQrt = {
+            ...currentCartData.qauntityPerProductID,
+            [productId]: qrt,
+          };
+
+          // Update the 'qauntityPerProductID' field in the cart document
+          await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt, product_id: updatedProductIds });
+
+          console.log("Product added to cart successfully!");
+        }
+      } else {
+        console.error("Invalid 'qauntityPerProductID' field in cart document.");
+      }
+    } catch (error) {
+      console.error("Error adding/updating product quantity in cart:", error);
+    }
+    alert('เพิ่มสิค้าในรถเข็นเเล้ว')
+    setLoading(false)
+  };
+
+
+
+
+
+  // const handlebuy = async (productId,qrt) => {
+  //   try {
+  //     if (homecart.length === 0) {
+  //       console.error("Cart not found.");
+  //       return;
+  //     }
+
+
+  //     // Assuming you want to work with the first cart found.
+  //     const cartID = homecart[0].id;
+  //     const cartDocRef = doc(db, "cart", cartID);
+
+  //     // Get the current cart data
+  //     const cartDocSnapshot = await getDoc(cartDocRef);
+  //     const currentCartData = cartDocSnapshot.data();
+
+  //     // Check if the 'product_id' field exists and is an array
+  //     if (Array.isArray(currentCartData.product_id) && Array.isArray(currentCartData.qauntityPerProductID)) {
+  //       // Add the new product ID to the array
+  //       const updatedProductIds = [...currentCartData.product_id, productId];
+  //       const updatedQrt = [...currentCartData.qauntityPerProductID, qrt];
+
+  //       // Update the 'product_id' field in the cart document
+  //       await updateDoc(cartDocRef, { product_id: updatedProductIds,qauntityPerProductID: updatedQrt});
+  //       // await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt});
+
+
+  //       console.log("Product added to cart successfully!");
+  //     } else {
+  //       console.error("Invalid 'product_id' field in cart document.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding product to cart:", error);
+  //   }
+  // };
+
+
   const fetchProducts = async () => {
     try {
       const q = query(
@@ -53,6 +188,7 @@ function Home() {
         orderBy("name")
       );
 
+
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -60,19 +196,22 @@ function Home() {
       }));
       setProducts(newData);
 
+
     } catch (error) {
+      console.error("Error fetching products:", error);
     }
-
-
   };
-
 
 
   return (
     <>
       <Nav_Bar />
+
       <Container>
         {user.email}
+
+        <div style={{ textAlign: 'right' }}><Link to="/userorderlist">ดูสินค้าในตะกร้า</Link></div>
+
         <Form.Group className="search_group">
           <Form.Control
             className="search_bar"
@@ -82,10 +221,11 @@ function Home() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button className="search_btn" onClick={fetchProducts}>
-            search
+            Search
           </Button>
         </Form.Group>
         <hr />
+
 
         <Row>
           {products.map((product, index) => (
@@ -121,25 +261,23 @@ function Home() {
                       </span>
                       <b className="bath"> บาท</b>
                     </div>
-                    <div>
-                      <Button
-                        type="submit"
-                        className="contact_form_submit"
-                        variant="success"
-                        onClick={(e) => handlebuy(e, product.id)}
-                      >
-                        ADD TO CART
-                      </Button>
-                    </div>
+
                   </Card.Body>
                 </Card>
               </Link>
+              <div>
+                <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(product.id, product.quantity)}  >
+                  ADD TO CART
+                </Button>
+
+              </div>
             </Col>
           ))}
         </Row>
       </Container>
     </>
-  )
+  );
 }
+
 
 export default Home;

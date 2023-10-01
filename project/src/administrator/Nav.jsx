@@ -15,7 +15,7 @@ function Nav() {
 
     return (
         <>
-            <header>admin section&#9822;</header>
+            <header></header>
             <Container>
                 <img className='menu' src={menuImage} alt="Menu" onClick={handleShow} />
 

@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Image, Button, Form, Row, Col, ProgressBar, Badge } from "react-bootstrap";
-import Nav from "./Nav";
+import { Container, Card, Image, Button, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
-import "./style/AdminHomePage.css";
-
+import { useUserAuth } from "../context/UserAuthContext";
+import Nav_Bar from "../component/Nav_Bar";
 function Home() {
+  const { user, logOut } = useUserAuth(); // Include logOut from useUserAuth
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
 
+
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectProduct, setselectProduct] = useState([]);
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
 
   useEffect(() => {
     listAll(imageListRef)
@@ -27,6 +38,13 @@ function Home() {
     fetchProducts();
   }, []);
 
+  const handlebuy = (e, product_id) => {
+    e.preventDefault();
+    const updatedSelectProduct = [...selectProduct];
+    updatedSelectProduct.push(product_id)
+    setselectProduct(updatedSelectProduct);
+    console.log(updatedSelectProduct);
+  };
   const fetchProducts = async () => {
     try {
       const q = query(
@@ -41,42 +59,38 @@ function Home() {
         id: doc.id,
       }));
       setProducts(newData);
+
     } catch (error) {
-      console.error("Error fetching account data:", error);
     }
   };
 
+
+
+
   return (
     <>
-      <Nav />
+      <Nav_Bar />
       <Container>
+        {user.email}
         <Form.Group className="search_group">
           <Form.Control
             className="search_bar"
             type="text"
-            placeholder="ค้นหาสิ่งที่คุณกำลังสนใจ"
+            placeholder="Search by product name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button className="search_btn" onClick={fetchProducts}>
-            ค้นหา
+            search
           </Button>
         </Form.Group>
         <hr />
-        <Row>
-          
-            <Button className="warning_btn" variant="dark">USER <br /> <Badge bg="warning">9 users</Badge></Button>
-            <Button className="warning_btn" variant="dark">PROFIT <br /> <Badge bg="success">900 bath</Badge></Button>
-   
 
-          
-
-        </Row>
         <Row>
           {products.map((product, index) => (
             <Col key={index} md={3} className="mb-4">
               <Link
-                to={`/edit_products?id=${encodeURIComponent(
+                to={`/product_detail?id=${encodeURIComponent(
                   product.id
                 )}&name=${encodeURIComponent(
                   product.name
@@ -86,14 +100,8 @@ function Home() {
                   product.description
                 )}&image=${encodeURIComponent(
                   product.img
-                )}&price=${encodeURIComponent(
-                  product.price
-                )}&type=${encodeURIComponent(
-                  product.type
-                )}&attribute=${encodeURIComponent(
-                  product.attribute
-                )}
-                  `} target="_blank"
+                )}&price=${encodeURIComponent(product.price)}`}
+                target="_blank"
               >
                 <Card className="card">
                   <Image
@@ -112,6 +120,16 @@ function Home() {
                       </span>
                       <b className="bath"> บาท</b>
                     </div>
+                    <div>
+                      <Button
+                        type="submit"
+                        className="contact_form_submit"
+                        variant="success"
+                        onClick={(e) => handlebuy(e, product.id)}
+                      >
+                        ADD TO CART
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               </Link>
@@ -120,7 +138,7 @@ function Home() {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
 export default Home;
