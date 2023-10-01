@@ -11,6 +11,10 @@
     border: 0;
 }
 
+.card{
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
 .search_bar {
     width: 60%;
 }
@@ -50,4 +54,8 @@
     height: 60px;
     margin: 0.5%;
     font-weight: bold;
+}
+
+.board{
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
