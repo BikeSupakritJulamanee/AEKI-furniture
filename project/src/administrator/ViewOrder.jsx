@@ -4,14 +4,20 @@ import { db } from '../firebase'; // Assuming you're importing the Firebase conf
 import Nav from './Nav';
 import { Button, Container, Image, Row, Col } from "react-bootstrap";
 import { doc, getDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
 
 
 function ViewOrder() {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-
+    const [recipientAddy_ID, setRecipientAddy_ID] = useState(null);
+    const [transportation_ID, setTransportation_ID] = useState(null);
+    const [productID_ID, setProductID] = useState([]);
+    const [quantity, setQuantity] = useState([]);
+    const [productID_Detail, setProductID_Detail] = useState([]);
+    const [imageList, setImageList] = useState([]);
+    const [imageList2, setImageList2] = useState([]);
     const [ShippingData, setShippingData] = useState({
         orderID: searchParams.get("orderID") || "",
         email: searchParams.get("email") || "",
@@ -22,13 +28,6 @@ function ViewOrder() {
         amount: searchParams.get("amount") || "",
     });
 
-    const [recipientAddy_ID, setRecipientAddy_ID] = useState(null);
-    const [transportation_ID, setTransportation_ID] = useState(null);
-    const [productID_ID, setProductID] = useState([]);
-    const [quantity, setQuantity] = useState([]);
-    const [productID_Detail, setProductID_Detail] = useState([]);
-
-    // Fetch product IDs as an array
     useEffect(() => {
         const productIDs = ShippingData.productID.split(",");
         const quantityPerProduct = ShippingData.quantityPerProductID.split(",");
@@ -93,7 +92,6 @@ function ViewOrder() {
         }
     }, [productID_ID]);
 
-    const [imageList, setImageList] = useState([]);
     useEffect(() => {
         const imageListRef = ref(storageRef, "products/");
         listAll(imageListRef)
@@ -104,7 +102,6 @@ function ViewOrder() {
             .catch((error) => console.error("Error listing images:", error));
     }, []);
 
-    const [imageList2, setImageList2] = useState([]);
     useEffect(() => {
         const imageListRef = ref(storageRef, "transaction/");
         listAll(imageListRef)
@@ -125,7 +122,9 @@ function ViewOrder() {
                         {productID_Detail.map((product, index) => (
                             <Row key={index}>
                                 <Col>
-                                    <Image width={200} height={160}
+                                    <Image
+                                        width={200}
+                                        height={160}
                                         src={imageList.find((url) => url.includes(product.img))}
                                     />
                                 </Col>
@@ -152,7 +151,9 @@ function ViewOrder() {
                                 บริษัท: {transportation_ID.transportCompanyName} <br />
                                 ค่าบริการ: {transportation_ID.shippingCost} <br />
                                 {transportation_ID.img && (
-                                    <Image width={100} height={80}
+                                    <Image
+                                        width={100}
+                                        height={80}
                                         src={imageList2.find((url) => url.includes(transportation_ID.img))}
                                     />
                                 )}
@@ -163,12 +164,11 @@ function ViewOrder() {
                         ยอดต้องชำระ: {ShippingData.amount} บาท
 
                         <br /><br />
-                        <Button href="/order_list" >ย้อนกลับ</Button>
+                        <Button href="/order_list">ย้อนกลับ</Button>
                     </Col>
                 </Row>
             </Container>
         </>
     );
 }
-
 export default ViewOrder;

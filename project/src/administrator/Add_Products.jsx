@@ -35,7 +35,7 @@ function Add_Products() {
   };
 
   const handleSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     const createProduct = await addDoc(collection(db, "products"), {
       name,
@@ -53,9 +53,9 @@ function Add_Products() {
       const url = await getDownloadURL(snapshot.ref);
       setImageList((prev) => [...prev, url]);
     }
-    alert('เพิ่มผลิตภัณฑ์สำเร็จ')
+    alert('เพิ่มผลิตภัณฑ์สำเร็จ');
 
-    setLoading(false)
+    setLoading(false);
     clearFormFields();
   };
 
@@ -69,6 +69,7 @@ function Add_Products() {
     setType("");
     setAttribute("");
     setFileName("");
+    setType("");
   };
 
   const handleShowAddModal = () => setShowAddModal(true);
@@ -78,14 +79,14 @@ function Add_Products() {
   };
 
   const handleAddSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     const createProduct = await addDoc(collection(db, 'type'), {
       productType,
     });
-    alert('เพิ่มประเภทสินค้าสำเร็จ')
+    alert('เพิ่มประเภทสินค้าสำเร็จ');
 
-    setLoading(false)
+    setLoading(false);
     handleCloseAddModal();
   };
 
@@ -106,10 +107,10 @@ function Add_Products() {
     }
   };
 
+
   return (
     <>
       <Nav />
-
       <Modal centered show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>
           <Modal.Title>เพิ่มประเภทสินค้า</Modal.Title>
@@ -125,7 +126,7 @@ function Add_Products() {
                 required
               />
             </Form.Group>
-            <Button type="submit" disabled={isLoading}  >
+            <Button type="submit" disabled={isLoading}>
               {isLoading ? 'Loading…' : 'เพิ่มประเภท'}
               {/* Conditional Rendering  */}
             </Button>
@@ -234,11 +235,15 @@ function Add_Products() {
                         </Form.Group>
 
                         <Form.Group controlId="exampleForm.SelectCustom"></Form.Group>
-                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}  >
+                        <Button
+                          variant="success"
+                          className="contact_form_submit"
+                          type="submit"
+                          disabled={isLoading}
+                        >
                           {isLoading ? 'Loading…' : 'เพิ่มผลิตภัณฑ์'}
                         </Button>
                       </Form>
-
                     </div>
                   </div>
                 </Col>

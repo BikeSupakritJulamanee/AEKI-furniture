@@ -1,34 +1,16 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Card,
-  Image,
-  Button,
-  Form,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Container, Card, Image, Button, Form, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  orderBy,
-  writeBatch,
-  doc,
-  updateDoc,
-  getDoc, // Add this import for getDoc
-} from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
-
 function Home() {
-  const { user, logOut } = useUserAuth();
+  const { user, logOut } = useUserAuth(); // Include logOut from useUserAuth
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
+
 
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,11 +19,11 @@ function Home() {
   const handleLogout = async () => {
     try {
       await logOut();
-      // Navigate logic here, but you need to import 'navigate' from your routing library.
+      navigate("/");
     } catch (err) {
       console.log(err.message);
     }
-  };
+  }
 
   useEffect(() => {
     listAll(imageListRef)
@@ -59,7 +41,7 @@ function Home() {
   const handlebuy = (e, product_id) => {
     e.preventDefault();
     const updatedSelectProduct = [...selectProduct];
-    updatedSelectProduct.push(product_id);
+    updatedSelectProduct.push(product_id)
     setselectProduct(updatedSelectProduct);
     console.log(updatedSelectProduct);
   };
@@ -77,20 +59,19 @@ function Home() {
         id: doc.id,
       }));
       setProducts(newData);
-    } catch (error) {}
+
+    } catch (error) {
+    }
   };
+
+
+
 
   return (
     <>
       <Nav_Bar />
-
       <Container>
         {user.email}
-
-        <div style={{ textAlign: "right" }}>
-          <Link to="/userorderlist">ดูสินค้าในตะกร้า</Link>
-        </div>
-
         <Form.Group className="search_group">
           <Form.Control
             className="search_bar"
@@ -100,7 +81,7 @@ function Home() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button className="search_btn" onClick={fetchProducts}>
-            Search
+            search
           </Button>
         </Form.Group>
         <hr />
@@ -157,7 +138,7 @@ function Home() {
         </Row>
       </Container>
     </>
-  );
+  )
 }
 
 export default Home;

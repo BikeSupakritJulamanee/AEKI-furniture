@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Image, Button, Form, Modal, Card, Row, Col } from 'react-bootstrap';
+import { Container, Image, Button, Form, Modal } from 'react-bootstrap';
 import Nav from './Nav';
 import { storageRef, db } from '../firebase';
 import { getDocs, collection, query, addDoc, updateDoc, doc, deleteDoc, } from 'firebase/firestore';
@@ -16,13 +16,22 @@ function Transportation() {
     const [imageList, setImageList] = useState([]);
     const [selectedTransportCompany, setSelectedTransportCompany] = useState(null);
     const [isLoading, setLoading] = useState(false);
+    const [fetchTransportCompanies, setFetchTransportCompanies] = useState([]);
+    const handleShowAddModal = () => setShowAddModal(true);
+    const imageListRef = ref(storageRef, 'transaction/');
+
+    useEffect(() => {
+        fetchProducts();
+        listAll(imageListRef)
+            .then((response) => Promise.all(response.items.map((item) => getDownloadURL(item))))
+            .then((urls) => setImageList(urls))
+            .catch((error) => console.error('Error listing images:', error));
+    }, []);
 
     const handleCloseAddModal = () => {
         setShowAddModal(false);
         clearFormFields();
     };
-
-    const handleShowAddModal = () => setShowAddModal(true);
 
     const handleCloseEditModal = () => {
         setShowEditModal(false);
@@ -58,7 +67,7 @@ function Transportation() {
 
         const createProduct = await addDoc(collection(db, 'transportation'), {
             transportCompanyName: transportCompanyName,
-            shippingCost: shippingCost,
+            shippingCost: parseFloat(shippingCost),
             img: fileName,
         });
 
@@ -81,7 +90,7 @@ function Transportation() {
             if (fileName != '') {
                 await updateDoc(companyDocRef, {
                     transportCompanyName: transportCompanyName,
-                    shippingCost: shippingCost,
+                    shippingCost: parseFloat(shippingCost),
                     img: fileName
 
                 });
@@ -133,23 +142,6 @@ function Transportation() {
             }
         }
     };
-
-
-
-    const imageListRef = ref(storageRef, 'transaction/');
-
-    useEffect(() => {
-        listAll(imageListRef)
-            .then((response) => Promise.all(response.items.map((item) => getDownloadURL(item))))
-            .then((urls) => setImageList(urls))
-            .catch((error) => console.error('Error listing images:', error));
-    }, []);
-
-    const [fetchTransportCompanies, setFetchTransportCompanies] = useState([]);
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
 
     const fetchProducts = async () => {
         try {
@@ -206,7 +198,7 @@ function Transportation() {
                                     required
                                 />
                             </Form.Group>
-                            <Button variant="success" type="submit" disabled={isLoading}  >
+                            <Button variant="success" type="submit" disabled={isLoading}>
                                 {isLoading ? 'Loading…' : 'เพิ่มช่องทางการขนส่ง'}
                             </Button>
                         </Form>
@@ -244,7 +236,6 @@ function Transportation() {
                                     className="input-small"
                                     type="file"
                                     onChange={handleFileChange}
-                                    required
                                 />
                             </Form.Group>
                             <Button type="submit">แก้ไข</Button>
@@ -258,8 +249,8 @@ function Transportation() {
                 {/* Display Transportation Companies */}
                 {fetchTransportCompanies.map((company, index) => (
                     <span key={index}>
-
-                        <Image onClick={() => handleShowEditModal(company)}
+                        <Image
+                            onClick={() => handleShowEditModal(company)}
                             className="img"
                             src={imageList.find((url) => url.includes(company.img))}
                             style={{ width: '180px', height: '120px' }}
@@ -267,6 +258,7 @@ function Transportation() {
                     </span>
                 ))}
             </Container>
+
         </>
     );
 }

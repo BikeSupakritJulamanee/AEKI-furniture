@@ -2,37 +2,30 @@ import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { Container, Table, Button, Form } from "react-bootstrap";
 import { db } from "../firebase";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  deleteDoc,
-  doc,
-  orderBy,
-} from "firebase/firestore";
+import { query, collection, where, getDocs, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 function Product_List() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [select, setSelect] = useState("");
-  // const navigate = useNavigate();
+  const [productTypeList, setProductTypeList] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+    fetchType();
+  }, [select]);
+
   const fetchProducts = async () => {
     try {
-      let q;
+      let q = collection(db, "products");
 
       if (select !== "") {
-        q = query(collection(db, "products"), where("type", "==", select));
-      } else if (searchTerm !== "") {
-        q = query(
-          collection(db, "products"),
-          where("name", ">=", searchTerm),
-          orderBy("name")
-        );
-      } else {
-        // Fetch all products when neither search term nor category is selected
-        q = query(collection(db, "products"), orderBy("name"));
+        q = query(q, where("type", "==", select));
+      }
+
+      if (searchTerm !== "") {
+        q = query(q, where("name", ">=", searchTerm), orderBy("name"));
       }
 
       const querySnapshot = await getDocs(q);
@@ -59,14 +52,20 @@ function Product_List() {
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, [select]);
+  const fetchType = async () => {
+    try {
+      const q = query(collection(db, 'type'), orderBy("productType"));
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setProductTypeList(newData);
+    } catch (error) {
+      console.error('Error fetching account data:', error);
+    }
+  };
 
   return (
     <>
       <Nav />
-      {select}
       <Container>
         <Form.Group className="search_group">
           <Form.Control
@@ -82,16 +81,22 @@ function Product_List() {
         </Form.Group>
         <hr />
 
-        <Form.Select
-          aria-label="Default select example"
-          onChange={(e) => setSelect(e.target.value)}
-        >
-          <option value="">Select a category</option>
-          <option value="ของตกเเต่งบ้าน">ของตกเเต่งบ้าน</option>
-          <option value="เตียง">เตียง</option>
-          <option value="เก้าอี้">เก้าอี้</option>
-        </Form.Select>
-
+        <Form.Group controlId="exampleForm.SelectCustom">
+          <Form.Control
+            as="select"
+            className="input-small"
+            placeholder="Type"
+            onChange={(e) => setSelect(e.target.value)}
+            required
+          >
+            <option value={""}>ทุกประเภทประเภท</option>
+            {productTypeList.map((typeObj, index) => (
+              <option key={index} value={typeObj.productType}>
+                {typeObj.productType}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
         <hr />
 
         <Table striped bordered hover>
@@ -134,8 +139,8 @@ function Product_List() {
                       product.type
                     )}&attribute=${encodeURIComponent(
                       product.attribute
-                    )}
-                  `} target="_blank"
+                    )}`}
+                    target="_blank"
                   >
                     <Button>
                       Edit
@@ -155,5 +160,4 @@ function Product_List() {
     </>
   );
 }
-
 export default Product_List;
