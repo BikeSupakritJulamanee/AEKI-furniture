@@ -1,17 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
 
-.card, .search_bar, .search_btn, .img, .edit_btn, .product_name, .product_price, .bath {
+.card,
+.search_bar,
+.search_btn,
+.img,
+.edit_btn,
+.product_name,
+.product_price,
+.bath {
     font-family: 'Kanit', sans-serif;
 }
 
-.card, .search_bar, .search_btn, .img, .edit_btn {
+.card,
+.search_bar,
+.search_btn,
+.img,
+.edit_btn {
     display: inline-block;
     margin: 15px;
     padding: 0;
     border: 0;
 }
 
-.card{
+.card {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -37,25 +48,25 @@
     font-size: 15px;
 }
 
-.progress_bar{
+.progress_bar {
 
     height: 20px;
     background: rgba(255, 255, 255, 0);
 }
 
-.progress_label{
+.progress_label {
     font-size: 24px;
     font-weight: bold;
     text-shadow: 2vh;
 }
 
-.warning_btn{
+.warning_btn {
     width: 140px;
     height: 60px;
     margin: 0.5%;
     font-weight: bold;
 }
 
-.board{
+.board {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }

@@ -26,12 +26,7 @@ import Home from './component/Home.jsx'
 import Product_detail from './component/Product_detail.jsx';
 import UserorderList from './component/UserorderList.jsx';
 
-
-
-
-
 import AdminHomePage from './administrator/AdminHomePage.jsx'
-import Create from './administrator/Create.jsx';
 import Add_Products from './administrator/Add_Products.jsx';
 import Edit_Products from './administrator/Edit_Products.jsx'
 import Product_List from './administrator/Product_List.jsx';
@@ -62,16 +57,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/userorderlist',
-    element:<ProtectedRoute><UserorderList/></ProtectedRoute>
+    element: <ProtectedRoute><UserorderList /></ProtectedRoute>
   },
 
   {
     path: '/adminhomepage',
     element: <AdminHomePage />
-  },
-  {
-    path: '/create',
-    element: <Create />
   },
   {
     path: '/add_products',

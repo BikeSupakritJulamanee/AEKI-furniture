@@ -16,9 +16,20 @@ import { Link } from 'react-router-dom';
 function Order_List() {
     const [shipping, setShipping] = useState([]);
     const [select, setSelect] = useState('');
+    const [lock, setLock] = useState(false)
+
+    useEffect(() => {
+        if (select == 'จัดส่งสำเร็จ') {
+            setLock(true)
+        }
+        else {
+            setLock(false)
+        }
+        fetchState();
+    }, [select]);
 
     const handleEditSubmit = async (id) => {
-        const companyDocRef = doc(db, 'state', id);
+        const companyDocRef = doc(db, 'shipping', id);
         await updateDoc(companyDocRef, {
             status: 'จัดส่งสำเร็จ'
         });
@@ -61,10 +72,6 @@ function Order_List() {
         }
     };
 
-    useEffect(() => {
-        fetchState();
-    }, [select]);
-
     return (
         <>
             <Nav />
@@ -76,7 +83,8 @@ function Order_List() {
                     <option value=''>สถานะ</option>
                     <option value='รอดำเนินการจัดส่ง'>รอดำเนินการจัดส่ง</option>
                     <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
-                </Form.Select> <hr />
+                </Form.Select>
+                <hr />
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -87,7 +95,7 @@ function Order_List() {
                             <th>รหัสบริการขนส่ง</th>
                             <th>รหัสสินค้า</th>
                             <th>จำนวน</th>
-                            <th color='red' >เปลี่ยนสถานะ</th>
+                            <th color='red'>เปลี่ยนสถานะ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -98,30 +106,41 @@ function Order_List() {
                                 <td>{s.recipientAddyID}</td>
                                 <td>{s.order.amount}</td>
                                 <td>{s.transportationID}</td>
-                                <td>{Array.isArray(s.order.productID) &&
-                                    s.order.productID.map((productId, i) => (
-                                        <div key={i}>{productId}</div>
-                                    ))}
+                                <td>
+                                    {Array.isArray(s.order.productID) &&
+                                        s.order.productID.map((productId, i) => (
+                                            <div key={i}>{productId}</div>
+                                        ))}
                                 </td>
-                                <td>{Array.isArray(s.order.quantityPerProductID) &&
-                                    s.order.quantityPerProductID.map((productId, i) => (
-                                        <div key={i}>{productId}</div>
-                                    ))}
+                                <td>
+                                    {Array.isArray(s.order.quantityPerProductID) &&
+                                        s.order.quantityPerProductID.map((productId, i) => (
+                                            <div key={i}>{productId}</div>
+                                        ))}
                                 </td>
-                                <td><Button onClick={() => handleEditSubmit(s.id)}>เลื่อนสถานะ</Button></td>
-                                <td> <Link
-                                    to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&email=${encodeURIComponent(
-                                        s.order.gmail
-                                    )}&recipientAddyID=${encodeURIComponent(s.recipientAddyID)}&amount=${encodeURIComponent(
-                                        s.order.amount
-                                    )}&transportationID=${encodeURIComponent(s.transportationID)}&productID=${encodeURIComponent(
-                                        s.order.productID
-                                    )}&quantityPerProductID=${encodeURIComponent(s.order.quantityPerProductID)}`}
-                                    target="_blank"
-                                    key={index}
-                                >view</Link></td>
+                                <td>
+                                    <Button disabled={lock} onClick={() => handleEditSubmit(s.id)}>
+                                        ทำการจัดส่ง
+                                    </Button>
+                                </td>
+                                <td>
+                                    <Link
+                                        to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&email=${encodeURIComponent(
+                                            s.order.gmail
+                                        )}&recipientAddyID=${encodeURIComponent(s.recipientAddyID)}&amount=${encodeURIComponent(
+                                            s.order.amount
+                                        )}&transportationID=${encodeURIComponent(s.transportationID)}&productID=${encodeURIComponent(
+                                            s.order.productID
+                                        )}&quantityPerProductID=${encodeURIComponent(
+                                            s.order.quantityPerProductID
+                                        )}`}
+                                        target="_blank"
+                                        key={index}
+                                    >
+                                        view
+                                    </Link>
+                                </td>
                             </tr>
-
                         ))}
                     </tbody>
                 </Table>

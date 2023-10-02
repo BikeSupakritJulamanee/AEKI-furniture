@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { query, collection, where, getDocs, updateDoc, doc, deleteDoc, writeBatch } from "firebase/firestore";
+import { query, collection, getDocs, doc, deleteDoc, writeBatch } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import Nav from "./Nav";
 import "./style/product_forrm.css";
@@ -14,11 +14,10 @@ function EditProducts() {
   const productId = searchParams.get("id");
   const [imageList, setImageList] = useState([]);
   const [productTypeList, setProductTypeList] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
-  const [fileName, setFileName] = useState(""); // Store the file name
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [isLoading, setLoading] = useState(false);
-
   const [productData, setProductData] = useState({
     id: productId || "",
     name: searchParams.get("name") || "",
@@ -31,7 +30,7 @@ function EditProducts() {
   });
 
   useEffect(() => {
-    // Fetch image list from Firebase Storage
+    fetchType();
     const imageListRef = ref(storageRef, "products/");
     listAll(imageListRef)
       .then((response) =>
@@ -39,11 +38,6 @@ function EditProducts() {
       )
       .then((urls) => setImageList(urls))
       .catch((error) => console.error("Error listing images:", error));
-  }, []);
-
-  useEffect(() => {
-    // Fetch product types
-    fetchType();
   }, []);
 
   const fetchType = async () => {
@@ -61,9 +55,8 @@ function EditProducts() {
     setLoading(true)
     e.preventDefault();
 
-    const batch = writeBatch(db); // Create a Firestore batch
+    const batch = writeBatch(db);
 
-    // Update Firestore data
     const productRef = doc(db, "products", productId);
     batch.update(productRef, {
       name: productData.name,
@@ -107,12 +100,12 @@ function EditProducts() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Get the first selected file
+    const file = e.target.files[0];
 
     if (file) {
       setSelectedFile(file);
-      setFileName(file.name); // Set the file name
-      setImageUpload(file); // Set the imageUpload state with the file object
+      setFileName(file.name);
+      setImageUpload(file);
     }
   };
 
@@ -222,7 +215,7 @@ function EditProducts() {
                           />
                         </Form.Group>
                         <br />
-                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}  >
+                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}>
                           {isLoading ? 'Loading…' : 'Update'}
                         </Button>
                         <Button
@@ -230,7 +223,7 @@ function EditProducts() {
                           className="contact_form_submit2"
                           variant="danger"
                         >
-                          delete
+                          Delete
                         </Button>
                       </Form>
                     </div>
@@ -250,7 +243,6 @@ function EditProducts() {
           </Col>
         </Row>
       </Container>
-
     </>
   );
 }
