@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap");
 
 .card,
 .search_bar,
@@ -8,7 +8,7 @@
 .product_name,
 .product_price,
 .bath {
-    font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
 }
 
 .card,
@@ -16,57 +16,56 @@
 .search_btn,
 .img,
 .edit_btn {
-    display: inline-block;
-    margin: 15px;
-    padding: 0;
-    border: 0;
+  display: inline-block;
+  margin: 15px;
+  /* padding: 0;
+    border: 0; */
 }
 
 .card {
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .search_bar {
-    width: 60%;
+  width: 60%;
 }
 
 .search_btn {
-    margin-left: 0.1%;
-    background-color: black;
-    padding: 0.5% 1% 0.5% 1%;
+  margin-left: 0.1%;
+  background-color: black;
+  padding: 0.5% 1% 0.5% 1%;
 }
 
 .product_name {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .product_price {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 .bath {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .progress_bar {
-
-    height: 20px;
-    background: rgba(255, 255, 255, 0);
+  height: 20px;
+  background: rgba(255, 255, 255, 0);
 }
 
 .progress_label {
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 2vh;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 2vh;
 }
 
 .warning_btn {
-    width: 140px;
-    height: 60px;
-    margin: 0.5%;
-    font-weight: bold;
+  width: 140px;
+  height: 60px;
+  margin: 0.5%;
+  font-weight: bold;
 }
 
 .board {
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }
