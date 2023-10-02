@@ -14,7 +14,6 @@
 .card,
 .search_bar,
 .search_btn,
-.img,
 .edit_btn {
   display: inline-block;
   margin: 15px;
@@ -22,6 +21,19 @@
     border: 0; */
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-wrapper {
+  margin: 25px; /* เพิ่มระยะห่างหรือขอบรอบการ์ดตามต้องการ */
+  width: 264px;
+}
+
+.card-wrapper:nth-child(n + 5) {
+  width: 264px;
+}
 .card {
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
 }

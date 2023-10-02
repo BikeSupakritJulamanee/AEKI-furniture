@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Image, Button, Form, Row, Col, ProgressBar, Badge } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Image,
+  Button,
+  Form,
+  Row,
+  Col,
+  ProgressBar,
+  Badge,
+} from "react-bootstrap";
 import Nav from "./Nav";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
@@ -21,10 +31,10 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [select, setSelect] = useState("");
-  const [shipping_1, setShipping_1] = useState([])
-  const [shipping_2, setShipping_2] = useState([])
-  const [transport, setTransport] = useState([])
-  const [user, setUser] = useState([])
+  const [shipping_1, setShipping_1] = useState([]);
+  const [shipping_2, setShipping_2] = useState([]);
+  const [transport, setTransport] = useState([]);
+  const [user, setUser] = useState([]);
   const [productTypeList, setProductTypeList] = useState([]);
 
   useEffect(() => {
@@ -47,56 +57,77 @@ function Home() {
 
   const fetchShipping_1 = async () => {
     try {
-      const q = query(collection(db, 'shipping'), where('status', '==', 'รอดำเนินการจัดส่ง'));
+      const q = query(
+        collection(db, "shipping"),
+        where("status", "==", "รอดำเนินการจัดส่ง")
+      );
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setShipping_1(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const fetchShipping_2 = async () => {
     try {
-      const q = query(collection(db, 'shipping'), where('status', '==', 'จัดส่งสำเร็จ'));
+      const q = query(
+        collection(db, "shipping"),
+        where("status", "==", "จัดส่งสำเร็จ")
+      );
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setShipping_2(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const fetchTransport = async () => {
     try {
-      const q = query(collection(db, 'transportation'));
+      const q = query(collection(db, "transportation"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setTransport(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const fetchUser = async () => {
     try {
-      const q = query(collection(db, 'user'));
+      const q = query(collection(db, "user"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setUser(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const fetchType = async () => {
     try {
-      const q = query(collection(db, 'type'), orderBy("productType"));
+      const q = query(collection(db, "type"), orderBy("productType"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setProductTypeList(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
@@ -127,7 +158,6 @@ function Home() {
     <>
       <Nav />
       <Container>
-
         <Image
           className="img"
           src={graph_icon}
@@ -135,11 +165,13 @@ function Home() {
         />
 
         <Card>
-          <Card className="board" style={{ width: '18rem' }}>
+          <Card className="board" style={{ width: "18rem" }}>
             <Row>
               <Col>
                 <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">New Users</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    New Users
+                  </Card.Subtitle>
                   <Card.Text>
                     <Badge bg="success">{user.length} user</Badge>
                   </Card.Text>
@@ -149,17 +181,19 @@ function Home() {
                 <Image
                   className="img"
                   src={user_icon}
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Col>
             </Row>
           </Card>
 
-          <Card className="board" style={{ width: '18rem' }}>
+          <Card className="board" style={{ width: "18rem" }}>
             <Row>
               <Col>
                 <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">Orders</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Orders
+                  </Card.Subtitle>
                   <Card.Text>
                     <Badge bg="success">{shipping_1.length} order</Badge>
                   </Card.Text>
@@ -169,17 +203,19 @@ function Home() {
                 <Image
                   className="img"
                   src={order_icon}
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Col>
             </Row>
           </Card>
 
-          <Card className="board" style={{ width: '18rem' }}>
+          <Card className="board" style={{ width: "18rem" }}>
             <Row>
               <Col>
                 <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">Success</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Success
+                  </Card.Subtitle>
                   <Card.Text>
                     <Badge bg="success">{shipping_2.length} order</Badge>
                   </Card.Text>
@@ -189,17 +225,19 @@ function Home() {
                 <Image
                   className="img"
                   src={success_icon}
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Col>
             </Row>
           </Card>
 
-          <Card className="board" style={{ width: '18rem' }}>
+          <Card className="board" style={{ width: "18rem" }}>
             <Row>
               <Col>
                 <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">Transportation</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Transportation
+                  </Card.Subtitle>
                   <Card.Text>
                     <Badge bg="success">{transport.length} company</Badge>
                   </Card.Text>
@@ -209,17 +247,19 @@ function Home() {
                 <Image
                   className="img"
                   src={transport_icon}
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Col>
             </Row>
           </Card>
 
-          <Card className="board" style={{ width: '18rem' }}>
+          <Card className="board" style={{ width: "18rem" }}>
             <Row>
               <Col>
                 <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">Product</Card.Subtitle>
+                  <Card.Subtitle className="mb-2 text-muted">
+                    Product
+                  </Card.Subtitle>
                   <Card.Text>
                     <Badge bg="success">{products.length} piece</Badge>
                   </Card.Text>
@@ -229,7 +269,7 @@ function Home() {
                 <Image
                   className="img"
                   src={product_icon}
-                  style={{ width: '50px', height: '50px' }}
+                  style={{ width: "50px", height: "50px" }}
                 />
               </Col>
             </Row>
@@ -250,13 +290,11 @@ function Home() {
           </Button>
         </Form.Group>
 
-
         <Form.Group controlId="exampleForm.SelectCustom">
           <Form.Control
             as="select"
             className="input-small"
             placeholder="Type"
-
             onChange={(e) => setSelect(e.target.value)}
             required
           >
@@ -269,53 +307,59 @@ function Home() {
           </Form.Control>
         </Form.Group>
 
-        <Row>
-          {products.map((product, index) => (
-            <Col key={index} md={3} className="mb-4">
-              <Link
-                to={`/edit_products?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(
-                  product.price
-                )}&type=${encodeURIComponent(
-                  product.type
-                )}&attribute=${encodeURIComponent(
-                  product.attribute
-                )}
-                  `} target="_blank"
-              >
-                <Card className="card">
-                  <Image
-                    className="img"
-                    src={imageList.find((url) => url.includes(product.img))}
-                    style={{ width: "290px", height: "300px" }}
-                  />
-                  <Card.Body>
-                    <div className="product_name">{product.name}</div>
-                    <div className="product_description">
-                      {product.description}
-                    </div>
-                    <div>
-                      <span className="product_price">
-                        {product.price.toLocaleString()}
-                      </span>
-                      <b className="bath"> บาท</b>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          ))}
-        </Row>
-      </Container >
+        <Container>
+          <div className="card-container">
+            <Row>
+              {products.map((product, index) => (
+                // <Col key={index} xs={12} sm={6} md={3} lg={3}>
+                <div className="card-wrapper">
+                  {" "}
+                  {/* เปลี่ยน xs, sm, md, lg */}
+                  <Link
+                    to={`/edit_products?id=${encodeURIComponent(
+                      product.id
+                    )}&name=${encodeURIComponent(
+                      product.name
+                    )}&quantity=${encodeURIComponent(
+                      product.quantity
+                    )}&description=${encodeURIComponent(
+                      product.description
+                    )}&image=${encodeURIComponent(
+                      product.img
+                    )}&price=${encodeURIComponent(
+                      product.price
+                    )}&type=${encodeURIComponent(
+                      product.type
+                    )}&attribute=${encodeURIComponent(product.attribute)}
+          `}
+                    target="_blank"
+                  >
+                    <Card className="card">
+                      <Image
+                        className="img"
+                        src={imageList.find((url) => url.includes(product.img))}
+                        style={{ width: "290px", height: "300px" }}
+                      />
+                      <Card.Body>
+                        <div className="product_name">{product.name}</div>
+                        <div className="product_description">
+                          {product.description}
+                        </div>
+                        <div>
+                          <span className="product_price">
+                            {product.price.toLocaleString()}
+                          </span>
+                          <b className="bath"> บาท</b>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </div>
+              ))}
+            </Row>
+          </div>
+        </Container>
+      </Container>
     </>
   );
 }
