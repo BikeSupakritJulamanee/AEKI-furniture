@@ -1,34 +1,60 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap");
 
-.card, .search_bar, .search_btn, .img, .edit_btn, .product_name, .product_price, .bath {
-    font-family: 'Kanit', sans-serif;
+.card,
+.search_bar,
+.search_btn,
+.img,
+.edit_btn,
+.product_name,
+.product_price,
+.bath {
+  font-family: "Kanit", sans-serif;
 }
 
-.card, .search_bar, .search_btn, .img, .edit_btn {
-    display: inline-block;
-    margin: 15px;
-    padding: 0;
-    border: 0;
+.search_bar,
+.search_btn,
+.img,
+.edit_btn {
+  display: inline-block;
+  margin: 15px;
+  /* padding: 0;
+    border: 0; */
 }
+
+.card {
+    width: 20rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* .card-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .card-wrapper {
+    flex: 20%;
+    margin: 5px; 
+  }
+   */
 
 .search_bar {
-    width: 60%;
+  width: 60%;
 }
 
 .search_btn {
-    margin-left: 0.1%;
-    background-color: black;
-    padding: 0.5% 1% 0.5% 1%;
+  margin-left: 0.1%;
+  background-color: black;
+  padding: 0.5% 1% 0.5% 1%;
 }
 
 .product_name {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .product_price {
-    font-size: 25px;
+  font-size: 25px;
 }
 
 .bath {
-    font-size: 15px;
+  font-size: 15px;
 }

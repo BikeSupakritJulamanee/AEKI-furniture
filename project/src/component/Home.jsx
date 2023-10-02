@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Image, Button, Form, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Image,
+  Button,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -11,10 +19,10 @@ function Home() {
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
 
-
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectProduct, setselectProduct] = useState([]);
+  const [qrtProduct, setqrtProduct] = useState([]);
 
   const handleLogout = async () => {
     try {
@@ -23,7 +31,7 @@ function Home() {
     } catch (err) {
       console.log(err.message);
     }
-  }
+  };
 
   useEffect(() => {
     listAll(imageListRef)
@@ -39,12 +47,16 @@ function Home() {
   }, []);
 
   const handlebuy = (e, product_id) => {
-    e.preventDefault();
-    const updatedSelectProduct = [...selectProduct];
-    updatedSelectProduct.push(product_id)
-    setselectProduct(updatedSelectProduct);
-    console.log(updatedSelectProduct);
+    // e.preventDefault();
+    // const updatedSelectProduct = [...selectProduct];
+    // updatedSelectProduct.push(product_id)
+    // setselectProduct(updatedSelectProduct);
+    // console.log(updatedSelectProduct);
+    // if(updatedSelectProduct==product_id){
+    //   qrtProduct++;
+    // }
   };
+
   const fetchProducts = async () => {
     try {
       const q = query(
@@ -59,14 +71,8 @@ function Home() {
         id: doc.id,
       }));
       setProducts(newData);
-
-    } catch (error) {
-    }
-
-
+    } catch (error) {}
   };
-
-
 
   return (
     <>
@@ -88,58 +94,73 @@ function Home() {
         <hr />
 
         <Row>
-          {products.map((product, index) => (
-            <Col key={index} md={3} className="mb-4">
-              <Link
-                to={`/product_detail?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(product.price)}`}
-                target="_blank"
-              >
-                <Card className="card">
-                  <Image
-                    className="img"
-                    src={imageList.find((url) => url.includes(product.img))}
-                    style={{ width: "290px", height: "300px" }}
-                  />
-                  <Card.Body>
-                    <div className="product_name">{product.name}</div>
-                    <div className="product_description">
-                      {product.description}
-                    </div>
-                    <div>
-                      <span className="product_price">
-                        {product.price.toLocaleString()}
-                      </span>
-                      <b className="bath"> บาท</b>
-                    </div>
-                    <div>
-                      <Button
-                        type="submit"
-                        className="contact_form_submit"
-                        variant="success"
-                        onClick={(e) => handlebuy(e, product.id)}
-                      >
-                        ADD TO CART
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Link>
-            </Col>
-          ))}
+          <Container className="flex-container wrap">
+            <Row>
+              {products.map((product, index) => (
+                // <div className="card-wrapper">
+                <Col key={index} xs={12} sm={6} md={3} lg={3}>
+                  <div className="flex-item">
+                    <Link
+                      to={`/product_detail?id=${encodeURIComponent(
+                        product.id
+                      )}&name=${encodeURIComponent(
+                        product.name
+                      )}&quantity=${encodeURIComponent(
+                        product.quantity
+                      )}&description=${encodeURIComponent(
+                        product.description
+                      )}&image=${encodeURIComponent(
+                        product.img
+                      )}&price=${encodeURIComponent(product.price)}`}
+                      target="_blank"
+                      style={{
+                        margin: "0px",
+                        width: "0px",
+                        border: "0px",
+                        padding: "0px",
+                      }}
+                    >
+                      <Card className="card ">
+                        <Image
+                          className="img"
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "290px", height: "300px" }}
+                        />
+                        <Card.Body>
+                          <div className="product_name">{product.name}</div>
+                          <div className="product_description">
+                            {product.description}
+                          </div>
+                          <div>
+                            <span className="product_price">
+                              {product.price.toLocaleString()}
+                            </span>
+                            <b className="bath"> บาท</b>
+                          </div>
+                          <div>
+                            <Button
+                              type="submit"
+                              className="contact_form_submit"
+                              variant="success"
+                              onClick={(e) => handlebuy(e, product.id)}
+                            >
+                              ADD TO CART
+                            </Button>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          </Container>
         </Row>
       </Container>
     </>
-  )
+  );
 }
 
 export default Home;

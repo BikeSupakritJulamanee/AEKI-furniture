@@ -127,6 +127,7 @@ function Add_Products() {
             </Form.Group>
             <Button type="submit" disabled={isLoading}  >
               {isLoading ? 'Loading…' : 'เพิ่มประเภท'}
+              {/* Conditional Rendering  */}
             </Button>
           </Form>
         </Modal.Body>
