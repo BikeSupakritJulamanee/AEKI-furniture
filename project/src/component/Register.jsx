@@ -1,56 +1,56 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Form, Alert, Button } from "react-bootstrap";
-import { useUserAuth } from "../context/UserAuthContext"; //useContext
-import { db } from "../firebase"; //database
-import { collection, addDoc } from "firebase/firestore"; //firestore
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Form, Alert, Button } from 'react-bootstrap';
+import { useUserAuth } from '../context/UserAuthContext'; //useContext
+import { db } from '../firebase'; //database
+import { collection, addDoc } from 'firebase/firestore'; //firestore
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Container, Row, Col } from "react-bootstrap";
 
+import "./style/Login.css";
+import img5 from "./image/img5.jpg";
+import img6 from "./image/img6.jpg"
+import img7 from "./image/img7.jpg"
+import img8 from "./image/img8.jpg"
 function Register() {
   const [error, setError] = useState("");
   const { signUp } = useUserAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [phone_number, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone_number, setPhoneNumber] = useState('');
 
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     setError("");
 
     if (!email || !password || !username || !phone_number) {
-      setError("Please fill in all required fields.");
+      setError('Please fill in all required fields.');
       return;
     }
 
+    const cart_user = await addDoc(collection(db, 'cart'), {
+      product_id: product_id,
+      email: email,
+      qauntityPerProductID: qrtproduct_id,
+    });
+
     try {
-      // const userDocRef_Users = await addDoc(collection(db, 'User'), {
-      //   email,
-      //   username,
-      //   phone_number,
-      // });
-
-      // const userDocRef_Accounts = await addDoc(collection(db, 'Account'), {
-      //   email,
-      //   posts: 0,
-      //   followers: 0,
-      //   following: 0,
-      //   bio: 'Write your description...',
-      //   image_profile: 'default_user_profile.png',
-      // });
-
-      // console.log('Document written with ID:', userDocRef_Users.id);
+      const userDocRef_Users = await addDoc(collection(db, 'user'), {
+        email: email,
+        username: username,
+        phone_number: phone_number,
+      });
 
       await signUp(email, password);
       navigate("/");
     } catch (err) {
       setError(err.message);
+      setLoading(false)
     }
   };
 
@@ -59,21 +59,47 @@ function Register() {
       <br />
       <br />
       <Row>
-        <Col></Col>
+        <Col> <Row>
+          <Col className="size" md={5}>
+            <Row>
+              <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <div className="aspect-ratio-box">
+                  <Image src={img5} alt="Image 1" className="resize" />
+                </div>
+              </Col>
+              <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <div className="aspect-ratio-box">
+                  <Image src={img6} alt="Image 2" className="resize" />
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <div className="aspect-ratio-box">
+                  <Image src={img7} alt="Image 3" className="resize" />
+                </div>
+              </Col>
+              <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                <div className="aspect-ratio-box">
+                  <Image src={img8} alt="Image 4" className="resize" />
+                </div>
+              </Col>
+            </Row>
+          </Col>
+        </Row></Col>
         <Col>
           <Row>
-            <Col>
+            <Col className="block_2">
               <br />
-              <center>
-                <h2 className="mb-3">Register</h2>
-              </center>
+              <center><h2 className="mb-3">Register</h2></center>
 
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group
-                  className="mb-3 d-flex justify-content-center"
+                  className="mb-3"
                   controlId="formBasicEmail"
                 >
+                  <Form.Label>Email address</Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="Email address"
@@ -82,7 +108,8 @@ function Register() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3 d-flex justify-content-center">
+                <Form.Group className="mb-3">
+                  <Form.Label>Username</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Username"
@@ -91,7 +118,8 @@ function Register() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3 d-flex justify-content-center">
+                <Form.Group className="mb-3">
+                  <Form.Label>Phone number</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Phone number"
@@ -101,9 +129,10 @@ function Register() {
                 </Form.Group>
 
                 <Form.Group
-                  className="mb-3 d-flex justify-content-center"
+                  className="mb-3"
                   controlId="formBasicPassword"
                 >
+                  <Form.Label>Password</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder="Password"
@@ -113,8 +142,8 @@ function Register() {
                 </Form.Group>
 
                 <div className="d-grid gap-2 justify-content-center">
-                  <Button className="custom-button-style" type="submit">
-                    SignUp
+                  <Button variant="warning" className="custom-button-style" type="submit" disabled={isLoading}  >
+                    {isLoading ? 'Loading…' : 'SignUp'}
                   </Button>
                 </div>
               </Form>
@@ -125,9 +154,9 @@ function Register() {
             </Col>
           </Row>
         </Col>
-        <Col></Col>
-      </Row>
-    </Container>
+
+      </Row >
+    </Container >
   );
 }
 

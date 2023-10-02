@@ -17,9 +17,11 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useUserAuth();
+  const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
     setError("");
     try {
@@ -31,6 +33,7 @@ function Login() {
       );
     } catch (err) {
       setError(err.message);
+      setLoading(false)
     }
   };
 
@@ -74,11 +77,13 @@ function Login() {
             <Col className="block">
               <br />
 
+              <h2 className="mb-3">
+                เข้าสู่ระบบ
+              </h2>
               <h6 className="mb-3">
                 เข้าสู่ระบบหรือสมัครสมาชิก IKEA Family
                 วันนี้เพื่อพบกับประสบการณ์ที่เป็นส่วนตัวยิ่งขึ้น
               </h6>
-
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -104,12 +109,8 @@ function Login() {
                 </Form.Group>
 
                 <div className="d-grid gap-2 justify-content-center">
-                  <Button
-                    className="custom-button-style"
-                    variant="warning"
-                    type="submit"
-                  >
-                    Sign in &#8811;
+                  <Button variant="warning" className="custom-button-style" type="submit" disabled={isLoading}  >
+                    {isLoading ? 'Loading…' : 'Sign in'}
                   </Button>
                 </div>
               </Form>

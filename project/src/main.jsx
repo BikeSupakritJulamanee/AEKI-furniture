@@ -22,12 +22,17 @@ import {
 import Register from './component/Register.jsx'
 import Login from './component/Login.jsx'
 import Home from './component/Home.jsx'
+//User
+import Product_detail from './component/Product_detail.jsx';
 
 import AdminHomePage from './administrator/AdminHomePage.jsx'
-import Store from './administrator/Store.jsx';
 import Create from './administrator/Create.jsx';
 import Add_Products from './administrator/Add_Products.jsx';
 import Edit_Products from './administrator/Edit_Products.jsx'
+import Product_List from './administrator/Product_List.jsx';
+import Transportation from './administrator/Transportation.jsx';
+import Order_List from './administrator/Order_List.jsx';
+import ViewOrder from './administrator/ViewOrder.jsx';
 
 const router = createBrowserRouter([
   {
@@ -46,14 +51,14 @@ const router = createBrowserRouter([
     path: '/home',
     element: <ProtectedRoute><Home /></ProtectedRoute>
   },
+  {
+    path: '/product_detail',
+    element: <ProtectedRoute><Product_detail /></ProtectedRoute>
+  },
 
   {
     path: '/adminhomepage',
     element: <AdminHomePage />
-  },
-  {
-    path: '/store',
-    element: <Store />
   },
   {
     path: '/create',
@@ -66,7 +71,24 @@ const router = createBrowserRouter([
   {
     path: '/edit_products',
     element: <Edit_Products />
+  },
+  {
+    path: '/product_list',
+    element: <Product_List />
+  },
+  {
+    path: '/transportation',
+    element: <Transportation />
+  },
+  {
+    path: '/order_list',
+    element: <Order_List />
+  },
+  {
+    path: '/view_order',
+    element: <ViewOrder />
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
