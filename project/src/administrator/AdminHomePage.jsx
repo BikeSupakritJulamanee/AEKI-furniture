@@ -158,11 +158,11 @@ function Home() {
     <>
       <Nav />
       <Container>
-        <Image
+        {/* <Image
           className="img"
           src={graph_icon}
           style={{ width: "50px", height: "50px" }}
-        />
+        /> */}
         <Container>
           <div class="con">
             <div class="item board" data-order="1">
@@ -178,7 +178,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="res">
                     <Image
                       className="img"
                       src={user_icon}
@@ -201,7 +201,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="res">
                     <Image
                       className="img"
                       src={order_icon}
@@ -212,7 +212,7 @@ function Home() {
               </Card>
             </div>
             <div className="item board" data-order="3">
-              <Card className="card-po">
+              <Card className="card-po ">
                 <Row>
                   <Col md={8}>
                     <Card.Body>
@@ -224,7 +224,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="res">
                     <Image
                       className="img"
                       src={success_icon}
@@ -240,14 +240,14 @@ function Home() {
                   <Col md={8}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
-                        Transportation
+                        <p className="size_font">Transportation</p>
                       </Card.Subtitle>
                       <Card.Text>
                         <Badge bg="success">{transport.length} company</Badge>
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="res">
                     <Image
                       className="img"
                       src={transport_icon}
@@ -270,7 +270,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}>
+                  <Col md={4} className="res">
                     <Image
                       className="img"
                       src={product_icon}
