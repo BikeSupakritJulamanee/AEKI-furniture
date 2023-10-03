@@ -163,118 +163,125 @@ function Home() {
           src={graph_icon}
           style={{ width: "50px", height: "50px" }}
         />
-
-        <Card>
-          <Card className="board" style={{ width: "18rem" }}>
-            <Row>
-              <Col>
-                <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    New Users
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <Badge bg="success">{user.length} user</Badge>
-                  </Card.Text>
-                </Card.Body>
-              </Col>
-              <Col>
-                <Image
-                  className="img"
-                  src={user_icon}
-                  style={{ width: "50px", height: "50px" }}
-                />
-              </Col>
-            </Row>
-          </Card>
-
-          <Card className="board" style={{ width: "18rem" }}>
-            <Row>
-              <Col>
-                <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Orders
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <Badge bg="success">{shipping_1.length} order</Badge>
-                  </Card.Text>
-                </Card.Body>
-              </Col>
-              <Col>
-                <Image
-                  className="img"
-                  src={order_icon}
-                  style={{ width: "50px", height: "50px" }}
-                />
-              </Col>
-            </Row>
-          </Card>
-
-          <Card className="board" style={{ width: "18rem" }}>
-            <Row>
-              <Col>
-                <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Success
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <Badge bg="success">{shipping_2.length} order</Badge>
-                  </Card.Text>
-                </Card.Body>
-              </Col>
-              <Col>
-                <Image
-                  className="img"
-                  src={success_icon}
-                  style={{ width: "50px", height: "50px" }}
-                />
-              </Col>
-            </Row>
-          </Card>
-
-          <Card className="board" style={{ width: "18rem" }}>
-            <Row>
-              <Col>
-                <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Transportation
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <Badge bg="success">{transport.length} company</Badge>
-                  </Card.Text>
-                </Card.Body>
-              </Col>
-              <Col>
-                <Image
-                  className="img"
-                  src={transport_icon}
-                  style={{ width: "50px", height: "50px" }}
-                />
-              </Col>
-            </Row>
-          </Card>
-
-          <Card className="board" style={{ width: "18rem" }}>
-            <Row>
-              <Col>
-                <Card.Body>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Product
-                  </Card.Subtitle>
-                  <Card.Text>
-                    <Badge bg="success">{products.length} piece</Badge>
-                  </Card.Text>
-                </Card.Body>
-              </Col>
-              <Col>
-                <Image
-                  className="img"
-                  src={product_icon}
-                  style={{ width: "50px", height: "50px" }}
-                />
-              </Col>
-            </Row>
-          </Card>
-        </Card>
+        <Container>
+          <div class="con">
+            <div class="item board" data-order="1">
+              <Card className="card-po">
+                <Row>
+                  <Col md={8}>
+                    <Card.Body>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        New Users
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <Badge bg="success">{user.length} user</Badge>
+                      </Card.Text>
+                    </Card.Body>
+                  </Col>
+                  <Col md={4}>
+                    <Image
+                      className="img"
+                      src={user_icon}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <div className="item board" data-order="2">
+              <Card className="card-po">
+                <Row>
+                  <Col md={8}>
+                    <Card.Body>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Orders
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <Badge bg="success">{shipping_1.length} order</Badge>
+                      </Card.Text>
+                    </Card.Body>
+                  </Col>
+                  <Col md={4}>
+                    <Image
+                      className="img"
+                      src={order_icon}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <div className="item board" data-order="3">
+              <Card className="card-po">
+                <Row>
+                  <Col md={8}>
+                    <Card.Body>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Success
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <Badge bg="success">{shipping_2.length} order</Badge>
+                      </Card.Text>
+                    </Card.Body>
+                  </Col>
+                  <Col md={4}>
+                    <Image
+                      className="img"
+                      src={success_icon}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <div className="item board" data-order="4">
+              <Card className="card-po">
+                <Row>
+                  <Col md={8}>
+                    <Card.Body>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Transportation
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <Badge bg="success">{transport.length} company</Badge>
+                      </Card.Text>
+                    </Card.Body>
+                  </Col>
+                  <Col md={4}>
+                    <Image
+                      className="img"
+                      src={transport_icon}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+            <div className="item board" data-order="5">
+              <Card className="card-po">
+                <Row>
+                  <Col md={8}>
+                    <Card.Body>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Product
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <Badge bg="success">{products.length} piece</Badge>
+                      </Card.Text>
+                    </Card.Body>
+                  </Col>
+                  <Col md={4}>
+                    <Image
+                      className="img"
+                      src={product_icon}
+                      style={{ width: "50px", height: "50px" }}
+                    />
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+          </div>
+        </Container>
         <hr />
 
         <Form.Group className="search_group">
@@ -293,14 +300,15 @@ function Home() {
         <Form.Group controlId="exampleForm.SelectCustom">
           <Form.Control
             as="select"
-            className="input-small"
+            className="dropdown-small"
             placeholder="Type"
             onChange={(e) => setSelect(e.target.value)}
             required
           >
-            <option value={""}>ทุกประเภทประเภท</option>
+            <option value={""}>ทุกประเภท</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
+                <span className="option-icon">👉🏼</span>
                 {typeObj.productType}
               </option>
             ))}
@@ -309,7 +317,7 @@ function Home() {
 
         <Container>
           <div className="card-container">
-            <Row>
+            <Row className="box">
               {products.map((product, index) => (
                 // <Col key={index} xs={12} sm={6} md={3} lg={3}>
                 <div className="card-wrapper">
@@ -356,6 +364,7 @@ function Home() {
                   </Link>
                 </div>
               ))}
+              <hr className="hr-text" data-content="IKEA"></hr>
             </Row>
           </div>
         </Container>
