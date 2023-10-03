@@ -14,12 +14,12 @@ function Nav() {
     const handleShow = () => setShow(true);
     const handleLogout = async () => {
         try {
-            await logOut();
-            navigate("/");
+          await logOut();
+          navigate("/");
         } catch (err) {
-            console.log(err.message);
+          console.log(err.message);
         }
-    }
+      }
 
     return (
         <>

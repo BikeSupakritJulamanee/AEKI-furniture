@@ -109,7 +109,7 @@ function Home() {
           // Update the quantity for the existing product
           const updatedQrt = {
             ...currentCartData.qauntityPerProductID,
-            [productId]: currentCartData.qauntityPerProductID[productId] + qrt,
+            [productId]: currentCartData.qauntityPerProductID[productId] + parseInt(qrt),
           };
 
           // Update the 'qauntityPerProductID' field in the cart document
@@ -135,7 +135,6 @@ function Home() {
     } catch (error) {
       console.error("Error adding/updating product quantity in cart:", error);
     }
-    alert('เพิ่มสิค้าในรถเข็นเเล้ว')
     setLoading(false)
   };
 
@@ -143,43 +142,7 @@ function Home() {
 
 
 
-  // const handlebuy = async (productId,qrt) => {
-  //   try {
-  //     if (homecart.length === 0) {
-  //       console.error("Cart not found.");
-  //       return;
-  //     }
-
-
-  //     // Assuming you want to work with the first cart found.
-  //     const cartID = homecart[0].id;
-  //     const cartDocRef = doc(db, "cart", cartID);
-
-  //     // Get the current cart data
-  //     const cartDocSnapshot = await getDoc(cartDocRef);
-  //     const currentCartData = cartDocSnapshot.data();
-
-  //     // Check if the 'product_id' field exists and is an array
-  //     if (Array.isArray(currentCartData.product_id) && Array.isArray(currentCartData.qauntityPerProductID)) {
-  //       // Add the new product ID to the array
-  //       const updatedProductIds = [...currentCartData.product_id, productId];
-  //       const updatedQrt = [...currentCartData.qauntityPerProductID, qrt];
-
-  //       // Update the 'product_id' field in the cart document
-  //       await updateDoc(cartDocRef, { product_id: updatedProductIds,qauntityPerProductID: updatedQrt});
-  //       // await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt});
-
-
-  //       console.log("Product added to cart successfully!");
-  //     } else {
-  //       console.error("Invalid 'product_id' field in cart document.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error adding product to cart:", error);
-  //   }
-  // };
-
-
+ 
   const fetchProducts = async () => {
     try {
       const q = query(
