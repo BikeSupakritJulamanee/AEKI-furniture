@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Image, Button, Form, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Image,
+  Button,
+  Form,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -17,22 +25,16 @@ import {
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 
-
-
 function Home() {
   const { user, logOut } = useUserAuth();
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
-
 
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [homecart, sethomecart] = useState([]);
 
   const [isLoading, setLoading] = useState(false);
-
-
-
 
   const handleLogout = async () => {
     try {
@@ -41,8 +43,7 @@ function Home() {
     } catch (err) {
       console.log(err.message);
     }
-  }
-
+  };
 
   useEffect(() => {
     listAll(imageListRef)
@@ -53,24 +54,17 @@ function Home() {
       .catch((error) => console.error("Error listing images:", error));
   }, []);
 
-
   useEffect(() => {
     fetchProducts();
   }, [searchTerm]); // Include searchTerm in the dependency array.
-
 
   useEffect(() => {
     fetchCart();
   }, [user]); // Include user in the dependency array.
 
-
   const fetchCart = async () => {
     if (user.email) {
-      const q = query(
-        collection(db, "cart"),
-        where("email", "==", user.email)
-      );
-
+      const q = query(collection(db, "cart"), where("email", "==", user.email));
 
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
@@ -79,15 +73,12 @@ function Home() {
       }));
       sethomecart(newData);
 
-
-
       // You don't need to set cartID here.
     }
   };
 
-
   const handlebuy = async (productId, qrt) => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (homecart.length === 0) {
         console.error("Cart not found.");
@@ -103,7 +94,7 @@ function Home() {
       const currentCartData = cartDocSnapshot.data();
 
       // Check if the 'qauntityPerProductID' field exists and is an object
-      if (typeof currentCartData.qauntityPerProductID === 'object') {
+      if (typeof currentCartData.qauntityPerProductID === "object") {
         // Check if productId already exists in 'qauntityPerProductID'
         if (currentCartData.qauntityPerProductID.hasOwnProperty(productId)) {
           // Update the quantity for the existing product
@@ -125,7 +116,10 @@ function Home() {
           };
 
           // Update the 'qauntityPerProductID' field in the cart document
-          await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt, product_id: updatedProductIds });
+          await updateDoc(cartDocRef, {
+            qauntityPerProductID: updatedQrt,
+            product_id: updatedProductIds,
+          });
 
           console.log("Product added to cart successfully!");
         }
@@ -135,6 +129,7 @@ function Home() {
     } catch (error) {
       console.error("Error adding/updating product quantity in cart:", error);
     }
+    alert('เพิ่มสิค้าในรถเข็นเเล้ว')
     setLoading(false)
   };
 
@@ -142,7 +137,43 @@ function Home() {
 
 
 
- 
+  // const handlebuy = async (productId,qrt) => {
+  //   try {
+  //     if (homecart.length === 0) {
+  //       console.error("Cart not found.");
+  //       return;
+  //     }
+
+
+  //     // Assuming you want to work with the first cart found.
+  //     const cartID = homecart[0].id;
+  //     const cartDocRef = doc(db, "cart", cartID);
+
+  //     // Get the current cart data
+  //     const cartDocSnapshot = await getDoc(cartDocRef);
+  //     const currentCartData = cartDocSnapshot.data();
+
+  //     // Check if the 'product_id' field exists and is an array
+  //     if (Array.isArray(currentCartData.product_id) && Array.isArray(currentCartData.qauntityPerProductID)) {
+  //       // Add the new product ID to the array
+  //       const updatedProductIds = [...currentCartData.product_id, productId];
+  //       const updatedQrt = [...currentCartData.qauntityPerProductID, qrt];
+
+  //       // Update the 'product_id' field in the cart document
+  //       await updateDoc(cartDocRef, { product_id: updatedProductIds,qauntityPerProductID: updatedQrt});
+  //       // await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt});
+
+
+  //       console.log("Product added to cart successfully!");
+  //     } else {
+  //       console.error("Invalid 'product_id' field in cart document.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding product to cart:", error);
+  //   }
+  // };
+
+
   const fetchProducts = async () => {
     try {
       const q = query(
@@ -151,20 +182,16 @@ function Home() {
         orderBy("name")
       );
 
-
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
       setProducts(newData);
-
-
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
-
 
   return (
     <>
@@ -173,7 +200,9 @@ function Home() {
       <Container>
         {user.email}
 
-        <div style={{ textAlign: 'right' }}><Link to="/userorderlist">ดูสินค้าในตะกร้า</Link></div>
+        <div style={{ textAlign: "right" }}>
+          <Link to="/userorderlist">ดูสินค้าในตะกร้า</Link>
+        </div>
 
         <Form.Group className="search_group">
           <Form.Control
@@ -188,7 +217,6 @@ function Home() {
           </Button>
         </Form.Group>
         <hr />
-
 
         <Row>
           {products.map((product, index) => (
@@ -224,23 +252,26 @@ function Home() {
                       </span>
                       <b className="bath"> บาท</b>
                     </div>
-
                   </Card.Body>
                 </Card>
               </Link>
               <div>
-                <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(product.id, product.quantity)}  >
+                <Button
+                  variant="warning"
+                  className="contact_form_submit"
+                  disabled={isLoading}
+                  onClick={() => handlebuy(product.id, product.quantity)}
+                >
                   ADD TO CART
                 </Button>
-
               </div>
             </Col>
           ))}
+          <hr className="hr-text" data-content="IKEA"></hr>
         </Row>
       </Container>
     </>
   );
 }
-
 
 export default Home;
