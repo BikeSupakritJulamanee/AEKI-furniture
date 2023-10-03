@@ -24,8 +24,7 @@ function Nav() {
             console.log(err.message);
         }
     }
-
-
+    
     return (
         <>
             <header>{user.email}</header>

@@ -13,7 +13,8 @@ import {
   writeBatch,
   doc,
   updateDoc,
-  getDoc, // Add this import for getDoc
+  getDoc,
+  addDoc // Add this import for getDoc
 } from "firebase/firestore";
 
 function UserorderList() {
@@ -22,11 +23,13 @@ function UserorderList() {
   const [userproductid, setuserproductid] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [shippingCost, setShippingCost] = useState('');
+  const [phone, setphone] = useState('');
   const [price, setprice] = useState(0);
   const [transportCompanyName, setTransportCompanyName] = useState('');
+  const [recipname, setrecipname] = useState('');
   const { user } = useUserAuth();
   const [matchingProducts, setMatchingProducts] = useState([]);
-  const [address, setaddress] = useState("");
+  const [address_user, setaddress_user] = useState([]);
   const handleShowAddModal = () => setShowAddModal(true);
 
   useEffect(() => {
@@ -38,16 +41,15 @@ function UserorderList() {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    const cartID = address[0].destination;
-    const cartDocRef = doc(db, "recipientAddy", cartID);
-    const cartDocSnapshot = await getDoc(cartDocRef);
-    const currentCartData = cartDocSnapshot.data();
-      const updatedQrt = {
-        ...currentCartData
-      };
-      await updateDoc(cartDocRef, { destination: updatedQrt,email:address[0].email,phoneNumber:address[0].phoneNumber,recipientName:address[0].recipientName});
-    handleCloseAddModal();
-};
+    const createProduct = await addDoc(collection(db, 'recipientAddy'), {
+      destination:transportCompanyName,
+      email:user.email,
+      phoneNumber:phone,
+      recipientName:recipname
+    });
+    alert('เพิ่มประเภทสินค้าสำเร็จ');
+
+  };
 
   const handleCloseAddModal = () => {
     setShowAddModal(false);
@@ -142,8 +144,10 @@ function UserorderList() {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
+        
       }));
-      setaddress(newData);
+      setaddress_user(newData);
+      console.log("ssssss",address_user)
     }
   };
 
@@ -186,12 +190,13 @@ function UserorderList() {
         </Table>
         <hr />
         <div style={{ textAlign: 'right', marginBottom:"10px",fontWeight:"bold"}}>ที่อยู่ในการจัดส่ง</div> 
-        {address.map((even)=>(
-          <div style={{ textAlign: 'right'}}>{even.destination}
-          <div style={{ textAlign: 'right'}}><span style={{ fontWeight:"bold"}}>อีเมลล์:</span> {even.email}</div>
-          <div style={{ textAlign: 'right'}}><span style={{ fontWeight:"bold"}}>เบอร์โทร:</span> {even.phoneNumber}</div>
-          <div style={{ textAlign: 'right'}}><span style={{ fontWeight:"bold"}}>ชื่อผู้ชื่อ:</span> {even.recipientName}</div>
-          </div>
+        {address_user.map((even)=>(
+          <div style={{ textAlign: 'right'}}>{even.destination} <br />
+          {even.email}<br />
+          {even.phoneNumber} <br />
+          {even.recipientName}
+          <hr />
+          </div> 
         ))}
         <Button variant="dark" onClick={handleShowAddModal}>
                     &#43;เพิ่มช่องทางการขนส่ง
@@ -203,6 +208,7 @@ function UserorderList() {
                     <Modal.Body>
                         <Form onSubmit={handleAddSubmit}>
                             <Form.Group>
+                   
                                 <Form.Control
                                     type="text"
                                     placeholder="ที่อยู่"
@@ -213,19 +219,19 @@ function UserorderList() {
                             </Form.Group>
                             <Form.Group>
                                 <Form.Control
-                                    type="number"
+                                    type="text"
                                     placeholder="เบอร์โทร"
-                                    value={shippingCost}
-                                    onChange={(e) => setShippingCost(e.target.value)}
+                                    value={phone}
+                                    onChange={(e) => setphone(e.target.value)}
                                     required
                                 />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Control
-                                    type="number"
+                                    type="text"
                                     placeholder="ชื่อผู้รับ"
-                                    value={shippingCost}
-                                    onChange={(e) => setShippingCost(e.target.value)}
+                                    value={recipname}
+                                    onChange={(e) => setrecipname(e.target.value)}
                                     required
                                 />
                             </Form.Group>
@@ -236,7 +242,7 @@ function UserorderList() {
                     </Modal.Body>
                 </Modal>
        <hr />
-        <div style={{ textAlign: 'right', padding:"20px"}}>Total Price: {price} บาท</div>
+        <div style={{ textAlign: 'right', padding:"20px"}}>Total Price: {price} Bath</div>
       </Container>
     </div>
   );
