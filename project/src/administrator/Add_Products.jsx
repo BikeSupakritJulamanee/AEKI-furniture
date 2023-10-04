@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Form,
+  Row,
+  Col,
+  Image,
+  Modal,
+} from "react-bootstrap";
 import { db, storageRef } from "../firebase";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -20,7 +28,7 @@ function Add_Products() {
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [productType, setProductType] = useState('');
+  const [productType, setProductType] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -44,7 +52,7 @@ function Add_Products() {
       price: parseInt(price),
       type,
       img: fileName,
-      attribute: attribute
+      attribute: attribute,
     });
 
     if (imageUpload) {
@@ -53,7 +61,7 @@ function Add_Products() {
       const url = await getDownloadURL(snapshot.ref);
       setImageList((prev) => [...prev, url]);
     }
-    alert('เพิ่มผลิตภัณฑ์สำเร็จ');
+    alert("เพิ่มผลิตภัณฑ์สำเร็จ");
 
     setLoading(false);
     clearFormFields();
@@ -81,10 +89,10 @@ function Add_Products() {
   const handleAddSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
-    const createProduct = await addDoc(collection(db, 'type'), {
+    const createProduct = await addDoc(collection(db, "type"), {
       productType,
     });
-    alert('เพิ่มประเภทสินค้าสำเร็จ');
+    alert("เพิ่มประเภทสินค้าสำเร็จ");
 
     setLoading(false);
     handleCloseAddModal();
@@ -98,15 +106,17 @@ function Add_Products() {
   // Fetch Type
   const fetchType = async () => {
     try {
-      const q = query(collection(db, 'type'));
+      const q = query(collection(db, "type"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setProductTypeList(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
-
 
   return (
     <>
@@ -127,7 +137,7 @@ function Add_Products() {
               />
             </Form.Group>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading…' : 'เพิ่มประเภท'}
+              {isLoading ? "Loading…" : "เพิ่มประเภท"}
             </Button>
           </Form>
         </Modal.Body>
@@ -201,7 +211,9 @@ function Add_Products() {
                             onChange={(e) => setType(e.target.value)}
                             required
                           >
-                            <option value={'ไม่มีประเภท'}>กรุณาเลือกประเภท</option>
+                            <option value={"ไม่มีประเภท"}>
+                              กรุณาเลือกประเภท
+                            </option>
                             {productTypeList.map((typeObj, index) => (
                               <option key={index} value={typeObj.productType}>
                                 {typeObj.productType}
@@ -228,7 +240,7 @@ function Add_Products() {
                             onChange={(e) => setAttribute(e.target.value)}
                             required
                             style={{
-                              height: '150px',
+                              height: "150px",
                             }}
                           />
                         </Form.Group>
@@ -240,7 +252,7 @@ function Add_Products() {
                           type="submit"
                           disabled={isLoading}
                         >
-                          {isLoading ? 'Loading…' : 'เพิ่มผลิตภัณฑ์'}
+                          {isLoading ? "Loading…" : "เพิ่มผลิตภัณฑ์"}
                         </Button>
                       </Form>
                     </div>
@@ -259,6 +271,5 @@ function Add_Products() {
       </Container>
     </>
   );
-
 }
 export default Add_Products;
