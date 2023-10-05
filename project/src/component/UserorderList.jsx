@@ -195,7 +195,7 @@ function UserorderList() {
         product_id:orderUser[0].product_id,
         quantityPerProductID:orderUser[0].qauntityPerProductID,
         email:user.email,
-        amount:price
+        amount:price,
       });
       const orderId = order_user.id;
 

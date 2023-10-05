@@ -64,7 +64,7 @@ function EditProducts() {
       quantity: parseInt(productData.quantity),
       price: parseInt(productData.price),
       type: productData.type,
-      attribute: productData.attribute
+      attribute: productData.attribute,
     });
 
     if (imageUpload) {

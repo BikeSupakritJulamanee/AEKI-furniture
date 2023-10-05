@@ -33,6 +33,8 @@ import Product_List from './administrator/Product_List.jsx';
 import Transportation from './administrator/Transportation.jsx';
 import Order_List from './administrator/Order_List.jsx';
 import ViewOrder from './administrator/ViewOrder.jsx';
+import OutOfStock from './administrator/OutOfStock.jsx';
+import Member_List from './administrator/Member_List.jsx';
 
 import Tmp from './component/Tmp.jsx';
 
@@ -90,11 +92,19 @@ const router = createBrowserRouter([
     path: '/view_order',
     element: <ViewOrder />
   },
-
   {
-    path: '/tmp',
+    path: '/out_of_stock',
+    element: <OutOfStock />
+  },
+  {
+    path: '/member_list',
+    element: <Member_List/>
+  },
+
+{
+  path: '/tmp',
     element: <Tmp />
-  }
+}
 
 ]);
 
