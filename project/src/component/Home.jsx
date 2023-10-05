@@ -100,7 +100,8 @@ function Home() {
           // Update the quantity for the existing product
           const updatedQrt = {
             ...currentCartData.qauntityPerProductID,
-            [productId]: currentCartData.qauntityPerProductID[productId] + parseInt(qrt),
+            [productId]:
+              currentCartData.qauntityPerProductID[productId] + parseInt(qrt),
           };
 
           // Update the 'qauntityPerProductID' field in the cart document
@@ -129,13 +130,9 @@ function Home() {
     } catch (error) {
       console.error("Error adding/updating product quantity in cart:", error);
     }
-    alert('เพิ่มสิค้าในรถเข็นเเล้ว')
-    setLoading(false)
+    alert("เพิ่มสิค้าในรถเข็นเเล้ว");
+    setLoading(false);
   };
-
-
-
-
 
   // const handlebuy = async (productId,qrt) => {
   //   try {
@@ -143,7 +140,6 @@ function Home() {
   //       console.error("Cart not found.");
   //       return;
   //     }
-
 
   //     // Assuming you want to work with the first cart found.
   //     const cartID = homecart[0].id;
@@ -163,7 +159,6 @@ function Home() {
   //       await updateDoc(cartDocRef, { product_id: updatedProductIds,qauntityPerProductID: updatedQrt});
   //       // await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt});
 
-
   //       console.log("Product added to cart successfully!");
   //     } else {
   //       console.error("Invalid 'product_id' field in cart document.");
@@ -172,7 +167,6 @@ function Home() {
   //     console.error("Error adding product to cart:", error);
   //   }
   // };
-
 
   const fetchProducts = async () => {
     try {
@@ -217,58 +211,64 @@ function Home() {
           </Button>
         </Form.Group>
         <hr />
-
-        <Row>
-          {products.map((product, index) => (
-            <Col key={index} md={3} className="mb-4">
-              <Link
-                to={`/product_detail?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(product.price)}`}
-                target="_blank"
-              >
-                <Card className="card">
-                  <Image
-                    className="img"
-                    src={imageList.find((url) => url.includes(product.img))}
-                    style={{ width: "290px", height: "300px" }}
-                  />
-                  <Card.Body>
-                    <div className="product_name">{product.name}</div>
-                    <div className="product_description">
-                      {product.description}
-                    </div>
-                    <div>
-                      <span className="product_price">
-                        {product.price.toLocaleString()}
-                      </span>
-                      <b className="bath"> บาท</b>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Link>
-              <div>
-                <Button
-                  variant="warning"
-                  className="contact_form_submit"
-                  disabled={isLoading}
-                  onClick={() => handlebuy(product.id, product.quantity)}
-                >
-                  ADD TO CART
-                </Button>
-              </div>
-            </Col>
-          ))}
-          <hr className="hr-text" data-content="IKEA"></hr>
-        </Row>
+        <Container>
+          <div className="card-container">
+            <Row className="box">
+              {products.map((product, index) => (
+                // <Col key={index} md={3} className="mb-4">
+                <div key={index} className="card-wrapper">
+                  <Link
+                    to={`/product_detail?id=${encodeURIComponent(
+                      product.id
+                    )}&name=${encodeURIComponent(
+                      product.name
+                    )}&quantity=${encodeURIComponent(
+                      product.quantity
+                    )}&description=${encodeURIComponent(
+                      product.description
+                    )}&image=${encodeURIComponent(
+                      product.img
+                    )}&price=${encodeURIComponent(product.price)}`}
+                    target="_blank"
+                  >
+                    <Card className="card">
+                      <Image
+                        className="img"
+                        src={imageList.find((url) => url.includes(product.img))}
+                        style={{ width: "290px", height: "300px" }}
+                      />
+                      <Card.Body>
+                        <div className="product_name">{product.name}</div>
+                        <div className="product_description">
+                          {product.description}
+                        </div>
+                        <div>
+                          <span className="product_price">
+                            {product.price.toLocaleString()}
+                          </span>
+                          <b className="bath"> บาท</b>
+                        </div>
+                        <div>
+                          <Button
+                            variant="warning"
+                            className="contact_form_submit"
+                            disabled={isLoading}
+                            onClick={() =>
+                              handlebuy(product.id, product.quantity)
+                            }
+                          >
+                            ADD TO CART
+                          </Button>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </div>
+              ))}
+              <hr className="hr-text" data-content="IKEA"></hr>
+            </Row>
+          </div>
+        </Container>
       </Container>
     </>
   );
