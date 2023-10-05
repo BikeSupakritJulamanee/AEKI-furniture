@@ -25,16 +25,21 @@ function Nav() {
 
   return (
     <>
-      <Navbar className="admin_nav" fixed="top">
+      <Navbar className="admin_nav">
         <Container>
-          <img className="menu" src={menuImage} alt="Menu" onClick={handleShow} />
+          <img
+            className="menu"
+            src={menuImage}
+            alt="Menu"
+            onClick={handleShow}
+          />
           <svg
             className="icon"
             width="100"
             height="40"
             viewBox="0 0 100 40"
             xmlns="http://www.w3.org/2000/svg"
-            xmlns: xlink="http://www.w3.org/1999/xlink"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
           >
             <g fill="none" fill-rule="evenodd">
               <path fill="#0058AB" d="M99.986 40H0V0h100v40z" />
@@ -63,7 +68,7 @@ function Nav() {
               height="40"
               viewBox="0 0 100 40"
               xmlns="http://www.w3.org/2000/svg"
-              xmlns: xlink="http://www.w3.org/1999/xlink"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
             >
               <g fill="none" fill-rule="evenodd">
                 <path fill="#0058AB" d="M99.986 40H0V0h100v40z" />
@@ -83,10 +88,7 @@ function Nav() {
         <Offcanvas.Body>
           <Navbar.Brand href="/adminhomepage">
             {" "}
-            <div className="Brand">
-              ผลิตภัณฑ์ของคุณ
-
-            </div>
+            <div className="Brand">ผลิตภัณฑ์ของคุณ</div>
           </Navbar.Brand>
           <Navbar.Brand href="/add_products">
             {" "}
@@ -106,7 +108,6 @@ function Nav() {
           </Navbar.Brand>
         </Offcanvas.Body>
       </Offcanvas>
-
     </>
   );
 }
