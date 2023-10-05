@@ -340,23 +340,33 @@ function Home() {
           `}
                     target="_blank"
                   >
-                    <Card className="card">
-                      <Image
-                        className="img"
-                        src={imageList.find((url) => url.includes(product.img))}
-                        style={{ width: "290px", height: "300px" }}
-                      />
-                      <Card.Body>
+                    <Card className="card_content">
+                      <div class="card_background">
+                        <Image
+                          className="img"
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "290px", height: "300px" }}
+                        />
+                      </div>
+
+                      <Card.Body class="card_body">
                         <div className="product_name">{product.name}</div>
-                        <div className="product_description">
-                          {product.description}
-                        </div>
+
                         <div>
                           <span className="product_price">
                             {product.price.toLocaleString()}
                           </span>
                           <b className="bath"> บาท</b>
                         </div>
+
+                        <div className="product_description">
+                          {product.description}
+                        </div>
+                        {/* <div class="action_bottom_bar">
+                          <Button className="bt2">rr</Button>
+                        </div> */}
                       </Card.Body>
                     </Card>
                   </Link>
