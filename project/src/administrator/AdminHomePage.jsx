@@ -178,7 +178,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}  sm={6} xs={6}  className="res">
+                  <Col md={4} sm={6} xs={6} className="res">
                     <Image
                       className="img"
                       src={user_icon}
@@ -270,7 +270,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4}  sm={6} xs={6}className="res">
+                  <Col md={4} sm={6} xs={6} className="res">
                     <Image
                       className="img"
                       src={product_icon}
@@ -320,8 +320,7 @@ function Home() {
             <Row className="box">
               {products.map((product, index) => (
                 // <Col key={index} xs={12} sm={6} md={3} lg={3}>
-                <div className="card-wrapper">
-                
+                <div key={index} className="card-wrapper">
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
                       product.id
