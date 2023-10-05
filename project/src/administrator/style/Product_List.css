@@ -1,0 +1,41 @@
+.sticky-right {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    right: 80px;
+    background-color: var(
+        --table-background);
+}
+.sticky-right2 {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    right: -1px;
+    background-color: var(
+        --table-background);
+}
+
+.bt{
+    --yellow:#fcda05;
+    --primary:blue;
+    height: 44px;
+    width: 70px;
+    border-radius: 50px;
+    background-color: var(--yellow);
+    color: var(--primary);
+    outline: none;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0s 
+        ease-in-out;
+    padding: 10px 16px;
+}
+
+.bt:hover {
+    background-color: var(
+        --yellow);
+    color: var(
+        --primary);
+}

@@ -29,15 +29,27 @@ function UserorderList() {
   const [recipname, setrecipname] = useState('');
   const { user } = useUserAuth();
   const [matchingProducts, setMatchingProducts] = useState([]);
+  const [transportList, setTransportList] = useState([])
+  const [transportID, setTransportID] = useState("")
   const [address_user, setaddress_user] = useState([]);
+  const [selectAddress,setselectAddress] =useState("")
   const handleShowAddModal = () => setShowAddModal(true);
+  const [orderID, setOrderID] = useState(null);
 
   useEffect(() => {
     fetchCart();
     fetchproduct();
     fetchprice();
-    fetchAdress();
+    // fetchAdress();
   }, [user, orderUser]);
+
+  useEffect(() => {
+    // fetchCart();
+    // fetchproduct();
+    // fetchprice();
+    fetch_transportation()
+    fetchAdress();
+  }, [user]);
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
@@ -122,6 +134,7 @@ function UserorderList() {
 
 
         setOrderUser(newData);
+        
         if (newData.length > 0) {
           setuserproductid(newData[0].product_id);
         } else {
@@ -147,9 +160,60 @@ function UserorderList() {
         
       }));
       setaddress_user(newData);
-      console.log("ssssss",address_user)
     }
   };
+
+  const fetch_transportation = async () => {
+    try {
+      const q = query(collection(db, 'transportation'));
+
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setTransportList(newData);
+    } catch (error) {
+      console.error('Error fetching account data:', error);
+    }
+  };
+
+  const handlePay=async(e)=>{
+      const order_user = await addDoc(collection(db, 'order'), {
+        product_id:orderUser[0].product_id,
+        quantityPerProductID:orderUser[0].qauntityPerProductID,
+        email:user.email,
+        amount:price
+      });
+      const orderId = order_user.id;
+
+      const shipping_user = await addDoc(collection(db, 'shipping'), {
+        orderID:orderId,
+        email:user.email,
+        transportationID:transportID,
+        recipientAddyID:selectAddress,
+        status:"รอดำเนินการจัดส่ง"
+      });
+      
+    
+      
+    }
+
+    // const createOrder = async (product_id, price) => {
+    //   try {
+    //     // Add the order document to Firestore
+    //     const docRef = await db.collection('orders').add({
+    //       product_id,
+    //       price,
+    //     });
+    
+    //     // Get the generated order ID
+    //     const orderId = docRef.id;
+    
+    //     // Display the order ID
+    //     console.log('Order ID:', orderId);
+    //   } catch (error) {
+    //     console.error('Error creating order:', error);
+    //   }
+    // };
+
 
   return (
     <div>
@@ -190,14 +254,43 @@ function UserorderList() {
         </Table>
         <hr />
         <div style={{ textAlign: 'right', marginBottom:"10px",fontWeight:"bold"}}>ที่อยู่ในการจัดส่ง</div> 
-        {address_user.map((even)=>(
-          <div style={{ textAlign: 'right'}}>{even.destination} <br />
-          {even.email}<br />
-          {even.phoneNumber} <br />
-          {even.recipientName}
-          <hr />
-          </div> 
-        ))}
+        
+        
+        <Form.Control
+          as="select"
+          className="dropdown-small"
+          placeholder="Type"
+          onChange={(e) => setselectAddress(e.target.value)}
+          required
+        >
+          <option value={''}>เลือกที่อยู่</option>
+          {address_user.map((typeObj, index) => (
+            <option key={index} value={typeObj.id}>
+              {typeObj.destination}
+              {typeObj.recipientName}
+              {typeObj.email}
+              {typeObj.phoneNumber}
+            </option>
+          ))}
+        </Form.Control>
+        
+
+        <Form.Group controlId="exampleForm.SelectCustom">
+        <Form.Control
+          as="select"
+          className="dropdown-small"
+          placeholder="Type"
+          onChange={(e) => setTransportID(e.target.value)}
+          required
+        >
+          <option value={''}>เลือกขนส่ง</option>
+          {transportList.map((typeObj, index) => (
+            <option key={index} value={typeObj.id}>
+              {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
+            </option>
+          ))}
+        </Form.Control>
+      </Form.Group>
         <Button variant="dark" onClick={handleShowAddModal}>
                     &#43;เพิ่มช่องทางการขนส่ง
         </Button>
@@ -243,6 +336,7 @@ function UserorderList() {
                 </Modal>
        <hr />
         <div style={{ textAlign: 'right', padding:"20px"}}>Total Price: {price} Bath</div>
+        <div style={{ float: 'right'}}><Button onClick={handlePay}>PAY</Button></div>
       </Container>
     </div>
   );

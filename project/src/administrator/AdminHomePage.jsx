@@ -168,7 +168,7 @@ function Home() {
             <div class="item board" data-order="1">
               <Card className="card-po">
                 <Row>
-                  <Col md={8}>
+                  <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
                         New Users
@@ -178,7 +178,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} className="res">
+                  <Col md={4}  sm={6} xs={6}  className="res">
                     <Image
                       className="img"
                       src={user_icon}
@@ -191,7 +191,7 @@ function Home() {
             <div className="item board" data-order="2">
               <Card className="card-po">
                 <Row>
-                  <Col md={8}>
+                  <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
                         Orders
@@ -201,7 +201,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} className="res">
+                  <Col md={4} sm={6} xs={6} className="res">
                     <Image
                       className="img"
                       src={order_icon}
@@ -214,7 +214,7 @@ function Home() {
             <div className="item board" data-order="3">
               <Card className="card-po ">
                 <Row>
-                  <Col md={8}>
+                  <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
                         Success
@@ -224,7 +224,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} className="res">
+                  <Col md={4} sm={6} xs={6} className="res">
                     <Image
                       className="img"
                       src={success_icon}
@@ -237,7 +237,7 @@ function Home() {
             <div className="item board" data-order="4">
               <Card className="card-po">
                 <Row>
-                  <Col md={8}>
+                  <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
                         <p className="size_font">Transportation</p>
@@ -247,7 +247,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} className="res">
+                  <Col md={4} sm={6} xs={6} className="res">
                     <Image
                       className="img"
                       src={transport_icon}
@@ -260,7 +260,7 @@ function Home() {
             <div className="item board" data-order="5">
               <Card className="card-po">
                 <Row>
-                  <Col md={8}>
+                  <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className="mb-2 text-muted">
                         Product
@@ -270,7 +270,7 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} className="res">
+                  <Col md={4}  sm={6} xs={6}className="res">
                     <Image
                       className="img"
                       src={product_icon}
@@ -321,8 +321,7 @@ function Home() {
               {products.map((product, index) => (
                 // <Col key={index} xs={12} sm={6} md={3} lg={3}>
                 <div className="card-wrapper">
-                  {" "}
-                  {/* เปลี่ยน xs, sm, md, lg */}
+                
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
                       product.id

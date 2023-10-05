@@ -85,7 +85,7 @@ function Order_List() {
                     <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
                 </Form.Select>
                 <hr />
-                <Table striped bordered hover>
+                <Table striped bordered hover responsive>
                     <thead>
                         <tr>
                             <th>รหัสคำสั่งซื้อ</th>

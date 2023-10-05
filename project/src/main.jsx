@@ -34,6 +34,8 @@ import Transportation from './administrator/Transportation.jsx';
 import Order_List from './administrator/Order_List.jsx';
 import ViewOrder from './administrator/ViewOrder.jsx';
 
+import Tmp from './component/Tmp.jsx';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -87,6 +89,11 @@ const router = createBrowserRouter([
   {
     path: '/view_order',
     element: <ViewOrder />
+  },
+
+  {
+    path: '/tmp',
+    element: <Tmp />
   }
 
 ]);

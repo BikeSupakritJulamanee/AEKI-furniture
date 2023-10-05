@@ -4,6 +4,7 @@ import { Container, Table, Button, Form } from "react-bootstrap";
 import { db } from "../firebase";
 import { query, collection, where, getDocs, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import "./style/Product_List.css";
 
 function Product_List() {
   const [products, setProducts] = useState([]);
@@ -99,7 +100,7 @@ function Product_List() {
         </Form.Group>
         <hr />
 
-        <Table striped bordered hover>
+        <Table striped bordered hover responsive>
           <thead>
             <tr>
               <th>ID</th>
@@ -108,8 +109,8 @@ function Product_List() {
               <th>Price</th>
               <th>Quantity</th>
               <th>Type</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th className="sticky-right">Edit</th>
+              <th className="sticky-right2">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -121,7 +122,7 @@ function Product_List() {
                 <td>{product.price}</td>
                 <td>{product.quantity}</td>
                 <td>{product.type}</td>
-                <td>
+                <td className="sticky-right">
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
                       product.id
@@ -142,13 +143,13 @@ function Product_List() {
                     )}`}
                     target="_blank"
                   >
-                    <Button>
+                    <Button className="bt btn--primary" variant="info">
                       Edit
                     </Button>
                   </Link>
                 </td>
-                <td>
-                  <Button onClick={() => handleDelete(product.id)}>
+                <td className="sticky-right2">
+                  <Button className="bt btn--primary"  variant="danger" onClick={() => handleDelete(product.id)}>
                     Delete
                   </Button>
                 </td>
@@ -156,6 +157,7 @@ function Product_List() {
             ))}
           </tbody>
         </Table>
+        
       </Container>
     </>
   );
