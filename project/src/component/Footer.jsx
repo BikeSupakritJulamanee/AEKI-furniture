@@ -1,12 +1,12 @@
 import React from 'react'
-import { Navbar } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
 function Footer() {
     return (
         <>
-            <Navbar fixed='bottom'>
+            <Container>
                 footer
-            </Navbar>
+            </Container>
             
         </>
     )

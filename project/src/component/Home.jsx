@@ -191,7 +191,6 @@ function Home() {
   return (
     <>
       <Nav_Bar />
-      <Footer />
       <Container>
         {user.email}
 
@@ -271,6 +270,7 @@ function Home() {
           </div>
         </Container>
       </Container>
+      <Footer />
 
     </>
   );
