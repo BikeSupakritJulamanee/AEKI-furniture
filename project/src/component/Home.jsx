@@ -24,6 +24,7 @@ import {
 } from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
+import Footer from "./Footer";
 
 function Home() {
   const { user, logOut } = useUserAuth();
@@ -196,7 +197,7 @@ function Home() {
   return (
     <>
       <Nav_Bar />
-
+      <Footer />
       <Container>
         {user.email}
 
@@ -270,6 +271,7 @@ function Home() {
           <hr className="hr-text" data-content="IKEA"></hr>
         </Row>
       </Container>
+
     </>
   );
 }

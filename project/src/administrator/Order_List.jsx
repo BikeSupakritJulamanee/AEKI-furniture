@@ -107,9 +107,9 @@ function Order_List() {
                                 <td>{s.order.amount}</td>
                                 <td>{s.transportationID}</td>
                                 <td>
-                                    {Array.isArray(s.order.productID) &&
-                                        s.order.productID.map((productId, i) => (
-                                            <div key={i}>{productId}</div>
+                                    {Array.isArray(s.order.product_id) &&
+                                        s.order.product_id.map((product_id, i) => (
+                                            <div key={i}>{product_id}</div>
                                         ))}
                                 </td>
                                 <td>
@@ -132,7 +132,7 @@ function Order_List() {
                                         )}&transportationID=${encodeURIComponent(s.transportationID)}&productID=${encodeURIComponent(
                                             s.order.productID
                                         )}&quantityPerProductID=${encodeURIComponent(
-                                            s.order.quantityPerProductID
+                                            s.order.qntityPerProductID
                                         )}`}
                                         target="_blank"
                                         key={index}
