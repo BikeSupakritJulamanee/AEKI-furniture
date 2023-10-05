@@ -176,6 +176,21 @@ function UserorderList() {
   };
 
   const handlePay=async(e)=>{
+    try {
+      matchingProducts.forEach(async (product) => {
+        const productId = product.id;
+        const purchasedQuantity = orderUser[0].qauntityPerProductID[productId];
+        const newQuantity = product.quantity - purchasedQuantity;
+  
+        const productRef = doc(db, "products", productId);
+  
+        await updateDoc(productRef, { quantity: newQuantity });
+      });
+  
+      console.log("Product quantities updated successfully.");
+    } catch (error) {
+      console.error("Error updating product quantities:", error);
+    }
       const order_user = await addDoc(collection(db, 'order'), {
         product_id:orderUser[0].product_id,
         quantityPerProductID:orderUser[0].qauntityPerProductID,
@@ -196,28 +211,9 @@ function UserorderList() {
       
     }
 
-    // const createOrder = async (product_id, price) => {
-    //   try {
-    //     // Add the order document to Firestore
-    //     const docRef = await db.collection('orders').add({
-    //       product_id,
-    //       price,
-    //     });
-    
-    //     // Get the generated order ID
-    //     const orderId = docRef.id;
-    
-    //     // Display the order ID
-    //     console.log('Order ID:', orderId);
-    //   } catch (error) {
-    //     console.error('Error creating order:', error);
-    //   }
-    // };
-
-
   return (
     <div>
-      <Nav_Bar />
+      <Nav_Bar /> 
       <Container>
       <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
         <Table striped bordered hover>
