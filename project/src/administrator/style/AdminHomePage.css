@@ -182,27 +182,6 @@
   opacity: 1;
 }
 
-.action_bottom_bar .bt2 {
-  display: flex;
-
-  color: rgba(114, 106, 106, 0.895);
-  text-decoration: none;
-  font-weight: 800;
-  opacity: 0;
-  padding: 0 30px;
-  transition: all 0.2s ease-in-out;
-}
-
-.action_bottom_bar {
-  display: flex;
-  font-size: 18px;
-  height: 42px;
-}
-
-.action_bottom_bar .product_description:hover {
-  color: #d6d3cc;
-}
-
 .product_name {
   text-decoration: underline;
   font-size: 18px;
