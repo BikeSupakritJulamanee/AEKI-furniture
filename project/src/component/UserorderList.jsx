@@ -14,7 +14,7 @@ import {
   doc,
   updateDoc,
   getDoc,
-  addDoc // Add this import for getDoc
+  addDoc, // Add this import for getDoc
 } from "firebase/firestore";
 
 function UserorderList() {
@@ -32,21 +32,30 @@ function UserorderList() {
   const [transportList, setTransportList] = useState([])
   const [transportID, setTransportID] = useState("")
   const [address_user, setaddress_user] = useState([]);
+  const [f_user, setf_user] = useState([]);
   const [selectAddress,setselectAddress] =useState("")
   const handleShowAddModal = () => setShowAddModal(true);
   const [orderID, setOrderID] = useState(null);
 
-  useEffect(() => {
+   useEffect(() => {
     fetchCart();
     fetchproduct();
     fetchprice();
     // fetchAdress();
-  }, [user, orderUser]);
+  }, [user]);
+
+  // useEffect(() => {
+  //   fetchCart();
+  //   fetchproduct();
+  //   fetchprice();
+  //   // fetchAdress();
+  // }, [user, orderUser]);
 
   useEffect(() => {
     // fetchCart();
     // fetchproduct();
     // fetchprice();
+    fetchUser()
     fetch_transportation()
     fetchAdress();
   }, [user]);
@@ -134,7 +143,6 @@ function UserorderList() {
 
 
         setOrderUser(newData);
-        
         if (newData.length > 0) {
           setuserproductid(newData[0].product_id);
         } else {
@@ -144,6 +152,23 @@ function UserorderList() {
       } catch (error) {
         console.error("Error fetching cart data:", error);
       }
+    }
+  };
+
+  const fetchUser = async () => {
+    if (user.email) {
+      const q = query(
+        collection(db, "user"),
+        where("email", "==", user.email)
+      );
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        
+      }));
+      setf_user(newData);
+      
     }
   };
 
@@ -177,6 +202,16 @@ function UserorderList() {
 
   const handlePay=async(e)=>{
     try {
+
+      const user_uid =f_user[0].id
+      const cartDocRef = doc(db, "user", user_uid);
+      const updatedQrt = parseInt(f_user[0].member_point) + price
+      console.log(updatedQrt)
+      await updateDoc(cartDocRef, {
+        member_point:updatedQrt
+      });
+      
+
       matchingProducts.forEach(async (product) => {
         const productId = product.id;
         const purchasedQuantity = orderUser[0].qauntityPerProductID[productId];

@@ -22,6 +22,7 @@ function Register() {
   const [username, setUsername] = useState('');
   const [phone_number, setPhoneNumber] = useState('');
   const [product_id, setproduct_id] = useState([]);
+  const [point, setpoint] = useState(0);
   const [qrtproduct_id, setqrtproduct_id] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
@@ -49,6 +50,7 @@ function Register() {
         email: email,
         username: username,
         phone_number: phone_number,
+        member_point:point,
       });
 
       await signUp(email, password);
