@@ -12,6 +12,8 @@ function Product_List() {
   const [select, setSelect] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
 
+  const [ifOrderBySales, setIfOrderBySales] = useState(false)
+
   useEffect(() => {
     fetchProducts();
     fetchType();
@@ -26,7 +28,13 @@ function Product_List() {
       }
 
       if (searchTerm !== "") {
-        q = query(q, where("name", ">=", searchTerm), orderBy("name"));
+        q = query(q, where("name", ">=", searchTerm));
+      }
+
+      if (ifOrderBySales === true) {
+        q = query(q, orderBy("quantity", "desc"));
+      } else {
+        q = query(q, orderBy("name"));
       }
 
       const querySnapshot = await getDocs(q);
@@ -39,6 +47,7 @@ function Product_List() {
       console.error("Error fetching product data:", error);
     }
   };
+
 
   const handleDelete = async (id) => {
     try {
@@ -63,6 +72,17 @@ function Product_List() {
       console.error('Error fetching account data:', error);
     }
   };
+
+  const OrderBySales = async () => {
+    if (ifOrderBySales == true) {
+      setIfOrderBySales(false)
+      fetchProducts()
+    }
+    else {
+      setIfOrderBySales(true)
+      fetchProducts()
+    }
+  }
 
   return (
     <>
@@ -99,6 +119,8 @@ function Product_List() {
           </Form.Control>
         </Form.Group>
         <hr />
+
+        <Button onClick={OrderBySales} >{ifOrderBySales ? 'จัดเรียงด้วยสินค้าขายดี' : 'จัดเรียงด้วยสินค้าขายดี'}</Button>
 
         <Table striped bordered hover responsive>
           <thead>
@@ -149,7 +171,7 @@ function Product_List() {
                   </Link>
                 </td>
                 <td className="sticky-right2">
-                  <Button className="bt btn--primary"  variant="danger" onClick={() => handleDelete(product.id)}>
+                  <Button className="bt btn--primary" variant="danger" onClick={() => handleDelete(product.id)}>
                     Delete
                   </Button>
                 </td>
@@ -157,7 +179,7 @@ function Product_List() {
             ))}
           </tbody>
         </Table>
-        
+
       </Container>
     </>
   );
