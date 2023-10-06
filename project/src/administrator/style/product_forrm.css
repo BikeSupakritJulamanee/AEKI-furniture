@@ -75,25 +75,41 @@ button.contact_form_submit {
   letter-spacing: 2px;
 }
 
-
 button.contact_form_submit2 {
-    background: #fcda05;
-    border: none;
-    color: #040404;
-    padding: 10px 15px;
-    width: 100%;
-    margin-top: 25px;
-    border-radius: 35px;
-    cursor: pointer;
-    font-size: 14px;
-    letter-spacing: 2px;
-  }
+  background: #fcda05;
+  border: none;
+  color: #040404;
+  padding: 10px 15px;
+  width: 100%;
+  margin-top: 25px;
+  border-radius: 35px;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
 .resize3 {
   position: absolute;
-  width:490px; 
+  width: 490px;
   height: 500px;
   right: -40px;
   top: 16%;
   padding: 40px;
   border-radius: 68px 0 0 62px;
+}
+
+.button {
+  color: #fcda05;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 2.5rem;
+  max-width: 160px;
+  width: 100%;
+  letter-spacing: 0.3rem;
+  font-weight: 600;
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  transition: all 1s ease-in;
 }

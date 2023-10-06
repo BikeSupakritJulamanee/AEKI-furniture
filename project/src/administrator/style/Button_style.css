@@ -1,0 +1,59 @@
+/* button */
+.custom-button {
+  display: flex;
+  justify-content: center;
+  transition: 1.9s all;
+  border-radius: 1px;
+  height: 40px;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.custom-button:hover {
+  border-radius: 2000px;
+  font-weight: bold;
+  color: #1325e8;
+
+  transform: translateY(-5px) scale(1.1);
+}
+
+.hvr-reveal {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+}
+.hvr-reveal:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-color: #1325e8;
+
+  border-style: solid;
+  border-radius: 2100px;
+  border-width: 0;
+  -webkit-transition-property: border-width;
+  transition-property: border-width;
+  -webkit-transition-duration: 0.1s;
+  transition-duration: 0.1s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-reveal:hover:before,
+.hvr-reveal:focus:before,
+.hvr-reveal:active:before {
+  background-color: #fcda05;
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  border-width: 4px;
+}
+.fix_row {
+  width: 1000px;
+}

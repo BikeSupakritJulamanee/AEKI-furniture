@@ -14,6 +14,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Nav from "./Nav";
 import img1 from "./image/add.jpg";
 import "./style/product_forrm.css";
+import "./style/Button_style.css";
 
 function Add_Products() {
   // State Variables
@@ -146,16 +147,23 @@ function Add_Products() {
       <Container>
         <Row>
           <Col md={10} className="sizecon">
-            <Button variant="dark" onClick={handleShowAddModal}>
-              &#43;เพิ่มประเภทสินค้า
-            </Button>
             <div className="contact_inner">
               <Row>
                 <Col md={10}>
                   <div className="contact_form_inner">
                     <div className="contact_field">
                       <h3>เพิ่มผลิตภัณฑ์</h3>
-                      <p>ทำการเพิ่มสินค้า</p>
+                      <div className="d-grid gap-2">
+                        <Button
+                          variant="outline-primary"
+                          size="lg"
+                          className="custom-button hvr-reveal"
+                          onClick={handleShowAddModal}
+                        >
+                          &#43;เพิ่มประเภทสินค้า
+                        </Button>
+                      </div>
+                      <p>ทำการเพิ่มรายละเอียดของสินค้า</p>
                       <Form onSubmit={handleSubmit}>
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
