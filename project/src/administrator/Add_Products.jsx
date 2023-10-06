@@ -33,6 +33,7 @@ function Add_Products() {
   const [productTypeList, setProductTypeList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
+
   // Event Handlers
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -54,6 +55,7 @@ function Add_Products() {
       type,
       img: fileName,
       attribute: attribute,
+      salses: 0
     });
 
     if (imageUpload) {
