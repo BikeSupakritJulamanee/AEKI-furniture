@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Nav_Bar from "../component/Nav_Bar";
-import { Container, Table, Button,Modal,Form } from 'react-bootstrap';
+import { Container, Table, Button, Modal, Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { db } from '../firebase';
 import { useUserAuth } from "../context/UserAuthContext";
@@ -33,11 +33,11 @@ function UserorderList() {
   const [transportID, setTransportID] = useState("")
   const [address_user, setaddress_user] = useState([]);
   const [f_user, setf_user] = useState([]);
-  const [selectAddress,setselectAddress] =useState("")
+  const [selectAddress, setselectAddress] = useState("")
   const handleShowAddModal = () => setShowAddModal(true);
   const [orderID, setOrderID] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     fetchCart();
     fetchproduct();
     fetchprice();
@@ -63,10 +63,10 @@ function UserorderList() {
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     const createProduct = await addDoc(collection(db, 'recipientAddy'), {
-      destination:transportCompanyName,
-      email:user.email,
-      phoneNumber:phone,
-      recipientName:recipname
+      destination: transportCompanyName,
+      email: user.email,
+      phoneNumber: phone,
+      recipientName: recipname
     });
     alert('เพิ่มประเภทสินค้าสำเร็จ');
 
@@ -75,17 +75,17 @@ function UserorderList() {
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     clearFormFields();
-};
+  };
 
   const fetchprice = () => {
     let sum = 0;
     matchingProducts.map((price, index) => (
       orderUser.map((even, index) => (
-          sum = sum+(price.price*even.qauntityPerProductID[price.id])
-          
-        ))
-        ))
-        setprice(sum)
+        sum = sum + (price.price * even.qauntityPerProductID[price.id])
+
+      ))
+    ))
+    setprice(sum)
   }
 
   const fetchproduct = async () => {
@@ -104,7 +104,7 @@ function UserorderList() {
 
         if (newDataproducts.length > 0) {
           const matching = [];
-          
+
           if (orderUser.length > 0) {
             orderUser[0].product_id.forEach((cartProductId) => {
               const productMatch = newDataproducts.find((product) => product.id === cartProductId);
@@ -165,10 +165,10 @@ function UserorderList() {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-        
+
       }));
       setf_user(newData);
-      
+
     }
   };
 
@@ -182,7 +182,7 @@ function UserorderList() {
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
-        
+
       }));
       setaddress_user(newData);
     }
@@ -200,57 +200,54 @@ function UserorderList() {
     }
   };
 
-  const handlePay=async(e)=>{
+  const handlePay = async (e) => {
     try {
-
-      const user_uid =f_user[0].id
+      const user_uid = f_user[0].id
       const cartDocRef = doc(db, "user", user_uid);
       const updatedQrt = parseInt(f_user[0].member_point) + price
       console.log(updatedQrt)
       await updateDoc(cartDocRef, {
-        member_point:updatedQrt
+        member_point: updatedQrt
       });
-      
 
       matchingProducts.forEach(async (product) => {
         const productId = product.id;
         const purchasedQuantity = orderUser[0].qauntityPerProductID[productId];
+
         const newQuantity = product.quantity - purchasedQuantity;
-  
+        const newSalsesQuantity = product.salses + purchasedQuantity;
+
         const productRef = doc(db, "products", productId);
-  
         await updateDoc(productRef, { quantity: newQuantity });
+        await updateDoc(productRef, { salses: newSalsesQuantity });
       });
-  
+
       console.log("Product quantities updated successfully.");
     } catch (error) {
       console.error("Error updating product quantities:", error);
     }
-      const order_user = await addDoc(collection(db, 'order'), {
-        product_id:orderUser[0].product_id,
-        quantityPerProductID:orderUser[0].qauntityPerProductID,
-        email:user.email,
-        amount:price,
-      });
-      const orderId = order_user.id;
+    const order_user = await addDoc(collection(db, 'order'), {
+      product_id: orderUser[0].product_id,
+      quantityPerProductID: orderUser[0].qauntityPerProductID,
+      email: user.email,
+      amount: price,
+    });
+    const orderId = order_user.id;
 
-      const shipping_user = await addDoc(collection(db, 'shipping'), {
-        orderID:orderId,
-        email:user.email,
-        transportationID:transportID,
-        recipientAddyID:selectAddress,
-        status:"รอดำเนินการจัดส่ง"
-      });
-      
-    
-      
-    }
+    const shipping_user = await addDoc(collection(db, 'shipping'), {
+      orderID: orderId,
+      email: user.email,
+      transportationID: transportID,
+      recipientAddyID: selectAddress,
+      status: "รอดำเนินการจัดส่ง"
+    });
+  }
 
   return (
     <div>
-      <Nav_Bar /> 
+      <Nav_Bar />
       <Container>
-      <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
+        <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -267,26 +264,26 @@ function UserorderList() {
                 ))}
               </td>
               <td>
-              {matchingProducts.map((price, index) => (
-              orderUser.map((even, index) => (
-                  <div key={index}>{even.qauntityPerProductID[price.id]}</div>
-                ))
+                {matchingProducts.map((price, index) => (
+                  orderUser.map((even, index) => (
+                    <div key={index}>{even.qauntityPerProductID[price.id]}</div>
+                  ))
                 ))}
               </td>
               <td>
-              {matchingProducts.map((price, index) => (
-              orderUser.map((even, index) => (
-                  <div key={index}>{price.price*even.qauntityPerProductID[price.id]}</div>
-                ))
+                {matchingProducts.map((price, index) => (
+                  orderUser.map((even, index) => (
+                    <div key={index}>{price.price * even.qauntityPerProductID[price.id]}</div>
+                  ))
                 ))}
               </td>
             </tr>
           </tbody>
         </Table>
         <hr />
-        <div style={{ textAlign: 'right', marginBottom:"10px",fontWeight:"bold"}}>ที่อยู่ในการจัดส่ง</div> 
-        
-        
+        <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
+
+
         <Form.Control
           as="select"
           className="dropdown-small"
@@ -304,70 +301,70 @@ function UserorderList() {
             </option>
           ))}
         </Form.Control>
-        
+
 
         <Form.Group controlId="exampleForm.SelectCustom">
-        <Form.Control
-          as="select"
-          className="dropdown-small"
-          placeholder="Type"
-          onChange={(e) => setTransportID(e.target.value)}
-          required
-        >
-          <option value={''}>เลือกขนส่ง</option>
-          {transportList.map((typeObj, index) => (
-            <option key={index} value={typeObj.id}>
-              {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
-            </option>
-          ))}
-        </Form.Control>
-      </Form.Group>
+          <Form.Control
+            as="select"
+            className="dropdown-small"
+            placeholder="Type"
+            onChange={(e) => setTransportID(e.target.value)}
+            required
+          >
+            <option value={''}>เลือกขนส่ง</option>
+            {transportList.map((typeObj, index) => (
+              <option key={index} value={typeObj.id}>
+                {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
         <Button variant="dark" onClick={handleShowAddModal}>
-                    &#43;เพิ่มช่องทางการขนส่ง
+          &#43;เพิ่มช่องทางการขนส่ง
         </Button>
         <Modal show={showAddModal} onHide={handleCloseAddModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>เพิ่มช่องทางการขนส่ง</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form onSubmit={handleAddSubmit}>
-                            <Form.Group>
-                   
-                                <Form.Control
-                                    type="text"
-                                    placeholder="ที่อยู่"
-                                    value={transportCompanyName}
-                                    onChange={(e) => setTransportCompanyName(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="เบอร์โทร"
-                                    value={phone}
-                                    onChange={(e) => setphone(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="ชื่อผู้รับ"
-                                    value={recipname}
-                                    onChange={(e) => setrecipname(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                            <Button variant="success" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Loading…' : 'เพิ่มช่องทางการขนส่ง'}
-                            </Button>
-                        </Form>
-                    </Modal.Body>
-                </Modal>
-       <hr />
-        <div style={{ textAlign: 'right', padding:"20px"}}>Total Price: {price} Bath</div>
-        <div style={{ float: 'right'}}><Button onClick={handlePay}>PAY</Button></div>
+          <Modal.Header closeButton>
+            <Modal.Title>เพิ่มช่องทางการขนส่ง</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form onSubmit={handleAddSubmit}>
+              <Form.Group>
+
+                <Form.Control
+                  type="text"
+                  placeholder="ที่อยู่"
+                  value={transportCompanyName}
+                  onChange={(e) => setTransportCompanyName(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  placeholder="เบอร์โทร"
+                  value={phone}
+                  onChange={(e) => setphone(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  placeholder="ชื่อผู้รับ"
+                  value={recipname}
+                  onChange={(e) => setrecipname(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Button variant="success" type="submit" disabled={isLoading}>
+                {isLoading ? 'Loading…' : 'เพิ่มช่องทางการขนส่ง'}
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+        <hr />
+        <div style={{ textAlign: 'right', padding: "20px" }}>Total Price: {price} Bath</div>
+        <div style={{ float: 'right' }}><Button onClick={handlePay}>PAY</Button></div>
       </Container>
     </div>
   );

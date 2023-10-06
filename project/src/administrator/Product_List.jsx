@@ -131,6 +131,7 @@ function Product_List() {
               <th>Price</th>
               <th>Quantity</th>
               <th>Type</th>
+              <th>Salse</th>
               <th className="sticky-right">Edit</th>
               <th className="sticky-right2">Delete</th>
             </tr>
@@ -144,6 +145,7 @@ function Product_List() {
                 <td>{product.price}</td>
                 <td>{product.quantity}</td>
                 <td>{product.type}</td>
+                <td>{product.salses}</td>
                 <td className="sticky-right">
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
