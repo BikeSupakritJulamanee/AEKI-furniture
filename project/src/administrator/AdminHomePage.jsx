@@ -298,7 +298,7 @@ function Home() {
         </Form.Group>
 
         <Form.Group controlId="exampleForm.SelectCustom">
-          <Form.Control
+          <Form.Select
             as="select"
             className="dropdown-small"
             placeholder="Type"
@@ -312,7 +312,7 @@ function Home() {
                 {typeObj.productType}
               </option>
             ))}
-          </Form.Control>
+          </Form.Select>
         </Form.Group>
 
         <Container>
