@@ -32,7 +32,7 @@ function Product_List() {
       }
 
       if (ifOrderBySales === true) {
-        q = query(q, orderBy("quantity", "desc"));
+        q = query(q, orderBy("salses", "desc"));
       } else {
         q = query(q, orderBy("name"));
       }
