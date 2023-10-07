@@ -197,6 +197,9 @@ function Home() {
         <div style={{ textAlign: "right" }}>
           <Link to="/userorderlist">ดูสินค้าในตะกร้า</Link>
         </div>
+        <div style={{ textAlign: "right" }}>
+          <Link to="/order_history">ดูประวัติการซื้อ</Link>
+        </div>
 
         <Form.Group className="search_group">
           <Form.Control

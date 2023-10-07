@@ -26,7 +26,9 @@ function Product_detail() {
     const [imageList, setImageList] = useState([]);
     const { user, logOut } = useUserAuth();
     const [homecart, sethomecart] = useState([]);
+    const [f_product, setf_product] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [select_qrt ,setselect_qrt] = useState(1);
     const [productData, setProductData] = useState({
         id: searchParams.get("id") || "",
         name: searchParams.get("name") || "",
@@ -38,6 +40,7 @@ function Product_detail() {
 
     useEffect(() => {
         fetchCart();
+        fetchProduct();
     }, [user]);
 
     useEffect(() => {
@@ -49,6 +52,19 @@ function Product_detail() {
             .then((urls) => setImageList(urls))
             .catch((error) => console.error("Error listing images:", error));
     }, []);
+
+    const fetchProduct = async () => {
+        try {
+            const q = query(collection(db, 'products'));
+
+            const querySnapshot = await getDocs(q);
+            const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            setf_product(newData);
+            console.log(f_product)
+        } catch (error) {
+            console.error('Error fetching account data:', error);
+        }
+    };
 
     const fetchCart = async () => {
         if (user.email) {
@@ -106,9 +122,12 @@ function Product_detail() {
                         [productId]: parseInt(qrt),
                     };
 
-                    await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt, product_id: updatedProductIds });
-
-                    console.log("Product added to cart successfully!");
+                    if (parseInt(qrt) <= parseInt(productData.quantity)) {
+                        await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt, product_id: updatedProductIds });
+                        console.log("Product added to cart successfully!");
+                    } else {
+                        alert("สินค้าไม่เพียงพอ")
+                    }
                 }
             } else {
                 console.error("Invalid 'qauntityPerProductID' field in cart document.");
@@ -123,31 +142,34 @@ function Product_detail() {
         <div>
             <Nav_Bar />
             <Container>
-            <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
+                <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
                 <Row>
                     <Col md={10} className="sizecon">
                         <div className="contact_inner">
                             <Row>
                                 <Col md={10}>
+
                                     <div className="contact_form_inner">
                                         <div className="contact_field">
                                             <h3>{productData.name}</h3>
 
-                                            <h4>Description:</h4>
-                                            <div><h5>{productData.description}</h5></div>
-
+                                            <h5>Inventories:</h5>
+                                            {f_product.map((product) => (
+                                                product.id === productData.id && (
+                                                
+                                                        <h5>{product.quantity}</h5>
+                                                  
+                                                )
+                                            ))}
 
                                             <Form.Group>
                                                 <Form.Label>Quantity</Form.Label>
                                                 <Form.Control
                                                     type="number"
                                                     placeholder="Quantity"
-                                                    value={productData.quantity}
+                                                    value={select_qrt}
                                                     onChange={(e) =>
-                                                        setProductData({
-                                                            ...productData,
-                                                            quantity: e.target.value,
-                                                        })
+                                                        setselect_qrt(e.target.value)
                                                     }
                                                 />
                                             </Form.Group>
@@ -160,11 +182,10 @@ function Product_detail() {
                                                         price: e.target.value,
                                                     })
                                                 }
-                                                <h5>{productData.price * productData.quantity}</h5>
+                                                <h5>{productData.price * select_qrt}</h5>
                                             </div>
-
                                             <br />
-                                            <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(productData.id, productData.quantity)}  >
+                                            <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(productData.id, select_qrt)}  >
                                                 ADD TO CART
                                             </Button>
 

@@ -25,6 +25,7 @@ import Home from './component/Home.jsx'
 //User
 import Product_detail from './component/Product_detail.jsx';
 import UserorderList from './component/UserorderList.jsx';
+import OrderHistory from './component/OrderHistory.jsx';
 
 import AdminHomePage from './administrator/AdminHomePage.jsx'
 import Add_Products from './administrator/Add_Products.jsx';
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
   {
     path: '/userorderlist',
     element: <ProtectedRoute><UserorderList /></ProtectedRoute>
+  },
+  {
+    path: '/order_history',
+    element: <ProtectedRoute><OrderHistory /></ProtectedRoute>
   },
 
   {
