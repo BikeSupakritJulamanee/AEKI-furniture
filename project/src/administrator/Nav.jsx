@@ -34,15 +34,15 @@ function Nav() {
             onClick={handleShow}
           />
 
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleLogout} className="logout_bt">
+            Logout
+          </Button>
         </Container>
       </Navbar>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            {" "}
-          </Offcanvas.Title>
+          <Offcanvas.Title> </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Navbar.Brand href="/adminhomepage">
