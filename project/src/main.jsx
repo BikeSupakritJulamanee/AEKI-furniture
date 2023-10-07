@@ -37,8 +37,6 @@ import ViewOrder from './administrator/ViewOrder.jsx';
 import OutOfStock from './administrator/OutOfStock.jsx';
 import Member_List from './administrator/Member_List.jsx';
 
-import Tmp from './component/Tmp.jsx';
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -106,10 +104,6 @@ const router = createBrowserRouter([
     element: <Member_List/>
   },
 
-{
-  path: '/tmp',
-    element: <Tmp />
-}
 
 ]);
 

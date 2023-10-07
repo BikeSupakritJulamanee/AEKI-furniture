@@ -23,7 +23,7 @@ function Nav() {
 
     return (
         <>
-            <header>admin section&#9822;</header>
+            <header>บุญมี</header>
             <Container>
                 <img className='menu' src={menuImage} alt="Menu" onClick={handleShow} />
 
@@ -33,11 +33,9 @@ function Nav() {
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
-                        <Navbar.Brand href="/adminhomepage"> <div className='Brand' >ผลิตภัณฑ์ของคุณ</div></Navbar.Brand>
-                        <Navbar.Brand href="/add_products"> <div className='Brand' >เพิ่มผลิตภัณฑ์</div></Navbar.Brand>
-                        <Navbar.Brand href='/product_list' > <div className='Brand' >รายการสินค้าทั้งหมด</div></Navbar.Brand>
-                        <Navbar.Brand href='/order_list' > <div className='Brand' >รายการสั่งซื้อ</div></Navbar.Brand>
-                        <Navbar.Brand href='/transportation' >  <div className='Brand' >บริษัทขนส่ง</div></Navbar.Brand>
+                        <Navbar.Brand href="/home"> <div className='Brand' >หน้าหลัก</div></Navbar.Brand>
+                        <Navbar.Brand href="/userorderlist"> <div className='Brand' >สินค้าในตะกร้า</div></Navbar.Brand>
+                        <Navbar.Brand href='/order_history' > <div className='Brand' >ประวัติการสั่งซื้อ</div></Navbar.Brand>
                         <Button onClick={handleLogout} variant='danger'>Logout</Button>
                     </Offcanvas.Body>
                 </Offcanvas>
