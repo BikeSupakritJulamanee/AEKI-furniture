@@ -127,7 +127,6 @@ function Home() {
     } catch (error) {
       console.error("Error adding/updating product quantity in cart:", error);
     }
-    alert('เพิ่มสิค้าในรถเข็นเเล้ว')
     setLoading(false)
   };
 
@@ -160,6 +159,9 @@ function Home() {
 
         <div style={{ textAlign: "right" }}>
           <Link to="/userorderlist">ดูสินค้าในตะกร้า</Link>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <Link to="/order_history">ดูประวัติการซื้อ</Link>
         </div>
 
         <Form.Group className="search_group">
