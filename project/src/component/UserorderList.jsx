@@ -5,8 +5,9 @@ import { Container, Table, Button, Modal, Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import { db } from '../firebase';
 import {
-  getDocs, collection, query, where, doc, updateDoc, addDoc, // Add this import for getDoc
+  getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc  // Add this import for getDoc
 } from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
 
 function UserorderList() {
   const { user } = useUserAuth();
@@ -34,9 +35,13 @@ function UserorderList() {
     await fetchAdress();
     await fetchUser();
     await fetchCart();
-    await fetchproduct();
-    await fetchprice();
+    fetchprice();
   };
+
+  useEffect(() => {
+    fetchproduct()
+    fetchprice()
+  }, [orderUser, matchingProducts])
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
@@ -55,37 +60,35 @@ function UserorderList() {
     clearFormFields();
   };
 
-  const fetchprice = () => {
+  const fetchprice = async () => {
     let sum = 0;
-    matchingProducts.map((price, index) => (
-      orderUser.map((even, index) => (
-        sum = sum + (price.price * even.qauntityPerProductID[price.id])
-
-      ))
-    ))
-    setprice(sum)
-  }
+    matchingProducts.forEach((price) => {
+      orderUser.forEach((even) => {
+        sum += price.price * even.qauntityPerProductID[price.id];
+      });
+    });
+    setprice(sum);
+  };
 
   const fetchproduct = async () => {
-    const q = query(collection(db, "products"));
-    const querySnapshot = await getDocs(q);
-    const newDataproducts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, }));
+    const querySnapshot = await getDocs(collection(db, "products"));
+    const newDataproducts = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
 
-    if (newDataproducts.length > 0) {
-      const matching = [];
-      if (orderUser.length > 0) {
-        orderUser[0].product_id.forEach((cartProductId) => {
+    if (newDataproducts.length > 0 && orderUser.length > 0) {
+      const matching = orderUser[0].product_id
+        .filter((cartProductId) => newDataproducts.some((product) => product.id === cartProductId))
+        .map((cartProductId) => {
           const productMatch = newDataproducts.find((product) => product.id === cartProductId);
-          if (productMatch) {
-            matching.push({
-              ...productMatch,
-              cartProductId,
-            });
-          }
+          return {
+            ...productMatch,
+            cartProductId,
+          };
         });
-      }
       setMatchingProducts(matching);
-    }
+    } 
   };
 
   const fetchCart = async () => {
@@ -93,6 +96,7 @@ function UserorderList() {
       const q = query(collection(db, "cart"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      console.log(newData)
       setOrderUser(newData);
     }
   };
@@ -153,7 +157,9 @@ function UserorderList() {
       quantityPerProductID: orderUser[0].qauntityPerProductID,
       email: user.email,
       amount: price,
+      Date: serverTimestamp(),
     });
+
     const orderId = order_user.id;
 
     const shipping_user = await addDoc(collection(db, 'shipping'), {
@@ -164,6 +170,40 @@ function UserorderList() {
       status: "รอดำเนินการจัดส่ง"
     });
   }
+
+  const handleDelete = async (productId, userId) => {
+    try {
+      const cartDocRef = doc(db, "cart", userId);
+      const cartDocSnapshot = await getDoc(cartDocRef);
+      const currentCartData = cartDocSnapshot.data();
+      const updatedMatchingProducts = matchingProducts.filter((product) => product.id !== productId);
+      setMatchingProducts(updatedMatchingProducts);
+      if (typeof currentCartData.qauntityPerProductID === 'object') {
+        const updatedProductIds = currentCartData.product_id.filter((id) => id !== productId);
+
+        await updateDoc(cartDocRef, { product_id: updatedProductIds });
+
+
+        if (currentCartData.qauntityPerProductID.hasOwnProperty(productId)) {
+          const updatedQrt = { ...currentCartData.qauntityPerProductID };
+          delete updatedQrt[productId];
+          await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt });
+          fetchproduct();
+          fetchCart();
+          fetchprice();
+          console.log(matchingProducts)
+          console.log("Product removed from cart successfully!");
+
+        } else {
+          console.error("Product not found in cart.");
+        }
+      } else {
+        console.error("Invalid 'qauntityPerProductID' field in cart document.");
+      }
+    } catch (error) {
+      console.error("Error removing product from cart:", error);
+    }
+  };
 
   return (
     <>
@@ -181,19 +221,12 @@ function UserorderList() {
             </tr>
           </thead>
           <tbody>
-            {matchingProducts.length > 0 ? (
-              <tbody>
-                <p>มากกว่า 0</p>
-              </tbody>
-            ) : (
-              <p>No products found.</p>
-            )}
-            
             {matchingProducts.map((price, index) => (
               <tr key={index}>
                 <td>{price.name}</td>
                 <td>{orderUser[0]?.qauntityPerProductID[price.id] || 0}</td>
                 <td>{price.price * (orderUser[0]?.qauntityPerProductID[price.id] || 0)}</td>
+                <td><Button onClick={() => handleDelete(price.id, orderUser[0].id)} style={{ fontSize: "12px", padding: "1px", marginBottom: "3px" }} variant="danger">DELETE</Button></td>
               </tr>
             ))}
           </tbody>
