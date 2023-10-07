@@ -25,7 +25,7 @@ import {
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 import Footer from "./Footer";
-
+import "./style/Home.css";
 function Home() {
   const { user, logOut } = useUserAuth();
   const [imageList, setImageList] = useState([]);
@@ -101,7 +101,8 @@ function Home() {
           // Update the quantity for the existing product
           const updatedQrt = {
             ...currentCartData.qauntityPerProductID,
-            [productId]: currentCartData.qauntityPerProductID[productId] + parseInt(qrt),
+            [productId]:
+              currentCartData.qauntityPerProductID[productId] + parseInt(qrt),
           };
 
           await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt });
@@ -127,7 +128,7 @@ function Home() {
     } catch (error) {
       console.error("Error adding/updating product quantity in cart:", error);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   const fetchProducts = async () => {
@@ -143,7 +144,9 @@ function Home() {
         ...doc.data(),
         id: doc.id,
       }));
-      const filteredProducts = newData.filter((product) => product.quantity > 0);
+      const filteredProducts = newData.filter(
+        (product) => product.quantity > 0
+      );
       setProducts(filteredProducts);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -177,59 +180,72 @@ function Home() {
           </Button>
         </Form.Group>
         <hr />
+        <Container>
+          <div className="card-container">
+            <Row className="box">
+              {products.map((product, index) => (
+                // <Col key={index} md={3} className="mb-4">
 
-        <Row>
-          {products.map((product, index) => (
-            <Col key={index} md={3} className="mb-4">
-              <Link
-                to={`/product_detail?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(product.price)}`}
-                target="_blank"
-              >
-                <Card className="card">
-                  <Image
-                    className="img"
-                    src={imageList.find((url) => url.includes(product.img))}
-                    style={{ width: "290px", height: "300px" }}
-                  />
-                  <Card.Body>
-                    <div className="product_name">{product.name}</div>
-                    <div className="product_description">
-                      {product.description}
+                <div key={index} className="card-wrapper">
+                  <Link
+                    to={`/product_detail?id=${encodeURIComponent(
+                      product.id
+                    )}&name=${encodeURIComponent(
+                      product.name
+                    )}&quantity=${encodeURIComponent(
+                      product.quantity
+                    )}&description=${encodeURIComponent(
+                      product.description
+                    )}&image=${encodeURIComponent(
+                      product.img
+                    )}&price=${encodeURIComponent(product.price)}`}
+                    target="_blank"
+                  >
+                    <Card className="card_content" style={{ height: "550px" }}>
+                      <div class="card_background">
+                        <Image
+                          className="img"
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "290px", height: "300px" }}
+                        />
+                      </div>
+                      <Card.Body className="card_body">
+                        <div className="product_name">{product.name}</div>
+                        <div className="product_description">
+                          {product.description}
+                        </div>
+                        <div>
+                          <span className="product_price">
+                            {product.price.toLocaleString()}
+                          </span>
+                          <b className="bath"> บาท</b>
+                          <span style={{ marginLeft: "4rem" }}>
+                            คงเหลือ: {product.quantity} ชิ้น
+                          </span>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                  <div>
+                    <div className="button_back">
+                      <Button
+                        variant="warning"
+                        className="contact_form"
+                        disabled={isLoading}
+                        onClick={() => handlebuy(product.id, 1)}
+                      >
+                        ADD TO CART
+                      </Button>
                     </div>
-                    <div>
-                      <span className="product_price">
-                        {product.price.toLocaleString()}
-                      </span>
-                      <b className="bath"> บาท</b>
-                      <span style={{ marginLeft: "4rem" }}>คงเหลือ: {product.quantity} ชิ้น</span>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Link>
-              <div>
-                <Button
-                  variant="warning"
-                  className="contact_form_submit"
-                  disabled={isLoading}
-                  onClick={() => handlebuy(product.id, 1)}
-                >
-                  ADD TO CART
-                </Button>
-              </div>
-            </Col>
-          ))}
-          <hr className="hr-text" data-content="IKEA"></hr>
-        </Row>
+                  </div>
+                </div>
+              ))}
+              <hr className="hr-text" data-content="IKEA"></hr>
+            </Row>
+          </div>
+        </Container>
       </Container>
       <Footer />
     </>
