@@ -158,11 +158,6 @@ function Home() {
     <>
       <Nav />
       <Container>
-        {/* <Image
-          className="img"
-          src={graph_icon}
-          style={{ width: "50px", height: "50px" }}
-        /> */}
         <Container>
           <div class="con">
             <div class="item board" data-order="1">
@@ -319,7 +314,6 @@ function Home() {
           <div className="card-container">
             <Row className="box">
               {products.map((product, index) => (
-                // <Col key={index} xs={12} sm={6} md={3} lg={3}>
                 <div key={index} className="card-wrapper">
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
