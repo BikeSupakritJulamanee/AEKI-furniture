@@ -122,10 +122,12 @@
 }
 
 .dropdown-small {
+  --image: url("../image/arrow-down2.png");
+
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background: url("arrow-down.png") no-repeat right center;
+  background: var(--image) no-repeat right 10px center;
   padding-right: 30px;
 }
 
@@ -283,4 +285,3 @@
   background-color: white;
   font-size: 16px;
 }
-
