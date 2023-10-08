@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Container } from "react-bootstrap";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "./style/Nav.css";
-import { Navbar, Button } from "react-bootstrap";
+import { Navbar, Button, Badge } from "react-bootstrap";
 import menuImage from "../image/menu.png"; // Import the image
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -33,6 +33,7 @@ function Nav() {
             alt="Menu"
             onClick={handleShow}
           />
+          <Badge bg="primary" ><b>{user.email}</b></Badge>
 
           <Button onClick={handleLogout} className="logout_bt">
             Logout

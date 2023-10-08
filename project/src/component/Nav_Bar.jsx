@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useUserAuth } from "../context/UserAuthContext";
-import { Container, Button, Badge, Navbar } from "react-bootstrap";
+import { Container, Badge, Navbar } from "react-bootstrap";
 
 import menuImage from '../image/menu.png';
 import cart_icon from './image/shopping-cart.png'

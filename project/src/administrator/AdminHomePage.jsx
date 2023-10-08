@@ -3,11 +3,9 @@ import {
   Container,
   Card,
   Image,
-  Button,
   Form,
   Row,
   Col,
-  ProgressBar,
   Badge,
 } from "react-bootstrap";
 import Nav from "./Nav";
@@ -22,7 +20,6 @@ import user_icon from "./image/group.png";
 import order_icon from "./image/order-history.png";
 import transport_icon from "./image/delivery-truck.png";
 import success_icon from "./image/check.png";
-import graph_icon from "./image/growth.png";
 import product_icon from "./image/double-bed.png";
 
 function Home() {
@@ -53,7 +50,7 @@ function Home() {
 
   useEffect(() => {
     fetchProducts();
-  }, [select]);
+  }, [select, searchTerm]);
 
   const fetchShipping_1 = async () => {
     try {
@@ -159,6 +156,7 @@ function Home() {
       <Nav />
       <Container>
         <Container>
+          <center><h4><Badge bg="info">Dash Board</Badge></h4></center>
           <div class="con">
             <div class="item board" data-order="1">
               <Card className="card-po">
@@ -277,30 +275,26 @@ function Home() {
             </div>
           </div>
         </Container>
-        <hr />
+        <center>
+          <Form.Group className="search_group">
+            <Form.Control
+              className="search_bar"
+              type="text"
+              placeholder="ค้นหาด้วยชื่อสินค้า"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Form.Group>
+        </center>
 
-        <Form.Group className="search_group">
-          <Form.Control
-            className="search_bar"
-            type="text"
-            placeholder="ค้นหาด้วยชื่อสินค้า"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button className="search_btn" onClick={fetchProducts}>
-            ค้นหา
-          </Button>
-        </Form.Group>
-
-        <Form.Group controlId="exampleForm.SelectCustom">
+        <Form.Group>
           <Form.Select
-            as="select"
-            className="dropdown-small"
+            className="dropdown-small select_productType"
             placeholder="Type"
             onChange={(e) => setSelect(e.target.value)}
             required
           >
-            <option value={""}>ทุกประเภท</option>
+            <option value={""}>ค้นหาด้วยประเภทสินค้า &#8595;</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
                 <span className="option-icon">👉🏼</span>
