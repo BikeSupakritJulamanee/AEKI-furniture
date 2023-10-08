@@ -13,6 +13,7 @@ import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Nav from "./Nav";
 import img1 from "./image/add.jpg";
+
 import "./style/product_forrm.css";
 import "./style/Button_style.css";
 
@@ -32,7 +33,6 @@ function Add_Products() {
   const [productType, setProductType] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
   const [isLoading, setLoading] = useState(false);
-
 
   // Event Handlers
   const handleFileChange = (e) => {
@@ -55,7 +55,7 @@ function Add_Products() {
       type,
       img: fileName,
       attribute: attribute,
-      salses: 0
+      salses: 0,
     });
 
     if (imageUpload) {
@@ -130,16 +130,25 @@ function Add_Products() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
-            <Form.Group>
-              <Form.Control
-                type="text"
-                placeholder="ประเภทสินค้า"
-                value={productType}
-                onChange={(e) => setProductType(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button type="submit" disabled={isLoading}>
+            <div className="contact_field_modal">
+              <Form.Group>
+                <Form.Control
+                  type="text"
+                  className="input-small"
+                  placeholder="ประเภทสินค้า"
+                  value={productType}
+                  onChange={(e) => setProductType(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isLoading}
+              variant="success"
+              className="contact_form_submit"
+            >
               {isLoading ? "Loading…" : "เพิ่มประเภท"}
             </Button>
           </Form>

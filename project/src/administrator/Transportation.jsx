@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Image, Button, Form, Modal } from "react-bootstrap";
+import { Container, Image, Button, Form, Modal, Card } from "react-bootstrap";
 import Nav from "./Nav";
 import { storageRef, db } from "../firebase";
 import {
@@ -212,22 +212,30 @@ function Transportation() {
           <Modal.Body>
             <Form onSubmit={handleAddSubmit}>
               <Form.Group>
-                <Form.Control
-                  type="text"
-                  placeholder="ชื่อบริษัทขนส่ง"
-                  value={transportCompanyName}
-                  onChange={(e) => setTransportCompanyName(e.target.value)}
-                  required
-                />
+                <div className="contact_field_modal">
+                  <Form.Control
+                    type="text"
+                    placeholder="ชื่อบริษัทขนส่ง"
+                    className="input-small"
+                    style={{ marginBottom: "10px" }}
+                    value={transportCompanyName}
+                    onChange={(e) => setTransportCompanyName(e.target.value)}
+                    required
+                  />
+                </div>
               </Form.Group>
               <Form.Group>
-                <Form.Control
-                  type="number"
-                  placeholder="ค่าบริการ"
-                  value={shippingCost}
-                  onChange={(e) => setShippingCost(e.target.value)}
-                  required
-                />
+                <div className="contact_field_modal">
+                  <Form.Control
+                    type="number"
+                    placeholder="ค่าบริการ"
+                    className="input-small"
+                    style={{ marginBottom: "10px" }}
+                    value={shippingCost}
+                    onChange={(e) => setShippingCost(e.target.value)}
+                    required
+                  />
+                </div>
               </Form.Group>
               <Form.Group>
                 <Form.Label>รูปภาพ</Form.Label>
@@ -238,7 +246,12 @@ function Transportation() {
                   required
                 />
               </Form.Group>
-              <Button variant="success" type="submit" disabled={isLoading}>
+              <Button
+                variant="success"
+                type="submit"
+                className="contact_form_submit"
+                disabled={isLoading}
+              >
                 {isLoading ? "Loading…" : "เพิ่มช่องทางการขนส่ง"}
               </Button>
             </Form>
@@ -289,12 +302,14 @@ function Transportation() {
         {/* Display Transportation Companies */}
         {fetchTransportCompanies.map((company, index) => (
           <span key={index}>
-            <Image
-              onClick={() => handleShowEditModal(company)}
-              className="img"
-              src={imageList.find((url) => url.includes(company.img))}
-              style={{ width: "180px", height: "120px" }}
-            />
+            <Card>
+              <Image
+                onClick={() => handleShowEditModal(company)}
+                className="img"
+                src={imageList.find((url) => url.includes(company.img))}
+                style={{ width: "180px", height: "120px" }}
+              />
+            </Card>
           </span>
         ))}
       </Container>

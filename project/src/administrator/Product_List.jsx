@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { Container, Table, Button, Form } from "react-bootstrap";
 import { db } from "../firebase";
-import { query, collection, where, getDocs, deleteDoc, doc, orderBy } from "firebase/firestore";
+import {
+  query,
+  collection,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+  orderBy,
+} from "firebase/firestore";
 import { Link } from "react-router-dom";
 import "./style/Product_List.css";
 
@@ -12,7 +20,7 @@ function Product_List() {
   const [select, setSelect] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
 
-  const [ifOrderBySales, setIfOrderBySales] = useState(false)
+  const [ifOrderBySales, setIfOrderBySales] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -48,7 +56,6 @@ function Product_List() {
     }
   };
 
-
   const handleDelete = async (id) => {
     try {
       const productDocRef = doc(db, "products", id);
@@ -64,25 +71,27 @@ function Product_List() {
 
   const fetchType = async () => {
     try {
-      const q = query(collection(db, 'type'), orderBy("productType"));
+      const q = query(collection(db, "type"), orderBy("productType"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setProductTypeList(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const OrderBySales = async () => {
     if (ifOrderBySales == true) {
-      setIfOrderBySales(false)
-      fetchProducts()
+      setIfOrderBySales(false);
+      fetchProducts();
+    } else {
+      setIfOrderBySales(true);
+      fetchProducts();
     }
-    else {
-      setIfOrderBySales(true)
-      fetchProducts()
-    }
-  }
+  };
 
   return (
     <>
@@ -120,7 +129,17 @@ function Product_List() {
         </Form.Group>
         <hr />
 
-        <Button onClick={OrderBySales} >{ifOrderBySales ? 'จัดเรียงด้วยสินค้าขายดี' : 'จัดเรียงด้วยสินค้าขายดี'}</Button>
+        <Button
+          onClick={OrderBySales}
+          variant="outline-primary"
+          size="lg"
+          className="custom-button hvr-reveal"
+          style={{ marginBottom: "20px", width: "200px" }}
+        >
+          {ifOrderBySales
+            ? "จัดเรียงด้วยสินค้าขายดี"
+            : "จัดเรียงด้วยสินค้าขายดี"}
+        </Button>
 
         <Table striped bordered hover responsive>
           <thead>
@@ -162,9 +181,7 @@ function Product_List() {
                       product.price
                     )}&type=${encodeURIComponent(
                       product.type
-                    )}&attribute=${encodeURIComponent(
-                      product.attribute
-                    )}`}
+                    )}&attribute=${encodeURIComponent(product.attribute)}`}
                     target="_blank"
                   >
                     <Button className="bt btn--primary" variant="info">
@@ -173,7 +190,11 @@ function Product_List() {
                   </Link>
                 </td>
                 <td className="sticky-right2">
-                  <Button className="bt btn--primary" variant="danger" onClick={() => handleDelete(product.id)}>
+                  <Button
+                    className="bt btn--primary"
+                    variant="danger"
+                    onClick={() => handleDelete(product.id)}
+                  >
                     Delete
                   </Button>
                 </td>
@@ -181,7 +202,6 @@ function Product_List() {
             ))}
           </tbody>
         </Table>
-
       </Container>
     </>
   );
