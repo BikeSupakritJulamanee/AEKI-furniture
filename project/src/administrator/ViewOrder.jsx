@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from '../firebase'; // Assuming you're importing the Firebase configuration correctly
 import Nav from './Nav';
-import { Button, Container, Image, Row, Col } from "react-bootstrap";
+import { Button, Container, Image, Row, Col, Table } from "react-bootstrap";
 import { doc, getDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
@@ -116,57 +116,74 @@ function ViewOrder() {
         <>
             <Nav />
             <Container>
-                <Row>
-                    <Col>
-                        <b>รายการสั่งซื้อ</b>
+                <br />
+                <h4>รหัสคำสั่งซื้อ:{ShippingData.orderID}</h4>
+                <br />
+                <Table bordered>
+                    <thead bordered striped responsive >
+                        <tr>
+                            <th>ส่วนของผู้รับ</th>
+                            <th>การจัดส่ง</th>
+                            <th>ค่าบริการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                ผู้สั่ง: {ShippingData.email} <br />
+                                ผู้รับ: {recipientAddy_ID && recipientAddy_ID.recipientName} <br />
+                                ติดต่อ: {recipientAddy_ID && recipientAddy_ID.phoneNumber} <br />
+                                ที่อยู่การจัดส่ง: {recipientAddy_ID && recipientAddy_ID.destination} <br />
+                            </td>
+                            <td>
+                                {transportation_ID && (
+                                    <>
+                                        บริษัท: {transportation_ID.transportCompanyName} <br />
+                                        ค่าบริการ: {transportation_ID.shippingCost} <br />
+                                        {transportation_ID.img && (
+                                            <Image
+                                                width={100}
+                                                height={80}
+                                                src={imageList2.find((url) => url.includes(transportation_ID.img))}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </td>
+                            <td>
+                                ยอดต้องชำระ: {ShippingData.amount} บาท
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
+
+                <Table bordered responsive>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>รายการสั่งซื้อ</th>
+                            <th>รายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {productID_Detail.map((product, index) => (
-                            <Row key={index}>
-                                <Col>
-                                    <Image
-                                        width={200}
-                                        height={160}
-                                        src={imageList.find((url) => url.includes(product.img))}
-                                    />
-                                </Col>
-                                <Col>
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td><Image
+                                    width={200}
+                                    height={160}
+                                    src={imageList.find((url) => url.includes(product.img))}
+                                /></td>
+                                <td>
                                     รหัสสินค้า: {product.id} <br />
                                     ชื่อสินค้า: {product.name} <br />
                                     ราคาสินค้าต่อชิ้น: {product.price} <br />
-                                    จำนวน: {quantity[index]}
-                                </Col>
-                            </Row>
+                                    จำนวน: {ShippingData.quantityPerProductID}
+                                </td>
+                            </tr>
                         ))}
-                    </Col>
-                    <Col>
-                        <b>ส่วนผู้รับ</b> <br />
-                        ผู้ใช้: {ShippingData.email} <br />
-                        ผู้รับ: {recipientAddy_ID && recipientAddy_ID.recipientName} <br />
-                        ติดต่อ: {recipientAddy_ID && recipientAddy_ID.phoneNumber} <br />
-                        ที่อยู่การจัดส่ง: {recipientAddy_ID && recipientAddy_ID.destination} <br />
-
-                        <br /><br />
-                        <b>การจัดส่ง</b> <br />
-                        {transportation_ID && (
-                            <>
-                                บริษัท: {transportation_ID.transportCompanyName} <br />
-                                ค่าบริการ: {transportation_ID.shippingCost} <br />
-                                {transportation_ID.img && (
-                                    <Image
-                                        width={100}
-                                        height={80}
-                                        src={imageList2.find((url) => url.includes(transportation_ID.img))}
-                                    />
-                                )}
-                            </>
-                        )}
-
-                        <br /><br />
-                        ยอดต้องชำระ: {ShippingData.amount} บาท
-
-                        <br /><br />
-                        <Button href="/order_list">ย้อนกลับ</Button>
-                    </Col>
-                </Row>
+                    </tbody>
+                </Table>
             </Container>
         </>
     );

@@ -152,7 +152,7 @@ function EditProducts() {
                           <Form.Control
                             type="number"
                             placeholder="Quantity"
-                            value={productData.quanstity}
+                            value={productData.quantity}
                             onChange={(e) =>
                               setProductData({ ...productData, quantity: e.target.value })
                             }

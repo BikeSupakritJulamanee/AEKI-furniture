@@ -294,7 +294,7 @@ function Home() {
             onChange={(e) => setSelect(e.target.value)}
             required
           >
-            <option value={""}>ค้นหาด้วยประเภทสินค้า &#8595;</option>
+            <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
                 <span className="option-icon">👉🏼</span>

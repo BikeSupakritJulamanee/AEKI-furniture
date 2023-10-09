@@ -50,9 +50,9 @@ function OutOfStock() {
         <>
             <Nav />
             <Container>
-                <Row>
+                <center><h1>
                     สินค้าหมด
-                </Row>
+                </h1></center>
                 {out_of_stock.map((i, index) => (
                     <div key={index}>
                         {/* link to /edit_products with variable */}

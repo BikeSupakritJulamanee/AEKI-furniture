@@ -6,6 +6,7 @@ import { Navbar, Button, Badge } from "react-bootstrap";
 import menuImage from "../image/menu.png"; // Import the image
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import AEKI from './image/ikea-logo.png'
 
 function Nav() {
   const { logOut, user } = useUserAuth();
@@ -33,6 +34,12 @@ function Nav() {
             alt="Menu"
             onClick={handleShow}
           />
+
+          <img
+            src={AEKI}
+            alt="Menu"
+            onClick={handleShow}
+          />
           <Badge bg="primary" ><b>{user.email}</b></Badge>
 
           <Button onClick={handleLogout} className="logout_bt">
@@ -56,7 +63,7 @@ function Nav() {
           </Navbar.Brand>
           <Navbar.Brand href="/product_list">
             {" "}
-            <div className="Brand">รายการสินค้าทั้งหมด</div>
+            <div className="Brand">คลังสินค้า</div>
           </Navbar.Brand>
           <Navbar.Brand href="/order_list">
             {" "}

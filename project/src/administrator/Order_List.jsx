@@ -76,16 +76,24 @@ function Order_List() {
         <>
             <Nav />
             <Container>
-                <Form.Select
-                    aria-label='Default select example'
-                    onChange={(e) => setSelect(e.target.value)}
-                >
-                    <option value=''>สถานะ</option>
-                    <option value='รอดำเนินการจัดส่ง'>รอดำเนินการจัดส่ง</option>
-                    <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
-                </Form.Select>
-                <hr />
-                <Table striped bordered hover responsive>
+                <br />
+                <center><h1>รายการสั่งซื้อ</h1></center>
+
+                <Form.Group>
+                    <Form.Select
+                        className="dropdown-small select_productType"
+                        placeholder="Type"
+                        onChange={(e) => setSelect(e.target.value)}
+                        required
+                    >
+                        <option value={''}>สถานะ</option>
+                        <option value='รอดำเนินการจัดส่ง'>รอดำเนินการจัดส่ง</option>
+                        <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
+                    </Form.Select>
+                </Form.Group>
+
+                <br /><br />
+                <Table hover responsive>
                     <thead>
                         <tr>
                             <th>รหัสคำสั่งซื้อ</th>
@@ -112,12 +120,12 @@ function Order_List() {
                                             <div key={i}>{product_id}</div>
                                         ))}
                                 </td>
-                                <td>
-                                    {Array.isArray(s.order.quantityPerProductID) &&
-                                        s.order.quantityPerProductID.map((productId, i) => (
-                                            <div key={i}>{productId}</div>
-                                        ))}
-                                </td>
+                                {s.order.quantityPerProductID &&
+                                    Object.entries(s.order.quantityPerProductID).map(([productId, quantity], i) => (
+                                        <div key={i}>
+                                           {quantity}
+                                        </div>
+                                    ))}
                                 <td>
                                     <Button disabled={lock} onClick={() => handleEditSubmit(s.id)}>
                                         ทำการจัดส่ง
@@ -126,13 +134,13 @@ function Order_List() {
                                 <td>
                                     <Link
                                         to={`/view_order?orderID=${encodeURIComponent(s.order.id)}&email=${encodeURIComponent(
-                                            s.order.gmail
+                                            s.order.email
                                         )}&recipientAddyID=${encodeURIComponent(s.recipientAddyID)}&amount=${encodeURIComponent(
                                             s.order.amount
                                         )}&transportationID=${encodeURIComponent(s.transportationID)}&productID=${encodeURIComponent(
-                                            s.order.productID
+                                            s.order.product_id
                                         )}&quantityPerProductID=${encodeURIComponent(
-                                            s.order.qntityPerProductID
+                                            s.order.quantityPerProductID
                                         )}`}
                                         target="_blank"
                                         key={index}

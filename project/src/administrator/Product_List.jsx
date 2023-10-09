@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
-import { Container, Table, Button, Form } from "react-bootstrap";
+import { Container, Table, Button, Form, Row, Col } from "react-bootstrap";
 import { db } from "../firebase";
 import {
   query,
@@ -20,12 +20,12 @@ function Product_List() {
   const [select, setSelect] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
 
-  const [ifOrderBySales, setIfOrderBySales] = useState(false);
+  const [ifOrderBySales, setIfOrderBySales] = useState();
 
   useEffect(() => {
     fetchProducts();
     fetchType();
-  }, [select]);
+  }, [select, searchTerm, ifOrderBySales]);
 
   const fetchProducts = async () => {
     try {
@@ -41,9 +41,13 @@ function Product_List() {
 
       if (ifOrderBySales === true) {
         q = query(q, orderBy("salses", "desc"));
-      } else {
-        q = query(q, orderBy("name"));
       }
+
+
+      if (ifOrderBySales === false) {
+        q = query(q, orderBy("salses"));
+      }
+
 
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
@@ -83,87 +87,94 @@ function Product_List() {
     }
   };
 
-  const OrderBySales = async () => {
-    if (ifOrderBySales == true) {
-      setIfOrderBySales(false);
-      fetchProducts();
-    } else {
-      setIfOrderBySales(true);
-      fetchProducts();
-    }
-  };
-
   return (
     <>
       <Nav />
       <Container>
-        <Form.Group className="search_group">
-          <Form.Control
-            className="search_bar"
-            type="text"
-            placeholder="ค้นหาด้วยชื่อผลิตภัณฑ์"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button className="search_btn" onClick={fetchProducts}>
-            ค้นหา
-          </Button>
-        </Form.Group>
-        <hr />
 
-        <Form.Group controlId="exampleForm.SelectCustom">
-          <Form.Control
-            as="select"
-            className="input-small"
-            placeholder="Type"
-            onChange={(e) => setSelect(e.target.value)}
-            required
-          >
-            <option value={""}>ทุกประเภทประเภท</option>
-            {productTypeList.map((typeObj, index) => (
-              <option key={index} value={typeObj.productType}>
-                {typeObj.productType}
-              </option>
-            ))}
-          </Form.Control>
-        </Form.Group>
-        <hr />
+        <br />
+        <center><h1>คลังสินค้า</h1></center>
 
-        <Button
-          onClick={OrderBySales}
-          variant="outline-primary"
-          size="lg"
-          className="custom-button hvr-reveal"
-          style={{ marginBottom: "20px", width: "200px" }}
-        >
-          {ifOrderBySales
-            ? "จัดเรียงด้วยสินค้าขายดี"
-            : "จัดเรียงด้วยสินค้าขายดี"}
-        </Button>
+        <center>
+          <Form.Group className="search_group">
+            <Form.Control
+              className="search_bar"
+              type="text"
+              placeholder="ค้นหาด้วยชื่อผลิตภัณฑ์"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Form.Group>
+        </center>
 
-        <Table striped bordered hover responsive>
+        <br />
+
+        <Row>
+          <Col >
+            <Form.Group>
+              <Form.Select
+                className="dropdown-small select_productType"
+                placeholder="Type"
+                onChange={(e) => setSelect(e.target.value)}
+                required
+              >
+                <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
+                {productTypeList.map((typeObj, index) => (
+                  <option key={index} value={typeObj.productType}>
+                    👉🏼
+                    {typeObj.productType}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+
+          <Col >
+            <Form.Group>
+              <Form.Select
+                className="dropdown-small select_productType"
+                placeholder="Type"
+                // onChange={(e) => setIfOrderBySales(e.target.value)}
+                onChange={(e) => setIfOrderBySales(e.target.value === "true")} // Convert the value to a boolean
+                required
+              >
+                <option>จัดเรียงด้วยยอดขาย</option>
+                <option value={true}>สูงไปต่ำ</option>
+                <option value={false}>ต่ำไปสูง</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+        </Row>
+
+        <br />
+
+        <Table hover responsive>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Type</th>
-              <th>Salse</th>
-              <th className="sticky-right">Edit</th>
-              <th className="sticky-right2">Delete</th>
+              {/* <th>ID</th> */}
+              <th>ชื่อผลิตภัณฑ์</th>
+              {/* <th>Description</th> */}
+              <th>ราคาสินค้า</th>
+              <th>คลัง</th>
+              {/* <th>Type</th> */}
+              <th>ยอดขาย</th>
+              <th className="sticky-right">#</th>
+              <th className="sticky-right2">#</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product, index) => (
               <tr key={index}>
-                <td>{product.id}</td>
+                {/* <td>{product.id}</td> */}
                 <td>{product.name}</td>
-                <td>{product.description}</td>
+                {/* <td>{product.description}</td> */}
                 <td>{product.price}</td>
                 <td>{product.quantity}</td>
-                <td>{product.type}</td>
+                {/* <td>{product.type}</td> */}
                 <td>{product.salses}</td>
                 <td className="sticky-right">
                   <Link

@@ -32,22 +32,24 @@ function Member_List() {
         <>
             <Nav />
             <Container>
-                <Row>ลูกค้าดีเด่น</Row>
+                <br />
+                <center><h1>ลูกค้าดีเด่น</h1></center>
+                <br />
                 {/* show member sort by member point */}
                 <Table responsive="sm">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>email,gmail</th>
-                            <th>member ID</th>
-                            <th>phone number</th>
-                            <th>member POINT</th>
+                            <th>ID สมาชิก</th>
+                            <th>หมายเลขโทรศัพท์</th>
+                            <th>เเต้มสมาชิก</th>
                         </tr>
                     </thead>
                     {memberList.map((i, index) => (
                         <tbody key={index}  >
                             <tr>
-                                <td>{index+1}</td>
+                                <td>{index + 1}</td>
                                 <td>{i.email}</td>
                                 <td>{i.id}</td>
                                 <td>{i.phone_number}</td>

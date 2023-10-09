@@ -202,7 +202,6 @@ function Transportation() {
             &#43;เพิ่มช่องทางการขนส่ง
           </Button>
         </div>
-        <hr />
 
         {/* Add Modal */}
         <Modal show={showAddModal} onHide={handleCloseAddModal}>
