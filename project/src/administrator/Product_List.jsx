@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
-import { Container, Table, Button, Form, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Button,
+  Form,
+  Row,
+  Col,
+  Stack,
+} from "react-bootstrap";
 import { db } from "../firebase";
 import {
   query,
@@ -43,11 +51,9 @@ function Product_List() {
         q = query(q, orderBy("salses", "desc"));
       }
 
-
       if (ifOrderBySales === false) {
         q = query(q, orderBy("salses"));
       }
-
 
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
@@ -91,9 +97,10 @@ function Product_List() {
     <>
       <Nav />
       <Container>
-
         <br />
-        <center><h1>คลังสินค้า</h1></center>
+        <center>
+          <h1>คลังสินค้า</h1>
+        </center>
 
         <center>
           <Form.Group className="search_group">
@@ -110,44 +117,47 @@ function Product_List() {
         <br />
 
         <Row>
-          <Col >
-            <Form.Group>
-              <Form.Select
-                className="dropdown-small select_productType"
-                placeholder="Type"
-                onChange={(e) => setSelect(e.target.value)}
-                required
-              >
-                <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
-                {productTypeList.map((typeObj, index) => (
-                  <option key={index} value={typeObj.productType}>
-                    👉🏼
-                    {typeObj.productType}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
-
-          <Col >
-            <Form.Group>
-              <Form.Select
-                className="dropdown-small select_productType"
-                placeholder="Type"
-                // onChange={(e) => setIfOrderBySales(e.target.value)}
-                onChange={(e) => setIfOrderBySales(e.target.value === "true")} // Convert the value to a boolean
-                required
-              >
-                <option>จัดเรียงด้วยยอดขาย</option>
-                <option value={true}>สูงไปต่ำ</option>
-                <option value={false}>ต่ำไปสูง</option>
-              </Form.Select>
-            </Form.Group>
-          </Col>
-          <Col></Col>
-          <Col></Col>
-          <Col></Col>
-          <Col></Col>
+          <Stack direction="horizontal" gap={1}>
+            <div className="p-2">
+              <Col>
+                <Form.Group>
+                  <Form.Select
+                    className="dropdown-small select_productType"
+                    placeholder="Type"
+                    onChange={(e) => setSelect(e.target.value)}
+                    required
+                  >
+                    <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
+                    {productTypeList.map((typeObj, index) => (
+                      <option key={index} value={typeObj.productType}>
+                        👉🏼
+                        {typeObj.productType}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </div>
+            <div className="p-2">
+              <Col>
+                <Form.Group>
+                  <Form.Select
+                    className="dropdown-small select_productType"
+                    placeholder="Type"
+                    // onChange={(e) => setIfOrderBySales(e.target.value)}
+                    onChange={(e) =>
+                      setIfOrderBySales(e.target.value === "true")
+                    } // Convert the value to a boolean
+                    required
+                  >
+                    <option>จัดเรียงด้วยยอดขาย</option>
+                    <option value={true}>สูงไปต่ำ</option>
+                    <option value={false}>ต่ำไปสูง</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </div>
+          </Stack>
         </Row>
 
         <br />

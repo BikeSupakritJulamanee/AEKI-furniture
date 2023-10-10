@@ -1,13 +1,16 @@
 import { useUserAuth } from "../context/UserAuthContext";
 import React, { useState, useEffect } from 'react';
 import Nav_Bar from "../component/Nav_Bar";
-import { Container, Table, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Table, Button, Modal, Form, Image } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import { db } from '../firebase';
+
+//firebase
+import { db, storageRef } from '../firebase';
+import { ref, getDownloadURL, listAll } from "firebase/storage";
 import {
-  getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc  // Add this import for getDoc
+  getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp  // Add this import for getDoc
 } from "firebase/firestore";
-import { serverTimestamp } from "firebase/firestore";
+
 
 function UserorderList() {
   const { user } = useUserAuth();
@@ -25,10 +28,21 @@ function UserorderList() {
   const [f_user, setf_user] = useState([]);
   const [selectAddress, setselectAddress] = useState("")
   const handleShowAddModal = () => setShowAddModal(true);
+  const imageListRef = ref(storageRef, "products/");
+  const [imageList, setImageList] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, [user]);
+
+  useEffect(() => {
+    listAll(imageListRef)
+      .then((response) =>
+        Promise.all(response.items.map((item) => getDownloadURL(item)))
+      )
+      .then((urls) => setImageList(urls))
+      .catch((error) => console.error("Error listing images:", error));
+  }, []);
 
   const fetchData = async () => {
     await fetch_transportation();
@@ -88,7 +102,7 @@ function UserorderList() {
           };
         });
       setMatchingProducts(matching);
-    } 
+    }
   };
 
   const fetchCart = async () => {
@@ -169,6 +183,22 @@ function UserorderList() {
       recipientAddyID: selectAddress,
       status: "รอดำเนินการจัดส่ง"
     });
+
+    if (orderUser[0].id) {
+
+      const docRef = doc(db, 'cart', orderUser[0].id); // Assuming 'cart' is your collection name
+      try {
+        await updateDoc(docRef, {
+          product_id: [],
+          qauntityPerProductID: {}
+        });
+        console.log('Document updated successfully.');
+      } catch (error) {
+        console.error('Error updating document:', error);
+      }
+    } else {
+      console.error('orderUser.id is undefined or null.');
+    }
   }
 
   const handleDelete = async (productId, userId) => {
@@ -210,78 +240,84 @@ function UserorderList() {
       <Nav_Bar />
       <Container>
 
-        <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
+        <div style={{ textAlign: 'right' }}><Link to="/home"><Button>เลือกสินค้าต่อ</Button></Link></div>
 
-        <Table striped bordered hover>
+        <Table hover>
           <thead>
             <tr>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Price</th>
+              <th>ผลิตภัณฑ์</th>
+              <th>จำนวน</th>
+              <th>ราคา</th>
+              <th>-</th>
             </tr>
           </thead>
           <tbody>
             {matchingProducts.map((price, index) => (
               <tr key={index}>
-                <td>{price.name}</td>
+                <td>{price.name}
+                  <Image
+                    className="img"
+                    src={imageList.find((url) =>
+                      url.includes(price.img)
+                    )}
+                    style={{ width: "100px", height: "100px" }}
+                  />
+
+                </td>
                 <td>{orderUser[0]?.qauntityPerProductID[price.id] || 0}</td>
                 <td>{price.price * (orderUser[0]?.qauntityPerProductID[price.id] || 0)}</td>
                 <td><Button onClick={() => handleDelete(price.id, orderUser[0].id)} style={{ fontSize: "12px", padding: "1px", marginBottom: "3px" }} variant="danger">DELETE</Button></td>
               </tr>
             ))}
           </tbody>
-
         </Table>
 
-        <hr />
-
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-
-        <Form.Control
-          as="select"
-          className="dropdown-small"
-          placeholder="Type"
-          onChange={(e) => setselectAddress(e.target.value)}
-          required
-        >
-          <option value={''}>เลือกที่อยู่</option>
-          {address_user.map((typeObj, index) => (
-            <option key={index} value={typeObj.id}>
-              {typeObj.destination}
-              {typeObj.recipientName}
-              {typeObj.email}
-              {typeObj.phoneNumber}
-            </option>
-          ))}
-        </Form.Control>
-
-        <Form.Group controlId="exampleForm.SelectCustom">
+        <Form>
           <Form.Control
             as="select"
             className="dropdown-small"
             placeholder="Type"
-            onChange={(e) => setTransportID(e.target.value)}
+            onChange={(e) => setselectAddress(e.target.value)}
             required
           >
-            <option value={''}>เลือกขนส่ง</option>
-            {transportList.map((typeObj, index) => (
+            <option value={''}>เลือกที่อยู่</option>
+            {address_user.map((typeObj, index) => (
               <option key={index} value={typeObj.id}>
-                {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
+                {typeObj.recipientName}
+                {typeObj.phoneNumber}
+                {typeObj.destination}
               </option>
             ))}
           </Form.Control>
-        </Form.Group>
 
-        <Button variant="dark" onClick={handleShowAddModal}>
-          &#43;เพิ่มช่องทางการขนส่ง
-        </Button>
+          <Form.Group controlId="exampleForm.SelectCustom">
+            <Form.Control
+              as="select"
+              className="dropdown-small"
+              placeholder="Type"
+              onChange={(e) => setTransportID(e.target.value)}
+              required
+            >
+              <option value={''}>เลือกขนส่ง</option>
+              {transportList.map((typeObj, index) => (
+                <option key={index} value={typeObj.id}>
+                  {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
 
-        <hr />
+          <Button variant="dark" onClick={handleShowAddModal}>
+            &#43;เพิ่มช่องทางการขนส่ง
+          </Button>
 
-        <div>
-          <div style={{ textAlign: 'right', padding: "20px" }}>Total Price: {price} Bath</div>
-          <div style={{ float: 'right' }}><Button onClick={handlePay}>PAY</Button></div>
-        </div>
+          <div>
+            <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
+            <div style={{ float: 'right' }}><Button type="submit" onSubmit={handlePay}>ยืนยันการซื้อ</Button></div>
+          </div>
+        </Form>
+
       </Container>
 
       <Modal show={showAddModal} onHide={handleCloseAddModal}>

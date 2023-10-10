@@ -212,7 +212,7 @@ function Home() {
                           {product.price.toLocaleString()}
                         </span>
                         <b className="bath"> บาท</b>
-                        <span style={{ marginLeft: "4rem" }}>
+                        <span style={{ marginLeft: "2rem" }}>
                           คงเหลือ: {product.quantity} ชิ้น
                         </span>
                       </div>
@@ -236,7 +236,7 @@ function Home() {
           </Row>
         </div>
 
-        <center><b>สินค้าขายดี</b></center>
+        <center><b className="animation_text">สินค้าขายดี</b></center>
 
 
         <Row>

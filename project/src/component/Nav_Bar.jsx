@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useUserAuth } from "../context/UserAuthContext";
-import { Container, Badge, Navbar, Button, Nav, Col } from "react-bootstrap";
+import { Container, Badge, Navbar, Button, Col, Stack, Nav } from "react-bootstrap";
 
 import menuImage from "../image/menu.png";
 import cart_icon from "./image/shopping-cart.png";
 import history_icon from "./image/file.png";
+import AEKI from "./image/ikea-logo.png";
 
 function Nav_Bar() {
   const { user } = useUserAuth();
@@ -37,12 +38,19 @@ function Nav_Bar() {
             alt="Menu"
             onClick={handleShow}
           />
+
           <Col>
-            <Nav className="justify-content-end  ">
-              <Badge bg="primary">
-                <b>{user.email}</b>
-              </Badge>
-            </Nav>
+            <Stack direction="horizontal" gap={2}>
+              <div className="p-4">
+                <img src={AEKI} alt="Menu" onClick={handleShow} />
+              </div>
+
+              <div className="p-4">
+                <Badge bg="primary">
+                  <b>{user.email}</b>
+                </Badge>
+              </div>
+            </Stack>
           </Col>
 
           <Col>

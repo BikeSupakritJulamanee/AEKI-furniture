@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Col, Navbar, Button, Badge, Stack } from "react-bootstrap";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import "./style/Nav.css";
-import { Navbar, Button, Badge } from "react-bootstrap";
+
 import menuImage from "../image/menu.png"; // Import the image
 import { useUserAuth } from "../context/UserAuthContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
-import AEKI from './image/ikea-logo.png'
+import AEKI from "./image/ikea-logo.png";
 
 function Nav() {
   const { logOut, user } = useUserAuth();
@@ -35,13 +35,18 @@ function Nav() {
             onClick={handleShow}
           />
 
-          <img
-            src={AEKI}
-            alt="Menu"
-            onClick={handleShow}
-          />
-          <Badge bg="primary" ><b>{user.email}</b></Badge>
-
+          <Col>
+            <Stack direction="horizontal" gap={2}>
+              <div className="p-4">
+                <img src={AEKI} alt="Menu" onClick={handleShow} />
+              </div>
+              <div className="p-4">
+                <Badge bg="primary">
+                  <b>{user.email}</b>
+                </Badge>
+              </div>
+            </Stack>
+          </Col>
           <Button onClick={handleLogout} className="logout_bt">
             Logout
           </Button>

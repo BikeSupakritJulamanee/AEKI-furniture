@@ -40,7 +40,7 @@ import Member_List from './administrator/Member_List.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: <Login />
   },
   {
     path: '/register',

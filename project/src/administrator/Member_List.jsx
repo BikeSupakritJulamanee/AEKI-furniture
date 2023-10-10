@@ -19,7 +19,7 @@ function Member_List() {
 
     // read member order by member point
     const read_member = async () => {
-        const q = query(collection(db, 'user'), orderBy('member_point'))
+        const q = query(collection(db, 'user'), orderBy('member_point', 'desc'))
         const querySnapshot = await getDocs(q)
         const newData = querySnapshot.docs.map((doc) => ({
             ...doc.data(),

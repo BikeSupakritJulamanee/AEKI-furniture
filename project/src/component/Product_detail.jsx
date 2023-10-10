@@ -28,7 +28,7 @@ function Product_detail() {
     const [homecart, sethomecart] = useState([]);
     const [f_product, setf_product] = useState([]);
     const [isLoading, setLoading] = useState(false);
-    const [select_qrt ,setselect_qrt] = useState(1);
+    const [select_qrt, setselect_qrt] = useState(1);
     const [productData, setProductData] = useState({
         id: searchParams.get("id") || "",
         name: searchParams.get("name") || "",
@@ -36,6 +36,7 @@ function Product_detail() {
         quantity: searchParams.get("quantity"),
         price: searchParams.get("price") || "",
         image: searchParams.get("image") || "",
+        attribute: searchParams.get("attribute") || "",
     });
 
     useEffect(() => {
@@ -73,15 +74,12 @@ function Product_detail() {
                 where("email", "==", user.email)
             );
 
-
             const querySnapshot = await getDocs(q);
             const newData = querySnapshot.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }));
             sethomecart(newData);
-
-            // You don't need to set cartID here.
         }
     };
 
@@ -92,15 +90,11 @@ function Product_detail() {
                 console.error("Cart not found.");
                 return;
             }
-
-            // Assuming you want to work with the first cart found.
             const cartID = homecart[0].id;
             const cartDocRef = doc(db, "cart", cartID);
 
-            // Get the current cart data
             const cartDocSnapshot = await getDoc(cartDocRef);
             const currentCartData = cartDocSnapshot.data();
-
 
             if (typeof currentCartData.qauntityPerProductID === 'object') {
 
@@ -142,7 +136,7 @@ function Product_detail() {
         <div>
             <Nav_Bar />
             <Container>
-                <div style={{ textAlign: 'right' }}><Link to="/home">เลือกสินค้าต่อ</Link></div>
+                <div style={{ textAlign: 'right' }}></div>
                 <Row>
                     <Col md={10} className="sizecon">
                         <div className="contact_inner">
@@ -151,17 +145,32 @@ function Product_detail() {
 
                                     <div className="contact_form_inner">
                                         <div className="contact_field">
+
                                             <h3>{productData.name}</h3>
 
-                                            <h5>Inventories:</h5>
+                                            <div>{productData.description}</div>
+
+                                            <div>{productData.attribute}</div>
+
+                                            {/* amount stock */}
                                             {f_product.map((product) => (
                                                 product.id === productData.id && (
-                                                
-                                                        <h5>{product.quantity}</h5>
-                                                  
+                                                    <h6>จำนวนคงเหลือ:{product.quantity}</h6>
                                                 )
                                             ))}
 
+                                            {/* real time price */}
+                                            <div>
+                                                {(e) =>
+                                                    setProductData({
+                                                        ...productData,
+                                                        price: e.target.value,
+                                                    })
+                                                }
+                                                <h5>ราคา:{productData.price * select_qrt}บาท</h5>
+                                            </div>
+
+                                            {/* quantity form */}
                                             <Form.Group>
                                                 <Form.Label>Quantity</Form.Label>
                                                 <Form.Control
@@ -173,20 +182,10 @@ function Product_detail() {
                                                     }
                                                 />
                                             </Form.Group>
-                                            <h4>Price:</h4>
-                                            <div>
 
-                                                {(e) =>
-                                                    setProductData({
-                                                        ...productData,
-                                                        price: e.target.value,
-                                                    })
-                                                }
-                                                <h5>{productData.price * select_qrt}</h5>
-                                            </div>
                                             <br />
                                             <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(productData.id, select_qrt)}  >
-                                                ADD TO CART
+                                                เพิ่มในตะกร้าสินค้า
                                             </Button>
 
                                         </div>
@@ -204,10 +203,11 @@ function Product_detail() {
                             </div>
                         </div>
                     </Col>
+
                 </Row>
+
             </Container>
         </div>
     )
 }
-
 export default Product_detail

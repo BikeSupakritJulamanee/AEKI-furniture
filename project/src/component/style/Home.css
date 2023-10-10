@@ -50,9 +50,44 @@
   right: 0;
 }
 
-.select_productType{
+.select_productType {
   width: 195px;
   border: 0px;
   font-weight: bold;
   font-size: 14px;
+}
+
+.animation_text {
+  font-size: 30px;
+
+  
+  -webkit-animation: animation_text 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) 1s both;
+  animation: animation_text 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) 1s both;
+}
+
+@-webkit-keyframes animation_text {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+@keyframes animation_text {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
 }
