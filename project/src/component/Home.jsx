@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Image, Button, Form, Row, Badge } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Image,
+  Button,
+  Form,
+  Row,
+  Badge,
+} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import {
-  getDocs, collection, query, where, orderBy, doc, updateDoc, getDoc, // Add this import for getDoc
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  doc,
+  updateDoc,
+  getDoc, // Add this import for getDoc
 } from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
@@ -46,7 +61,10 @@ function Home() {
     if (user.email) {
       const q = query(collection(db, "cart"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       sethomecart(newData);
     }
   };
@@ -108,17 +126,18 @@ function Home() {
       ...doc.data(),
       id: doc.id,
     }));
-    const filteredProducts = newData.filter(
-      (product) => product.quantity > 0
-    );
+    const filteredProducts = newData.filter((product) => product.quantity > 0);
     setProducts(filteredProducts);
   };
 
   const fecthTopProducts = async () => {
     if (user.email) {
-      const q = query(collection(db, "products"), orderBy('salses', 'desc'));
+      const q = query(collection(db, "products"), orderBy("salses", "desc"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       const filteredProducts = newData.filter(
         (product) => product.quantity > 0
       );
@@ -144,7 +163,6 @@ function Home() {
     <>
       <Nav_Bar />
       <Container>
-
         <center>
           <Form.Group className="search_group">
             <Form.Control
@@ -192,13 +210,11 @@ function Home() {
                   )}&price=${encodeURIComponent(product.price)}`}
                   target="_blank"
                 >
-                  <Card className="card_content" style={{ height: "550px" }}>
+                  <Card className="card_content" style={{ height: "570px" }}>
                     <div class="card_background">
                       <Image
                         className="img"
-                        src={imageList.find((url) =>
-                          url.includes(product.img)
-                        )}
+                        src={imageList.find((url) => url.includes(product.img))}
                         style={{ width: "290px", height: "300px" }}
                       />
                     </div>
@@ -236,13 +252,14 @@ function Home() {
           </Row>
         </div>
 
-        <center><b className="animation_text">สินค้าขายดี</b></center>
-
+        <center>
+          <b className="animation_text">สินค้าขายดี</b>
+        </center>
 
         <Row>
           {topProductList.map((product, index) => (
             <div key={index} className="card-wrapper">
-              <Link 
+              <Link
                 to={`/product_detail?id=${encodeURIComponent(
                   product.id
                 )}&name=${encodeURIComponent(
@@ -256,29 +273,32 @@ function Home() {
                 )}&price=${encodeURIComponent(product.price)}`}
                 target="_blank"
               >
-                <Card style={{ height: "300px" }}>
-                  <Image
-                    className="img"
-                    src={imageList.find((url) =>
-                      url.includes(product.img)
-                    )}
-                    style={{ width: "200px", height: "200px" }}
-                  />
-                  <Card.Body>
-                    <div className="product_name">{product.name}</div>
-                    <span className="product_price">
-                      {product.price.toLocaleString()}
-                    </span>
-                    <b className="bath"> บาท</b>
-                  </Card.Body>
-                </Card>
+                <div className="card-container">
+                  <Row className="box">
+                    <Card style={{ height: "350px" }}>
+                      <center>
+                        <Image
+                          className="img"
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                      </center>
+                      <Card.Body>
+                        <div className="product_name">{product.name}</div>
+                        <span className="product_price">
+                          {product.price.toLocaleString()}
+                        </span>
+                        <b className="bath"> บาท</b>
+                      </Card.Body>
+                    </Card>
+                  </Row>
+                </div>
               </Link>
             </div>
           ))}
         </Row>
-       
-
-
       </Container>
       <hr className="hr-text" data-content="IKEA"></hr>
       <Footer />
