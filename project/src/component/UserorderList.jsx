@@ -21,6 +21,7 @@ import {
 import "./style/UserorderList.css";
 
 import confirm from "./image/confirmation.png";
+import shopping_cart from "./image/shopping-cart.png";
 function UserorderList() {
   const { user } = useUserAuth();
   const [showAddModal, setShowAddModal] = useState(false);
@@ -269,7 +270,17 @@ function UserorderList() {
       <Container>
         <div style={{ textAlign: "right" }}>
           <Link to="/home">
-            <Button>เลือกสินค้าต่อ</Button>
+            <Button
+              className="hvr_grow"
+              style={{ width: "160px", paddingRight: "20px" }}
+            >
+              เลือกสินค้าต่อ
+              <img
+                className="hvr-icon"
+                src={shopping_cart}
+                style={{ marginBottom: "3px" }}
+              />
+            </Button>
           </Link>
         </div>
 
@@ -286,25 +297,32 @@ function UserorderList() {
             {matchingProducts.map((price, index) => (
               <tr key={index}>
                 <td>
-                  {price.name}
-
                   <Image
                     className="img"
                     src={imageList.find((url) => url.includes(price.img))}
                     style={{ width: "100px", height: "100px" }}
                   />
+                  <div>{price.name}</div>
                 </td>
-                <td>{orderUser[0]?.qauntityPerProductID[price.id] || 0}</td>
-                <td>
+                <td style={{ paddingTop: "49px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {orderUser[0]?.qauntityPerProductID[price.id] || 0}
+                  </div>
+                </td>
+                <td style={{ paddingTop: "49px" }}>
                   {price.price *
                     (orderUser[0]?.qauntityPerProductID[price.id] || 0)}
                 </td>
-                <td>
+                <td style={{ paddingTop: "49px" }}>
                   <Button
                     onClick={() => handleDelete(price.id, orderUser[0].id)}
-                    className="bt"
-                    style={{ fontSize: "13px" }}
+                    style={{
+                      fontSize: "13px",
+                      borderRadius: "40px",
+                      height: "35px",
+                    }}
                     variant="danger"
+                    className="custom-button hvr-reveal"
                   >
                     DELETE
                   </Button>
@@ -375,7 +393,7 @@ function UserorderList() {
               ยอดรวม: {price} บาท
             </div>
             <div style={{ float: "right" }}>
-              <Button type="submit" class="hvr-icon-grow" onSubmit={handlePay}>
+              <Button type="submit" className="hvr_grow" onSubmit={handlePay}>
                 ยืนยันการซื้อ
                 <img className="hvr-icon" src={confirm} />
               </Button>
