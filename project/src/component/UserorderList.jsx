@@ -1,32 +1,42 @@
 import { useUserAuth } from "../context/UserAuthContext";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import Nav_Bar from "../component/Nav_Bar";
-import { Container, Table, Button, Modal, Form, Image } from 'react-bootstrap';
+import { Container, Table, Button, Modal, Form, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 //firebase
-import { db, storageRef } from '../firebase';
+import { db, storageRef } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import {
-  getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp  // Add this import for getDoc
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+  addDoc,
+  getDoc,
+  serverTimestamp, // Add this import for getDoc
 } from "firebase/firestore";
+import "./style/UserorderList.css";
 
-
+import confirm from "./image/confirmation.png";
+import shopping_cart from "./image/shopping-cart.png";
 function UserorderList() {
   const { user } = useUserAuth();
   const [showAddModal, setShowAddModal] = useState(false);
   const [orderUser, setOrderUser] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [phone, setphone] = useState('');
+  const [phone, setphone] = useState("");
   const [price, setprice] = useState(0);
-  const [transportCompanyName, setTransportCompanyName] = useState('');
-  const [recipname, setrecipname] = useState('');
+  const [transportCompanyName, setTransportCompanyName] = useState("");
+  const [recipname, setrecipname] = useState("");
   const [matchingProducts, setMatchingProducts] = useState([]);
-  const [transportList, setTransportList] = useState([])
-  const [transportID, setTransportID] = useState("")
+  const [transportList, setTransportList] = useState([]);
+  const [transportID, setTransportID] = useState("");
   const [address_user, setaddress_user] = useState([]);
   const [f_user, setf_user] = useState([]);
-  const [selectAddress, setselectAddress] = useState("")
+  const [selectAddress, setselectAddress] = useState("");
   const handleShowAddModal = () => setShowAddModal(true);
   const imageListRef = ref(storageRef, "products/");
   const [imageList, setImageList] = useState([]);
@@ -53,20 +63,19 @@ function UserorderList() {
   };
 
   useEffect(() => {
-    fetchproduct()
-    fetchprice()
-  }, [orderUser, matchingProducts])
+    fetchproduct();
+    fetchprice();
+  }, [orderUser, matchingProducts]);
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
-    const createProduct = await addDoc(collection(db, 'recipientAddy'), {
+    const createProduct = await addDoc(collection(db, "recipientAddy"), {
       destination: transportCompanyName,
       email: user.email,
       phoneNumber: phone,
-      recipientName: recipname
+      recipientName: recipname,
     });
-    alert('เพิ่มประเภทสินค้าสำเร็จ');
-
+    alert("เพิ่มประเภทสินค้าสำเร็จ");
   };
 
   const handleCloseAddModal = () => {
@@ -93,9 +102,13 @@ function UserorderList() {
 
     if (newDataproducts.length > 0 && orderUser.length > 0) {
       const matching = orderUser[0].product_id
-        .filter((cartProductId) => newDataproducts.some((product) => product.id === cartProductId))
+        .filter((cartProductId) =>
+          newDataproducts.some((product) => product.id === cartProductId)
+        )
         .map((cartProductId) => {
-          const productMatch = newDataproducts.find((product) => product.id === cartProductId);
+          const productMatch = newDataproducts.find(
+            (product) => product.id === cartProductId
+          );
           return {
             ...productMatch,
             cartProductId,
@@ -109,8 +122,11 @@ function UserorderList() {
     if (user && user.email) {
       const q = query(collection(db, "cart"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      console.log(newData)
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      console.log(newData);
       setOrderUser(newData);
     }
   };
@@ -119,35 +135,47 @@ function UserorderList() {
     if (user && user.email) {
       const q = query(collection(db, "user"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setf_user(newData);
-    };
-  }
+    }
+  };
 
   const fetchAdress = async () => {
     if (user && user.email) {
-      const q = query(collection(db, "recipientAddy"), where("email", "==", user.email));
+      const q = query(
+        collection(db, "recipientAddy"),
+        where("email", "==", user.email)
+      );
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id, }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setaddress_user(newData);
-    };
-  }
+    }
+  };
 
   const fetch_transportation = async () => {
-    const q = query(collection(db, 'transportation'));
+    const q = query(collection(db, "transportation"));
     const querySnapshot = await getDocs(q);
-    const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const newData = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
     setTransportList(newData);
   };
 
   const handlePay = async (e) => {
     try {
-      const user_uid = f_user[0].id
+      const user_uid = f_user[0].id;
       const cartDocRef = doc(db, "user", user_uid);
-      const updatedQrt = parseInt(f_user[0].member_point) + price
-      console.log(updatedQrt)
+      const updatedQrt = parseInt(f_user[0].member_point) + price;
+      console.log(updatedQrt);
       await updateDoc(cartDocRef, {
-        member_point: updatedQrt
+        member_point: updatedQrt,
       });
 
       matchingProducts.forEach(async (product) => {
@@ -166,7 +194,7 @@ function UserorderList() {
     } catch (error) {
       console.error("Error updating product quantities:", error);
     }
-    const order_user = await addDoc(collection(db, 'order'), {
+    const order_user = await addDoc(collection(db, "order"), {
       product_id: orderUser[0].product_id,
       quantityPerProductID: orderUser[0].qauntityPerProductID,
       email: user.email,
@@ -176,43 +204,45 @@ function UserorderList() {
 
     const orderId = order_user.id;
 
-    const shipping_user = await addDoc(collection(db, 'shipping'), {
+    const shipping_user = await addDoc(collection(db, "shipping"), {
       orderID: orderId,
       email: user.email,
       transportationID: transportID,
       recipientAddyID: selectAddress,
-      status: "รอดำเนินการจัดส่ง"
+      status: "รอดำเนินการจัดส่ง",
     });
 
     if (orderUser[0].id) {
-
-      const docRef = doc(db, 'cart', orderUser[0].id); // Assuming 'cart' is your collection name
+      const docRef = doc(db, "cart", orderUser[0].id); // Assuming 'cart' is your collection name
       try {
         await updateDoc(docRef, {
           product_id: [],
-          qauntityPerProductID: {}
+          qauntityPerProductID: {},
         });
-        console.log('Document updated successfully.');
+        console.log("Document updated successfully.");
       } catch (error) {
-        console.error('Error updating document:', error);
+        console.error("Error updating document:", error);
       }
     } else {
-      console.error('orderUser.id is undefined or null.');
+      console.error("orderUser.id is undefined or null.");
     }
-  }
+  };
 
   const handleDelete = async (productId, userId) => {
     try {
       const cartDocRef = doc(db, "cart", userId);
       const cartDocSnapshot = await getDoc(cartDocRef);
       const currentCartData = cartDocSnapshot.data();
-      const updatedMatchingProducts = matchingProducts.filter((product) => product.id !== productId);
+      const updatedMatchingProducts = matchingProducts.filter(
+        (product) => product.id !== productId
+      );
       setMatchingProducts(updatedMatchingProducts);
-      if (typeof currentCartData.qauntityPerProductID === 'object') {
-        const updatedProductIds = currentCartData.product_id.filter((id) => id !== productId);
+      if (typeof currentCartData.qauntityPerProductID === "object") {
+        const updatedProductIds = currentCartData.product_id.filter(
+          (id) => id !== productId
+        );
 
         await updateDoc(cartDocRef, { product_id: updatedProductIds });
-
 
         if (currentCartData.qauntityPerProductID.hasOwnProperty(productId)) {
           const updatedQrt = { ...currentCartData.qauntityPerProductID };
@@ -221,9 +251,8 @@ function UserorderList() {
           fetchproduct();
           fetchCart();
           fetchprice();
-          console.log(matchingProducts)
+          console.log(matchingProducts);
           console.log("Product removed from cart successfully!");
-
         } else {
           console.error("Product not found in cart.");
         }
@@ -239,8 +268,21 @@ function UserorderList() {
     <>
       <Nav_Bar />
       <Container>
-
-        <div style={{ textAlign: 'right' }}><Link to="/home"><Button>เลือกสินค้าต่อ</Button></Link></div>
+        <div style={{ textAlign: "right" }}>
+          <Link to="/home">
+            <Button
+              className="hvr_grow"
+              style={{ width: "160px", paddingRight: "20px" }}
+            >
+              เลือกสินค้าต่อ
+              <img
+                className="hvr-icon"
+                src={shopping_cart}
+                style={{ marginBottom: "3px" }}
+              />
+            </Button>
+          </Link>
+        </div>
 
         <Table hover>
           <thead>
@@ -254,34 +296,61 @@ function UserorderList() {
           <tbody>
             {matchingProducts.map((price, index) => (
               <tr key={index}>
-                <td>{price.name}
+                <td>
                   <Image
                     className="img"
-                    src={imageList.find((url) =>
-                      url.includes(price.img)
-                    )}
+                    src={imageList.find((url) => url.includes(price.img))}
                     style={{ width: "100px", height: "100px" }}
                   />
-
+                  <div>{price.name}</div>
                 </td>
-                <td>{orderUser[0]?.qauntityPerProductID[price.id] || 0}</td>
-                <td>{price.price * (orderUser[0]?.qauntityPerProductID[price.id] || 0)}</td>
-                <td><Button onClick={() => handleDelete(price.id, orderUser[0].id)} style={{ fontSize: "12px", padding: "1px", marginBottom: "3px" }} variant="danger">DELETE</Button></td>
+                <td style={{ paddingTop: "49px" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {orderUser[0]?.qauntityPerProductID[price.id] || 0}
+                  </div>
+                </td>
+                <td style={{ paddingTop: "49px" }}>
+                  {price.price *
+                    (orderUser[0]?.qauntityPerProductID[price.id] || 0)}
+                </td>
+                <td style={{ paddingTop: "49px" }}>
+                  <Button
+                    onClick={() => handleDelete(price.id, orderUser[0].id)}
+                    style={{
+                      fontSize: "13px",
+                      borderRadius: "40px",
+                      height: "35px",
+                    }}
+                    variant="danger"
+                    className="custom-button hvr-reveal"
+                  >
+                    DELETE
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
         </Table>
 
-        <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
+        <div
+          style={{
+            textAlign: "right",
+            marginBottom: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          ที่อยู่ในการจัดส่ง
+        </div>
         <Form>
           <Form.Control
             as="select"
             className="dropdown-small"
             placeholder="Type"
+            style={{ width: "225.333334px", marginBottom: "10px" }}
             onChange={(e) => setselectAddress(e.target.value)}
             required
           >
-            <option value={''}>เลือกที่อยู่</option>
+            <option value={""}>เลือกที่อยู่</option>
             {address_user.map((typeObj, index) => (
               <option key={index} value={typeObj.id}>
                 {typeObj.recipientName}
@@ -296,28 +365,41 @@ function UserorderList() {
               as="select"
               className="dropdown-small"
               placeholder="Type"
+              style={{ width: "225.333334px", marginBottom: "10px" }}
               onChange={(e) => setTransportID(e.target.value)}
               required
             >
-              <option value={''}>เลือกขนส่ง</option>
+              <option value={""}>เลือกขนส่ง</option>
               {transportList.map((typeObj, index) => (
                 <option key={index} value={typeObj.id}>
-                  {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost} บาท
+                  {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost}{" "}
+                  บาท
                 </option>
               ))}
             </Form.Control>
           </Form.Group>
 
-          <Button variant="dark" onClick={handleShowAddModal}>
+          <Button
+            variant="outline-primary"
+            className="custom-button hvr-reveal"
+            style={{ marginLeft: "20px" }}
+            onClick={handleShowAddModal}
+          >
             &#43;เพิ่มช่องทางการขนส่ง
           </Button>
 
           <div>
-            <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
-            <div style={{ float: 'right' }}><Button type="submit" onSubmit={handlePay}>ยืนยันการซื้อ</Button></div>
+            <div style={{ textAlign: "right", padding: "20px" }}>
+              ยอดรวม: {price} บาท
+            </div>
+            <div style={{ float: "right" }}>
+              <Button type="submit" className="hvr_grow" onSubmit={handlePay}>
+                ยืนยันการซื้อ
+                <img className="hvr-icon" src={confirm} />
+              </Button>
+            </div>
           </div>
         </Form>
-
       </Container>
 
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
@@ -327,35 +409,48 @@ function UserorderList() {
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
             <Form.Group>
-
-              <Form.Control
-                type="text"
-                placeholder="ที่อยู่"
-                value={transportCompanyName}
-                onChange={(e) => setTransportCompanyName(e.target.value)}
-                required
-              />
+              <div className="contact_field_modal">
+                <Form.Control
+                  type="text"
+                  placeholder="ที่อยู่"
+                  className="input-small"
+                  value={transportCompanyName}
+                  onChange={(e) => setTransportCompanyName(e.target.value)}
+                  required
+                />
+              </div>
             </Form.Group>
             <Form.Group>
-              <Form.Control
-                type="text"
-                placeholder="เบอร์โทร"
-                value={phone}
-                onChange={(e) => setphone(e.target.value)}
-                required
-              />
+              <div className="contact_field_modal">
+                <Form.Control
+                  type="text"
+                  placeholder="เบอร์โทร"
+                  className="input-small"
+                  value={phone}
+                  onChange={(e) => setphone(e.target.value)}
+                  required
+                />
+              </div>
             </Form.Group>
             <Form.Group>
-              <Form.Control
-                type="text"
-                placeholder="ชื่อผู้รับ"
-                value={recipname}
-                onChange={(e) => setrecipname(e.target.value)}
-                required
-              />
+              <div className="contact_field_modal">
+                <Form.Control
+                  type="text"
+                  placeholder="ชื่อผู้รับ"
+                  className="input-small"
+                  value={recipname}
+                  onChange={(e) => setrecipname(e.target.value)}
+                  required
+                />
+              </div>
             </Form.Group>
-            <Button variant="success" type="submit" disabled={isLoading}>
-              {isLoading ? 'Loading…' : 'เพิ่มช่องทางการขนส่ง'}
+            <Button
+              variant="success"
+              type="submit"
+              className="contact_form_submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading…" : "เพิ่มช่องทางการขนส่ง"}
             </Button>
           </Form>
         </Modal.Body>
