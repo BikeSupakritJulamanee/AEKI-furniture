@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Card,
-  Image,
-  Button,
-  Form,
-  Row,
-  Badge,
-} from "react-bootstrap";
+import { Container, Card, Image, Button, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
@@ -27,7 +19,7 @@ import Footer from "./Footer";
 import "./style/Home.css";
 
 function Home() {
-  const { user, logOut } = useUserAuth();
+  const { user } = useUserAuth();
   const [imageList, setImageList] = useState([]);
   const imageListRef = ref(storageRef, "products/");
   const [products, setProducts] = useState([]);
@@ -141,7 +133,9 @@ function Home() {
       const filteredProducts = newData.filter(
         (product) => product.quantity > 0
       );
-      setTopProductList(filteredProducts);
+
+      const data = filteredProducts.slice(0, 4);
+      setTopProductList(data);
     }
   };
 
@@ -163,6 +157,49 @@ function Home() {
     <>
       <Nav_Bar />
       <Container>
+        <center>
+          <b className="animation_text">สินค้าขายดี</b>
+        </center>
+
+        <Row>
+          {topProductList.map((product, index) => (
+            <div key={index} className="card-wrapper">
+              <Link
+                to={`/product_detail?id=${encodeURIComponent(
+                  product.id
+                )}&name=${encodeURIComponent(
+                  product.name
+                )}&quantity=${encodeURIComponent(
+                  product.quantity
+                )}&description=${encodeURIComponent(
+                  product.description
+                )}&image=${encodeURIComponent(
+                  product.img
+                )}&price=${encodeURIComponent(product.price)}`}
+                target="_blank"
+              >
+                <div className="card-container">
+                  <Row className="box">
+                    <Card style={{ height: "280px" }}>
+                      <center>
+                        <Image
+                          className="img"
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                      </center>
+                      <Card.Body>
+                        <div className="product_name">{product.name}</div>
+                      </Card.Body>
+                    </Card>
+                  </Row>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </Row>
         <center>
           <Form.Group className="search_group">
             <Form.Control
@@ -252,53 +289,7 @@ function Home() {
           </Row>
         </div>
 
-        <center>
-          <b className="animation_text">สินค้าขายดี</b>
-        </center>
 
-        <Row>
-          {topProductList.map((product, index) => (
-            <div key={index} className="card-wrapper">
-              <Link
-                to={`/product_detail?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(product.price)}`}
-                target="_blank"
-              >
-                <div className="card-container">
-                  <Row className="box">
-                    <Card style={{ height: "350px" }}>
-                      <center>
-                        <Image
-                          className="img"
-                          src={imageList.find((url) =>
-                            url.includes(product.img)
-                          )}
-                          style={{ width: "200px", height: "200px" }}
-                        />
-                      </center>
-                      <Card.Body>
-                        <div className="product_name">{product.name}</div>
-                        <span className="product_price">
-                          {product.price.toLocaleString()}
-                        </span>
-                        <b className="bath"> บาท</b>
-                      </Card.Body>
-                    </Card>
-                  </Row>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </Row>
       </Container>
       <hr className="hr-text" data-content="IKEA"></hr>
       <Footer />

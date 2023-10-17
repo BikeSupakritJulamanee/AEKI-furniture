@@ -167,26 +167,32 @@ function Product_detail() {
                                                         price: e.target.value,
                                                     })
                                                 }
-                                                <h5>ราคา:{productData.price * select_qrt}บาท</h5>
+                                                <h5>ราคา:{(productData.price * select_qrt).toLocaleString()}บาท</h5>
                                             </div>
 
-                                            {/* quantity form */}
-                                            <Form.Group>
-                                                <Form.Label>Quantity</Form.Label>
-                                                <Form.Control
-                                                    type="number"
-                                                    placeholder="Quantity"
-                                                    value={select_qrt}
-                                                    onChange={(e) =>
-                                                        setselect_qrt(e.target.value)
-                                                    }
-                                                />
-                                            </Form.Group>
+                                            <Form onSubmit={(e) => handlebuy(productData.id, select_qrt, e)} >
 
-                                            <br />
-                                            <Button variant="warning" className="contact_form_submit" disabled={isLoading} onClick={() => handlebuy(productData.id, select_qrt)}  >
-                                                เพิ่มในตะกร้าสินค้า
-                                            </Button>
+                                                {/* quantity form */}
+                                                <Form.Group>
+                                                    <Form.Label>จำนวน</Form.Label>
+                                                    <Form.Control
+                                                        type="number"
+                                                        placeholder="จำนวน"
+                                                        value={select_qrt}
+                                                        onChange={(e) =>
+                                                            setselect_qrt(e.target.value)
+                                                        }
+                                                        min={1}
+                                                        pattern="+"
+                                                    />
+                                                </Form.Group>
+
+                                                <br />
+                                                <Button variant="warning" type="submit" className="contact_form_submit" disabled={isLoading}>
+                                                    เพิ่มในตะกร้าสินค้า
+                                                </Button>
+
+                                            </Form>
 
                                         </div>
                                     </div>

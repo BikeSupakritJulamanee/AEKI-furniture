@@ -7,22 +7,14 @@ import { Link } from "react-router-dom";
 //firebase
 import { db, storageRef } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  doc,
-  updateDoc,
-  addDoc,
-  getDoc,
-  serverTimestamp, // Add this import for getDoc
-} from "firebase/firestore";
+import { getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp, } from "firebase/firestore";
 import "./style/UserorderList.css";
 
-import confirm from "./image/confirmation.png";
+//image
 import shopping_cart from "./image/shopping-cart.png";
+
 function UserorderList() {
+
   const { user } = useUserAuth();
   const [showAddModal, setShowAddModal] = useState(false);
   const [orderUser, setOrderUser] = useState([]);
@@ -40,6 +32,7 @@ function UserorderList() {
   const handleShowAddModal = () => setShowAddModal(true);
   const imageListRef = ref(storageRef, "products/");
   const [imageList, setImageList] = useState([]);
+  const [buyStatus, setBuyStatus] = useState(false)
 
   useEffect(() => {
     fetchData();
@@ -54,6 +47,11 @@ function UserorderList() {
       .catch((error) => console.error("Error listing images:", error));
   }, []);
 
+  useEffect(() => {
+    fetchproduct();
+    fetchprice();
+  }, [orderUser, matchingProducts]);
+
   const fetchData = async () => {
     await fetch_transportation();
     await fetchAdress();
@@ -61,11 +59,6 @@ function UserorderList() {
     await fetchCart();
     fetchprice();
   };
-
-  useEffect(() => {
-    fetchproduct();
-    fetchprice();
-  }, [orderUser, matchingProducts]);
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
@@ -84,92 +77,84 @@ function UserorderList() {
   };
 
   const fetchprice = async () => {
-    let sum = 0;
-    matchingProducts.forEach((price) => {
-      orderUser.forEach((even) => {
-        sum += price.price * even.qauntityPerProductID[price.id];
-      });
-    });
+    const sum = matchingProducts.reduce((total, price) => {
+      return total + orderUser.reduce((subtotal, even) => {
+        return subtotal + price.price * even.qauntityPerProductID[price.id];
+      }, 0);
+    }, 0);
+
     setprice(sum);
   };
 
   const fetchproduct = async () => {
     const querySnapshot = await getDocs(collection(db, "products"));
-    const newDataproducts = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const newDataproducts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
     if (newDataproducts.length > 0 && orderUser.length > 0) {
       const matching = orderUser[0].product_id
-        .filter((cartProductId) =>
-          newDataproducts.some((product) => product.id === cartProductId)
-        )
-        .map((cartProductId) => {
-          const productMatch = newDataproducts.find(
-            (product) => product.id === cartProductId
-          );
-          return {
-            ...productMatch,
-            cartProductId,
-          };
-        });
-      setMatchingProducts(matching);
+        .filter((cartProductId) => newDataproducts.some((product) => product.id === cartProductId))
+        .map((cartProductId) => ({ ...newDataproducts.find((product) => product.id === cartProductId), cartProductId }));
+
+      if (matching.length !== matchingProducts.length) {
+        setMatchingProducts(matching);
+      }
     }
   };
 
   const fetchCart = async () => {
-    if (user && user.email) {
+    try {
+      if (!user || !user.email) return;
       const q = query(collection(db, "cart"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      console.log(newData);
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setOrderUser(newData);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const fetchUser = async () => {
-    if (user && user.email) {
-      const q = query(collection(db, "user"), where("email", "==", user.email));
+    if (!user || !user.email) return;
+    const q = query(collection(db, "user"), where("email", "==", user.email));
+    try {
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setf_user(newData);
+    } catch (error) {
+      console.error("Error fetching user:", error);
     }
   };
 
   const fetchAdress = async () => {
-    if (user && user.email) {
-      const q = query(
-        collection(db, "recipientAddy"),
-        where("email", "==", user.email)
-      );
+    if (!user || !user.email) return;
+    const q = query(collection(db, "recipientAddy"), where("email", "==", user.email));
+    try {
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setaddress_user(newData);
+    } catch (error) {
+      console.error("Error fetching address:", error);
     }
   };
 
   const fetch_transportation = async () => {
     const q = query(collection(db, "transportation"));
-    const querySnapshot = await getDocs(q);
-    const newData = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setTransportList(newData);
+
+    try {
+      const querySnapshot = await getDocs(q);
+      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setTransportList(newData);
+    } catch (error) {
+      console.error("Error fetching transportation:", error);
+    }
   };
 
-  const handlePay = async (e) => {
-    e.preventDefault();
+  const changByStatus = () => {
+    setBuyStatus(false)
+  }
+
+  const handlePay = async () => {
+
     try {
       const user_uid = f_user[0].id;
       const cartDocRef = doc(db, "user", user_uid);
@@ -214,7 +199,6 @@ function UserorderList() {
     });
 
     if (orderUser[0].id) {
-
       const docRef = doc(db, 'cart', orderUser[0].id); // Assuming 'cart' is your collection name
       try {
         await updateDoc(docRef, {
@@ -222,6 +206,8 @@ function UserorderList() {
           qauntityPerProductID: {},
         });
         console.log("Document updated successfully.");
+        fetchCart()
+        setBuyStatus(true)
       } catch (error) {
         console.error("Error updating document:", error);
       }
@@ -250,11 +236,7 @@ function UserorderList() {
           const updatedQrt = { ...currentCartData.qauntityPerProductID };
           delete updatedQrt[productId];
           await updateDoc(cartDocRef, { qauntityPerProductID: updatedQrt });
-          fetchproduct();
           fetchCart();
-          fetchprice();
-          console.log(matchingProducts);
-          console.log("Product removed from cart successfully!");
         } else {
           console.error("Product not found in cart.");
         }
@@ -335,7 +317,7 @@ function UserorderList() {
         </Table>
 
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-        <Form>
+        <Form >
           <Form.Control
             as="select"
             className="dropdown-small"
@@ -384,7 +366,7 @@ function UserorderList() {
 
           <div>
             <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
-            <div style={{ float: 'right' }}><Button type="submit" onSubmit={handlePay}>ยืนยันการซื้อ</Button></div>
+            <div style={{ float: 'right' }}><Button onClick={handlePay}  >ยืนยันการซื้อ</Button></div>
           </div>
         </Form>
       </Container>
@@ -441,6 +423,13 @@ function UserorderList() {
             </Button>
           </Form>
         </Modal.Body>
+      </Modal>
+
+      <Modal show={buyStatus} centered onHide={changByStatus}>
+        <Modal.Header style={{ textAlign: 'center' }} closeButton>
+          <Modal.Title>คำสั่งซื้อสำเร็จ</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ fontSize: '100px', textAlign: 'center' }} >&#10004;</Modal.Body>
       </Modal>
     </>
   );
