@@ -141,6 +141,7 @@ function UserorderList() {
   };
 
   const handlePay = async (e) => {
+    e.preventDefault();
     try {
       const user_uid = f_user[0].id
       const cartDocRef = doc(db, "user", user_uid);
@@ -185,7 +186,6 @@ function UserorderList() {
     });
 
     if (orderUser[0].id) {
-
       const docRef = doc(db, 'cart', orderUser[0].id); // Assuming 'cart' is your collection name
       try {
         await updateDoc(docRef, {
@@ -273,7 +273,7 @@ function UserorderList() {
         </Table>
 
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-        <Form>
+        <Form onSubmit={handlePay} >
           <Form.Control
             as="select"
             className="dropdown-small"
@@ -314,7 +314,7 @@ function UserorderList() {
 
           <div>
             <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
-            <div style={{ float: 'right' }}><Button type="submit" onSubmit={handlePay}>ยืนยันการซื้อ</Button></div>
+            <div style={{ float: 'right' }}><Button type="submit" >ยืนยันการซื้อ</Button></div>
           </div>
         </Form>
 
