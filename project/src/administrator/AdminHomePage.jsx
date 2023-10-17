@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Card,
-  Image,
-  Form,
-  Row,
-  Col,
-  Badge,
-} from "react-bootstrap";
+import { Container, Card, Image, Form, Row, Col, Badge } from "react-bootstrap";
 import Nav from "./Nav";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";

@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
-import { Container, Table, Form, Button } from 'react-bootstrap';
+import { Container, Table, Form, Button, Modal } from 'react-bootstrap';
 import { db } from '../firebase';
-import {
-    collection,
-    query,
-    where,
-    getDocs,
-    doc, // Corrected function name
-    getDoc,
-    updateDoc
-} from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
 function Order_List() {
     const [shipping, setShipping] = useState([]);
-    const [select, setSelect] = useState('');
+    const [select, setSelect] = useState('รอดำเนินการจัดส่ง');
     const [lock, setLock] = useState(false)
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         if (select == 'จัดส่งสำเร็จ') {
@@ -26,14 +21,14 @@ function Order_List() {
             setLock(false)
         }
         fetchState();
-    }, [select]);
+    }, [select, show]);
 
     const handleEditSubmit = async (id) => {
         const companyDocRef = doc(db, 'shipping', id);
         await updateDoc(companyDocRef, {
             status: 'จัดส่งสำเร็จ'
         });
-        alert('Success')
+        handleShow()
     };
 
     const fetchState = async () => {
@@ -43,29 +38,22 @@ function Order_List() {
                 where('status', '==', select)
             );
             const querySnapshot = await getDocs(q);
-            const newData = [];
-
-            for (const docSnap of querySnapshot.docs) { // Renamed the variable to avoid conflict with the 'doc' function
+            const orderRefs = querySnapshot.docs.map(docSnap => doc(db, 'order', docSnap.data().orderID));
+            const orderDocs = await Promise.all(orderRefs.map(orderRef => getDoc(orderRef)));
+            const newData = querySnapshot.docs.map((docSnap, index) => {
                 const stateData = {
                     id: docSnap.id,
                     ...docSnap.data(),
                 };
-
-                // Fetch order data using auto-generated orderID
-                const orderID = stateData.orderID;
-                const orderRef = doc(db, 'order', orderID); // Corrected function name
-                const orderDoc = await getDoc(orderRef);
-
-                if (orderDoc.exists()) {
+                if (orderDocs[index].exists()) {
                     const orderData = {
-                        id: orderDoc.id,
-                        ...orderDoc.data(),
+                        id: orderDocs[index].id,
+                        ...orderDocs[index].data(),
                     };
                     stateData.order = orderData;
-                    newData.push(stateData);
                 }
-            }
-
+                return stateData;
+            });
             setShipping(newData);
         } catch (error) {
             console.error('Error fetching state data:', error);
@@ -84,48 +72,31 @@ function Order_List() {
                         className="dropdown-small select_productType"
                         placeholder="Type"
                         onChange={(e) => setSelect(e.target.value)}
-                        required
                     >
-                        <option value={''}>สถานะ</option>
                         <option value='รอดำเนินการจัดส่ง'>รอดำเนินการจัดส่ง</option>
                         <option value='จัดส่งสำเร็จ'>จัดส่งสำเร็จ</option>
                     </Form.Select>
                 </Form.Group>
 
                 <br /><br />
-                <Table hover responsive>
+                <Table hover responsive >
                     <thead>
                         <tr>
                             <th>รหัสคำสั่งซื้อ</th>
                             <th>ผู้สั่งซื้อ</th>
-                            <th>รหัสที่อยู่ผู้รับ</th>
-                            <th>ยอดต้องชำระ</th>
-                            <th>รหัสบริการขนส่ง</th>
-                            <th>รหัสสินค้า</th>
-                            <th>จำนวน</th>
-                            <th color='red'>เปลี่ยนสถานะ</th>
+                            <th>ยอดต้องชำระ (บาท)</th>
+                            <th>เวลา</th>
+                            <th>เปลี่ยนสถานะ</th>
+                            <th>#</th>
                         </tr>
                     </thead>
                     <tbody>
                         {shipping.map((s, index) => (
                             <tr key={index}>
-                                <td>{s.order.id}</td>
+                                <td><b>{s.order.id}</b></td>
                                 <td>{s.order.email}</td>
-                                <td>{s.recipientAddyID}</td>
-                                <td>{s.order.amount}</td>
-                                <td>{s.transportationID}</td>
-                                <td>
-                                    {Array.isArray(s.order.product_id) &&
-                                        s.order.product_id.map((product_id, i) => (
-                                            <div key={i}>{product_id}</div>
-                                        ))}
-                                </td>
-                                {s.order.quantityPerProductID &&
-                                    Object.entries(s.order.quantityPerProductID).map(([productId, quantity], i) => (
-                                        <div key={i}>
-                                           {quantity}
-                                        </div>
-                                    ))}
+                                <td>{s.order.amount.toLocaleString()}</td>
+                                <td>{s.order.Date.Date}</td>
                                 <td>
                                     <Button disabled={lock} onClick={() => handleEditSubmit(s.id)}>
                                         ทำการจัดส่ง
@@ -153,6 +124,13 @@ function Order_List() {
                     </tbody>
                 </Table>
             </Container>
+
+            <Modal show={show} centered onHide={handleClose}>
+                <Modal.Header style={{ textAlign: 'center' }} closeButton>
+                    <Modal.Title>ดำเนินการสำเร็จ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={{ fontSize: '100px', textAlign: 'center' }} >&#10004;</Modal.Body>
+            </Modal>
         </>
     );
 }

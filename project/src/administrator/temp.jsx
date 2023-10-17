@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from '../firebase'; // Assuming you're importing the Firebase configuration correctly
 import Nav from './Nav';
-import { Container, Image, Table } from "react-bootstrap";
+import { Button, Container, Image, Row, Col, Table } from "react-bootstrap";
 import { doc, getDoc } from 'firebase/firestore';
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
@@ -18,7 +18,6 @@ function ViewOrder() {
     const [productID_Detail, setProductID_Detail] = useState([]);
     const [imageList, setImageList] = useState([]);
     const [imageList2, setImageList2] = useState([]);
-
     const [ShippingData, setShippingData] = useState({
         orderID: searchParams.get("orderID") || "",
         email: searchParams.get("email") || "",
@@ -34,24 +33,26 @@ function ViewOrder() {
         const quantityPerProduct = ShippingData.quantityPerProductID.split(",");
         setProductID(productIDs);
         setQuantity(quantityPerProduct);
-        fetchImageUrls()
     }, [ShippingData.productID]);
 
     const fetchProductDetails = async () => {
-        if (productID_ID.length > 0) {
-            const productRefs = productID_ID.map((id) => doc(db, 'products', id));
-            const productSnapshots = await Promise.all(productRefs.map((ref) => getDoc(ref)));
+        const productDetails = [];
 
-            const productDetails = productSnapshots
-                .filter((snapshot) => snapshot.exists())
-                .map((snapshot) => ({
-                    id: snapshot.id,
-                    ...snapshot.data(),
-                }));
-            setProductID_Detail(productDetails);
+        for (let i = 0; i < productID_ID.length; i++) {
+            const q = doc(db, 'products', productID_ID[i]);
+            const r = await getDoc(q);
+
+            if (r.exists()) {
+                const Data = {
+                    id: r.id,
+                    ...r.data(),
+                };
+                productDetails.push(Data);
+            }
         }
-    };
 
+        setProductID_Detail(productDetails);
+    };
 
     useEffect(() => {
         async function fetchRecipientAddy() {
@@ -91,28 +92,25 @@ function ViewOrder() {
         }
     }, [productID_ID]);
 
-    const imageListRef1 = ref(storageRef, 'products/');
-    const imageListRef2 = ref(storageRef, 'transaction/');
+    useEffect(() => {
+        const imageListRef = ref(storageRef, "products/");
+        listAll(imageListRef)
+            .then((response) =>
+                Promise.all(response.items.map((item) => getDownloadURL(item)))
+            )
+            .then((urls) => setImageList(urls))
+            .catch((error) => console.error("Error listing images:", error));
+    }, []);
 
-    const fetchImageUrls = async () => {
-        try {
-            const [response1, response2] = await Promise.all([
-                listAll(imageListRef1),
-                listAll(imageListRef2),
-            ]);
-            const urls1 = await Promise.all(
-                response1.items.map((item) => getDownloadURL(item))
-            );
-            const urls2 = await Promise.all(
-                response2.items.map((item) => getDownloadURL(item))
-            );
-            setImageList(urls1);
-            setImageList2(urls2);
-        } catch (error) {
-            console.error('Error listing or fetching images:', error);
-        }
-    };
-
+    useEffect(() => {
+        const imageListRef = ref(storageRef, "transaction/");
+        listAll(imageListRef)
+            .then((response) =>
+                Promise.all(response.items.map((item) => getDownloadURL(item)))
+            )
+            .then((urls) => setImageList2(urls))
+            .catch((error) => console.error("Error listing images:", error));
+    }, []);
 
     return (
         <>
