@@ -53,8 +53,9 @@ function OutOfStock() {
                 <center><h1>
                     สินค้าหมด
                 </h1></center>
+
                 {out_of_stock.map((i, index) => (
-                    <div key={index}>
+                    <div key={index}  style={{ display: 'inline' }}  >
                         {/* link to /edit_products with variable */}
                         <Link
                             to={`/edit_products?id=${encodeURIComponent(

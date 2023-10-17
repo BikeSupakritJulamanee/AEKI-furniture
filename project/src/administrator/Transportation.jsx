@@ -300,7 +300,7 @@ function Transportation() {
 
         {/* Display Transportation Companies */}
         {fetchTransportCompanies.map((company, index) => (
-          <span key={index}>
+          <span key={index} style={{ display: 'inline-flex',placeItems: 'center', minHeight:'100vh',  }}>
             <Card>
               <Image
                 onClick={() => handleShowEditModal(company)}
