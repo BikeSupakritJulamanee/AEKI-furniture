@@ -47,7 +47,7 @@ function Nav() {
               </div>
             </Stack>
           </Col>
-          <Button onClick={handleLogout} className="logout_bt">
+          <Button onClick={handleLogout} className="logout_bt respon3">
             Logout
           </Button>
         </Container>

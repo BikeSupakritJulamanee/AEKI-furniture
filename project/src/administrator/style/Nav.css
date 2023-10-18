@@ -86,3 +86,9 @@ header {
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
 }
+@media screen and (min-width: 300px) and (max-width: 1000px) {
+  .respon3{
+      padding-right: 65px;
+  }
+
+}

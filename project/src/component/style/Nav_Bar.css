@@ -1,0 +1,25 @@
+@media screen and (max-width: 400px) and (max-height: 700px) {
+.respon1{
+    position: absolute;
+    top:70px;    
+    left:10px;
+}
+.respon2{
+    position: absolute;
+    top:70px;    
+    left:60px;
+}
+.respon3{
+    position: absolute;
+    top:60px;    
+    right:120px;
+    padding-right: 65px;
+}
+}
+
+@media screen and (min-width: 300px) and (max-width: 1000px) {
+    .respon3{
+        padding-right: 65px;
+    }
+
+}

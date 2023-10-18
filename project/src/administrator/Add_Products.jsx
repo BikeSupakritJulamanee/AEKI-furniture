@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Form,
+  Row,
+  Col,
+  Image,
+  Modal,
+} from "react-bootstrap";
 import { db, storageRef } from "../firebase";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -93,10 +101,12 @@ function Add_Products() {
     handleCloseAddModal();
   };
 
+  // useEffect
   useEffect(() => {
     fetchType();
   }, []);
 
+  // Fetch Type
   const fetchType = async () => {
     try {
       const q = query(collection(db, "type"));
@@ -113,6 +123,7 @@ function Add_Products() {
 
   return (
     <>
+      <Nav />
       <Modal centered show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>
           <Modal.Title>เพิ่มประเภทสินค้า</Modal.Title>
@@ -128,7 +139,6 @@ function Add_Products() {
                   value={productType}
                   onChange={(e) => setProductType(e.target.value)}
                   required
-                  pattern="[ก-๏]+"
                 />
               </Form.Group>
             </div>
@@ -145,14 +155,12 @@ function Add_Products() {
         </Modal.Body>
       </Modal>
 
-      <Nav />
-
       <Container>
         <Row>
           <Col md={10} className="sizecon">
             <div className="contact_inner">
               <Row>
-                <Col md={10}>
+                <Col md={7}>
                   <div className="contact_form_inner">
                     <div className="contact_field">
                       <h3>เพิ่มผลิตภัณฑ์</h3>
@@ -176,7 +184,6 @@ function Add_Products() {
                             placeholder="Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            pattern="[ก-๏a-zA-Z]+"
                             required
                           />
                         </Form.Group>
@@ -188,7 +195,6 @@ function Add_Products() {
                             placeholder="Description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            pattern="[ก-๏a-zA-Z0-9]+"
                             required
                           />
                         </Form.Group>
@@ -200,7 +206,6 @@ function Add_Products() {
                             type="number"
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
-                            pattern="0"
                             required
                           />
                         </Form.Group>
@@ -212,8 +217,7 @@ function Add_Products() {
                             type="number"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
-                            pattern="[1-9]*"
-                            requiredz
+                            required
                           />
                         </Form.Group>
                         <Form.Group controlId="exampleForm.SelectCustom">
@@ -273,13 +277,15 @@ function Add_Products() {
                     </div>
                   </div>
                 </Col>
+
+                <Col  md={3}>
+                  <Image src={img1} alt="Image 1" className="resize5" />
+                </Col>
                 <Col md={2}>
                   <div className="right_conatct_social_icon d-flex align-items-end"></div>
                 </Col>
               </Row>
-              <div>
-                <Image src={img1} alt="Image 1" className="resize4" />
-              </div>
+            
             </div>
           </Col>
         </Row>

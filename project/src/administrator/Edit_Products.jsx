@@ -117,7 +117,7 @@ function EditProducts() {
           <Col md={10} className="sizecon">
             <div className="contact_inner">
               <Row>
-                <Col md={10}>
+                <Col md={7}>
                   <div className="contact_form_inner">
                     <div className="contact_field">
                       <h3>แก้ไขผลิตภัณฑ์</h3>
@@ -229,16 +229,21 @@ function EditProducts() {
                     </div>
                   </div>
                 </Col>
+
+                <Col md={3} >
+                <Image
+                  className="resize5"
+                  src={imageList.find((url) => url.includes(productData.image))}
+                />
+                </Col>
+
                 <Col md={2}>
                   <div className="right_conatct_social_icon d-flex align-items-end"></div>
                 </Col>
               </Row>
-              <div>
-                <Image
-                  className="resize3"
-                  src={imageList.find((url) => url.includes(productData.image))}
-                />
-              </div>
+              
+              
+              
             </div>
           </Col>
         </Row>

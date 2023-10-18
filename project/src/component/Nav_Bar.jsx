@@ -8,6 +8,8 @@ import cart_icon from "./image/shopping-cart.png";
 import history_icon from "./image/file.png";
 import AEKI from "./image/ikea-logo.png";
 
+import "./style/Nav_Bar.css";
+
 function Nav_Bar() {
   const { user } = useUserAuth();
   const { logOut } = useUserAuth();
@@ -30,7 +32,7 @@ function Nav_Bar() {
         &#10166;บริการผ่อนชำระ 0% &#10166;จัดส่งเริ่มต้นที่ 99 บาท
         &#10166;นโยบายเปลี่ยนคืนสินค้าใน 365 วัน
       </header>
-      <Navbar className="admin_nav">
+      <Navbar className="admin_nav" >
         <Container>
           <img
             className="menu"
@@ -55,11 +57,11 @@ function Nav_Bar() {
 
           <Col>
             <Nav className="justify-content-end flex-grow-1 pe-5">
-              <a href="/userorderlist">
+              <a href="/userorderlist" className="respon1">
                 <img className="menu" src={cart_icon} />
               </a>
 
-              <a href="/order_history">
+              <a href="/order_history" className="respon2">
                 <img className="menu" src={history_icon} />
               </a>
             </Nav>
@@ -67,7 +69,7 @@ function Nav_Bar() {
           <Button
             onClick={handleLogout}
             style={{ marginBottom: "20px" }}
-            className="logout_bt"
+            className="logout_bt respon3"
           >
             Logout
           </Button>
