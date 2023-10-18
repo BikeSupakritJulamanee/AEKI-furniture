@@ -67,6 +67,8 @@ function Order_List() {
         return format(date, 'dd/MM/yyyy HH:mm:ss');
     };
 
+    let arr;
+
 
 
     return (
@@ -120,7 +122,7 @@ function Order_List() {
                                         )}&transportationID=${encodeURIComponent(s.transportationID)}&productID=${encodeURIComponent(
                                             s.order.product_id
                                         )}&quantityPerProductID=${encodeURIComponent(
-                                            s.order.quantityPerProductID
+                                            arr = Object.keys(s.order.quantityPerProductID).map(key => s.order.quantityPerProductID[key]) 
                                         )}`}
                                         target="_blank"
                                         key={index}

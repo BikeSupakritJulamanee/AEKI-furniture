@@ -104,7 +104,10 @@ function Register() {
               </h6>
 
               {error && <Alert variant="danger">{error}</Alert>}
+
               <Form onSubmit={handleSubmit}>
+
+                {/* form email */}
                 <Form.Group
                   className="mb-3"
                   controlId="formBasicEmail"
@@ -118,6 +121,7 @@ function Register() {
                   />
                 </Form.Group>
 
+                {/* form username */}
                 <Form.Group className="mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
@@ -125,19 +129,23 @@ function Register() {
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
                     className="input-small "
+                    pattern="[a-zA-Z0-9ก-๙]+"
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                {/* form phone */}
+                <Form.Group controlId="phoneNumberInput" className="mb-3">
                   <Form.Label>Phone number</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Phone number"
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="input-small "
+                    className="input-small"
+                    pattern='^0{1}[6-9]{1}[0-9]{8}'
                   />
                 </Form.Group>
 
+                {/* form password */}
                 <Form.Group
                   className="mb-3"
                   controlId="formBasicPassword"
@@ -161,10 +169,10 @@ function Register() {
               <div className="p-4 box mt-3 text-center">
                 Already have an account? <Link to="/login">Login</Link>
               </div>
+
             </Col>
           </Row>
         </Col>
-
       </Row >
     </Container >
   );

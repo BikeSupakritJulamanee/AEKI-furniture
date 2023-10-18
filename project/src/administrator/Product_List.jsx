@@ -44,7 +44,7 @@ function Product_List() {
       }
 
       if (searchTerm !== "") {
-        q = query(q, where("name", ">=", searchTerm));
+        q = query(q, orderBy("name"), where("name", ">=", searchTerm));
       }
 
       if (ifOrderBySales === true) {

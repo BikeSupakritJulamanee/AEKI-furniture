@@ -25,7 +25,8 @@ function ViewOrder() {
         recipientAddyID: searchParams.get("recipientAddyID") || "",
         transportationID: searchParams.get("transportationID") || "",
         productID: searchParams.get("productID") || "",
-        quantityPerProductID: searchParams.get("quantityPerProductID") || "",
+        // quantityPerProductID: searchParams.get("quantityPerProductID") || "",
+        quantityPerProductID: JSON.stringify(searchParams.get("quantityPerProductID") || ""),
         amount: searchParams.get("amount") || "",
     });
 
@@ -180,7 +181,7 @@ function ViewOrder() {
                                     รหัสสินค้า: {product.id} <br />
                                     ชื่อสินค้า: {product.name} <br />
                                     ราคาสินค้าต่อชิ้น: {product.price.toLocaleString()} <br />
-                                    จำนวน: {ShippingData.quantityPerProductID}
+                                    จำนวน: {ShippingData.quantityPerProductID.split(',')[index].replace(/"/g, ' ')}
                                 </td>
                             </tr>
                         ))}

@@ -123,6 +123,8 @@ function EditProducts() {
                       <h3>แก้ไขผลิตภัณฑ์</h3>
                       <p>ทำการแก้ไขสินค้า</p>
                       <Form onSubmit={handleUpdate}>
+
+                        {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
@@ -133,8 +135,11 @@ function EditProducts() {
                               setProductData({ ...productData, name: e.target.value })
                             }
                             required
+                            pattern="[a-zA-Zก-๙]+"
                           />
                         </Form.Group>
+
+                        {/* form description */}
                         <Form.Group>
                           <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
@@ -147,6 +152,8 @@ function EditProducts() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form amount */}
                         <Form.Group>
                           <Form.Label>จำนวน</Form.Label>
                           <Form.Control
@@ -159,6 +166,8 @@ function EditProducts() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form price */}
                         <Form.Group>
                           <Form.Label>ราคา</Form.Label>
                           <Form.Control
@@ -171,6 +180,8 @@ function EditProducts() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form type */}
                         <Form.Group controlId="exampleForm.SelectCustom">
                           <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
@@ -190,6 +201,8 @@ function EditProducts() {
                             ))}
                           </Form.Control>
                         </Form.Group>
+
+                        {/* form img */}
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
@@ -198,6 +211,8 @@ function EditProducts() {
                             onChange={handleFileChange}
                           />
                         </Form.Group>
+
+                        {/* form attribult */}
                         <Form.Group>
                           <Form.Label>คุณลักษณะ</Form.Label>
                           <Form.Control
@@ -214,6 +229,7 @@ function EditProducts() {
                             }
                           />
                         </Form.Group>
+
                         <br />
                         <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}>
                           {isLoading ? 'Loading…' : 'Update'}
@@ -231,19 +247,16 @@ function EditProducts() {
                 </Col>
 
                 <Col md={3} >
-                <Image
-                  className="resize5"
-                  src={imageList.find((url) => url.includes(productData.image))}
-                />
+                  <Image
+                    className="resize5"
+                    src={imageList.find((url) => url.includes(productData.image))}
+                  />
                 </Col>
 
                 <Col md={2}>
                   <div className="right_conatct_social_icon d-flex align-items-end"></div>
                 </Col>
               </Row>
-              
-              
-              
             </div>
           </Col>
         </Row>

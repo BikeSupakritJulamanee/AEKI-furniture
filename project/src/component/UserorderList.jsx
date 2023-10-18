@@ -336,7 +336,7 @@ function UserorderList() {
         </Table>
 
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-        <Form onSubmit={(e)=>handlePay(e)} >
+        <Form onSubmit={(e) => handlePay(e)} >
           {/* select address */}
           <Form.Control
             as="select"
@@ -396,7 +396,6 @@ function UserorderList() {
                   src={confirmation}
                   style={{ marginBottom: "3px" }}
                 />
-
               </Button></div>
           </div>
         </Form>
@@ -408,6 +407,7 @@ function UserorderList() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
+
             <Form.Group>
               <div className="contact_field_modal">
                 <Form.Control
@@ -420,6 +420,7 @@ function UserorderList() {
                 />
               </div>
             </Form.Group>
+
             <Form.Group>
               <div className="contact_field_modal">
                 <Form.Control
@@ -429,9 +430,12 @@ function UserorderList() {
                   value={phone}
                   onChange={(e) => setphone(e.target.value)}
                   required
+                  pattern="^0{1}[6-9]{1}[0-9]{8}"
                 />
               </div>
+
             </Form.Group>
+
             <Form.Group>
               <div className="contact_field_modal">
                 <Form.Control
@@ -441,9 +445,11 @@ function UserorderList() {
                   value={recipname}
                   onChange={(e) => setrecipname(e.target.value)}
                   required
+                  pattern="[a-zA-Zก-๙]+"
                 />
               </div>
             </Form.Group>
+
             <Button
               variant="success"
               type="submit"
@@ -452,6 +458,7 @@ function UserorderList() {
             >
               {isLoading ? "Loading…" : "เพิ่มช่องทางการขนส่ง"}
             </Button>
+
           </Form>
         </Modal.Body>
       </Modal>

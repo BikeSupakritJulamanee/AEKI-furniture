@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  Form,
-  Row,
-  Col,
-  Image,
-  Modal,
-} from "react-bootstrap";
+import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
 import { db, storageRef } from "../firebase";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+//import image
 import Nav from "./Nav";
 import img1 from "./image/add.jpg";
 
+//import style.css
 import "./style/product_forrm.css";
 import "./style/Button_style.css";
 
 function Add_Products() {
-  // State Variables
+  
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -101,12 +96,10 @@ function Add_Products() {
     handleCloseAddModal();
   };
 
-  // useEffect
   useEffect(() => {
     fetchType();
   }, []);
 
-  // Fetch Type
   const fetchType = async () => {
     try {
       const q = query(collection(db, "type"));
@@ -131,6 +124,8 @@ function Add_Products() {
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
             <div className="contact_field_modal">
+
+              {/* form product type */}
               <Form.Group>
                 <Form.Control
                   type="text"
@@ -139,8 +134,10 @@ function Add_Products() {
                   value={productType}
                   onChange={(e) => setProductType(e.target.value)}
                   required
+                  pattern="[ก-๙]+"
                 />
               </Form.Group>
+
             </div>
 
             <Button
@@ -151,6 +148,7 @@ function Add_Products() {
             >
               {isLoading ? "Loading…" : "เพิ่มประเภท"}
             </Button>
+
           </Form>
         </Modal.Body>
       </Modal>
@@ -165,6 +163,7 @@ function Add_Products() {
                     <div className="contact_field">
                       <h3>เพิ่มผลิตภัณฑ์</h3>
                       <div className="d-grid gap-2">
+
                         <Button
                           variant="outline-primary"
                           size="lg"
@@ -173,9 +172,13 @@ function Add_Products() {
                         >
                           &#43;เพิ่มประเภทสินค้า
                         </Button>
+
                       </div>
                       <p>ทำการเพิ่มรายละเอียดของสินค้า</p>
+
                       <Form onSubmit={handleSubmit}>
+
+                        {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
@@ -185,8 +188,11 @@ function Add_Products() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
+                            pattern="[a-zA-Zก-๙]+"
                           />
                         </Form.Group>
+
+                        {/* form description */}
                         <Form.Group>
                           <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
@@ -198,6 +204,8 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form amount */}
                         <Form.Group>
                           <Form.Label>จำนวน</Form.Label>
                           <Form.Control
@@ -209,6 +217,8 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form price */}
                         <Form.Group>
                           <Form.Label>ราคา</Form.Label>
                           <Form.Control
@@ -220,6 +230,8 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form product type */}
                         <Form.Group controlId="exampleForm.SelectCustom">
                           <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
@@ -240,6 +252,8 @@ function Add_Products() {
                             ))}
                           </Form.Control>
                         </Form.Group>
+
+                        {/* form image */}
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
@@ -249,6 +263,8 @@ function Add_Products() {
                             required
                           />
                         </Form.Group>
+
+                        {/* form attribute */}
                         <Form.Group>
                           <Form.Label>คุณลักษณะ</Form.Label>
                           <Form.Control
@@ -264,7 +280,6 @@ function Add_Products() {
                           />
                         </Form.Group>
 
-                        <Form.Group controlId="exampleForm.SelectCustom"></Form.Group>
                         <Button
                           variant="success"
                           className="contact_form_submit"
@@ -273,19 +288,20 @@ function Add_Products() {
                         >
                           {isLoading ? "Loading…" : "เพิ่มผลิตภัณฑ์"}
                         </Button>
+
                       </Form>
+
                     </div>
                   </div>
                 </Col>
 
-                <Col  md={3}>
+                <Col md={3}>
                   <Image src={img1} alt="Image 1" className="resize5" />
                 </Col>
                 <Col md={2}>
                   <div className="right_conatct_social_icon d-flex align-items-end"></div>
                 </Col>
               </Row>
-            
             </div>
           </Col>
         </Row>

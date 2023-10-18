@@ -195,6 +195,7 @@ function Transportation() {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleAddSubmit}>
+
               <Form.Group>
                 <div className="contact_field_modal">
                   <Form.Control
@@ -205,9 +206,11 @@ function Transportation() {
                     value={transportCompanyName}
                     onChange={(e) => setTransportCompanyName(e.target.value)}
                     required
+                    pattern="[a-zA-Zก-๙]+"
                   />
                 </div>
               </Form.Group>
+
               <Form.Group>
                 <div className="contact_field_modal">
                   <Form.Control
@@ -221,6 +224,7 @@ function Transportation() {
                   />
                 </div>
               </Form.Group>
+
               <Form.Group>
                 <Form.Label>รูปภาพ</Form.Label>
                 <Form.Control
@@ -230,6 +234,7 @@ function Transportation() {
                   required
                 />
               </Form.Group>
+
               <Button
                 variant="success"
                 type="submit"
