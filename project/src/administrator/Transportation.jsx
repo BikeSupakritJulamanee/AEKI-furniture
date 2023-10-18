@@ -2,22 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Container, Image, Button, Form, Modal, Card } from "react-bootstrap";
 import Nav from "./Nav";
 import { storageRef, db } from "../firebase";
-import {
-  getDocs,
-  collection,
-  query,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import {
-  ref,
-  getDownloadURL,
-  uploadBytes,
-  listAll,
-  deleteObject,
-} from "firebase/storage";
+import { getDocs, collection, query, addDoc, updateDoc, doc, deleteDoc, } from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytes, listAll, deleteObject } from "firebase/storage";
 
 function Transportation() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -28,8 +14,7 @@ function Transportation() {
   const [fileName, setFileName] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
-  const [selectedTransportCompany, setSelectedTransportCompany] =
-    useState(null);
+  const [selectedTransportCompany, setSelectedTransportCompany] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [fetchTransportCompanies, setFetchTransportCompanies] = useState([]);
   const handleShowAddModal = () => setShowAddModal(true);
@@ -300,7 +285,7 @@ function Transportation() {
 
         {/* Display Transportation Companies */}
         {fetchTransportCompanies.map((company, index) => (
-          <span key={index} style={{ display: 'inline-flex',placeItems: 'center', minHeight:'100vh',  }}>
+          <span key={index} style={{ display: 'inline-flex', placeItems: 'center', minHeight: '70vh', }}>
             <Card>
               <Image
                 onClick={() => handleShowEditModal(company)}

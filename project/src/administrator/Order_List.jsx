@@ -65,7 +65,7 @@ function Order_List() {
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
         return format(date, 'dd/MM/yyyy HH:mm:ss');
-      };
+    };
 
 
 
@@ -104,8 +104,7 @@ function Order_List() {
                             <tr key={index}>
                                 <td><b>{s.order.id}</b></td>
                                 <td>{s.order.email}</td>
-                                <td>{s.order.amount.toLocaleString()}</td>
-                                {/* <td>{s.order.Date.Date}</td> */}
+                                <td>{s.order.amount}</td>
                                 <td>{formatTimestamp(s.order.Date?.seconds * 1000)}</td>
                                 <td>
                                     <Button disabled={lock} onClick={() => handleEditSubmit(s.id)}>

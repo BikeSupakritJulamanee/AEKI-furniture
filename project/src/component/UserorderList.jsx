@@ -12,6 +12,8 @@ import "./style/UserorderList.css";
 
 //image
 import shopping_cart from "./image/shopping-cart.png";
+import confirmation from "./image/confirmation.png";
+
 
 function UserorderList() {
 
@@ -368,7 +370,18 @@ function UserorderList() {
 
           <div>
             <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
-            <div style={{ float: 'right' }}><Button onClick={handlePay}  >ยืนยันการซื้อ</Button></div>
+
+
+
+            <div style={{ float: 'right' }}><Button onClick={handlePay} className="hvr_grow"
+              style={{ width: "160px", paddingRight: "20px" }}>ยืนยันการซื้อ
+              <img
+                className="hvr-icon"
+                src={confirmation}
+                style={{ marginBottom: "3px" }}
+              />
+
+            </Button></div>
           </div>
         </Form>
       </Container>

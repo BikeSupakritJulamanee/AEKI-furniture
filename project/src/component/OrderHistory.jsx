@@ -19,6 +19,7 @@ function OrderHistory() {
     fetchProduct();
     fetchCart();
     fetchshipping();
+    console.log(1);
   }, [user_cart, user]);
 
   const formatTimestamp = (timestamp) => {
@@ -54,7 +55,9 @@ function OrderHistory() {
       const q = query(collection(db, 'cart'), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-      setuser_cart(newData);
+      if (newData.length != user_cart.length) {
+        setuser_cart(newData);
+      }
     } catch (error) {
       console.error('Error fetching account data:', error);
     }
