@@ -68,7 +68,7 @@ function UserorderList() {
       phoneNumber: phone,
       recipientName: recipname,
     });
-    alert("เพิ่มประเภทสินค้าสำเร็จ");
+    alert("เพิ่มที่อยู่สำเร็จ");
   };
 
   const handleCloseAddModal = () => {
@@ -268,6 +268,7 @@ function UserorderList() {
           </Link>
         </div>
 
+        {/* order table */}
         <Table hover>
           <thead>
             <tr>
@@ -318,11 +319,12 @@ function UserorderList() {
 
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
         <Form >
+          {/* select address */}
           <Form.Control
             as="select"
             className="dropdown-small"
             placeholder="Type"
-            style={{ width: "225.333334px", marginBottom: "10px" }}
+            style={{ width: "224px", marginBottom: "10px" }}
             onChange={(e) => setselectAddress(e.target.value)}
             required
           >

@@ -153,7 +153,7 @@ function ViewOrder() {
                                 )}
                             </td>
                             <td>
-                                ยอดต้องชำระ: {ShippingData.amount} บาท
+                                ยอดต้องชำระ: {parseInt(ShippingData.amount).toLocaleString()} บาท
                             </td>
                         </tr>
                     </tbody>
@@ -179,7 +179,7 @@ function ViewOrder() {
                                 <td>
                                     รหัสสินค้า: {product.id} <br />
                                     ชื่อสินค้า: {product.name} <br />
-                                    ราคาสินค้าต่อชิ้น: {product.price} <br />
+                                    ราคาสินค้าต่อชิ้น: {product.price.toLocaleString()} <br />
                                     จำนวน: {ShippingData.quantityPerProductID}
                                 </td>
                             </tr>

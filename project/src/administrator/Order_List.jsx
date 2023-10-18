@@ -5,6 +5,8 @@ import { db } from '../firebase';
 import { collection, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
+import { format } from 'date-fns';
+
 function Order_List() {
     const [shipping, setShipping] = useState([]);
     const [select, setSelect] = useState('รอดำเนินการจัดส่ง');
@@ -60,6 +62,13 @@ function Order_List() {
         }
     };
 
+    const formatTimestamp = (timestamp) => {
+        const date = new Date(timestamp);
+        return format(date, 'dd/MM/yyyy HH:mm:ss');
+      };
+
+
+
     return (
         <>
             <Nav />
@@ -96,7 +105,8 @@ function Order_List() {
                                 <td><b>{s.order.id}</b></td>
                                 <td>{s.order.email}</td>
                                 <td>{s.order.amount.toLocaleString()}</td>
-                                <td>{s.order.Date.Date}</td>
+                                {/* <td>{s.order.Date.Date}</td> */}
+                                <td>{formatTimestamp(s.order.Date?.seconds * 1000)}</td>
                                 <td>
                                     <Button disabled={lock} onClick={() => handleEditSubmit(s.id)}>
                                         ทำการจัดส่ง

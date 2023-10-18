@@ -4,7 +4,6 @@ import { Form, Alert, Button, Image } from 'react-bootstrap';
 import { useUserAuth } from '../context/UserAuthContext'; //useContext
 import { db } from '../firebase'; //database
 import { collection, addDoc } from 'firebase/firestore'; //firestore
-
 import { Container, Row, Col } from "react-bootstrap";
 
 import "./style/Login.css";
@@ -50,7 +49,7 @@ function Register() {
         email: email,
         username: username,
         phone_number: phone_number,
-        member_point:point,
+        member_point: point,
       });
 
       await signUp(email, password);
