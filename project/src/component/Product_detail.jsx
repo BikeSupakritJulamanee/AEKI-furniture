@@ -2,27 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { db } from "../firebase";
-import { Link } from "react-router-dom";
 import Nav_Bar from "../component/Nav_Bar";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  orderBy,
-  writeBatch,
-  doc,
-  updateDoc,
-  getDoc, // Add this import for getDoc
-} from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { getDocs, collection, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
+import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 
 function Product_detail() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const productId = searchParams.get("id");
   const [imageList, setImageList] = useState([]);
   const { user, logOut } = useUserAuth();
   const [homecart, sethomecart] = useState([]);
@@ -142,48 +130,42 @@ function Product_detail() {
           <Col md={10} className="sizecon">
             <div className="contact_inner">
               <Row>
-
-
                 <Col md={7}>
                   <div className="contact_form_inner">
                     <div className="contact_field">
                       <h3>{productData.name}</h3>
-
                       <div>{productData.description}</div>
-
-                      <div>{productData.attribute}</div>
+                      <br />
+                      <div>
+                        {f_product.map(
+                          (product) =>
+                            product.id === productData.id && (
+                              <h6>จำนวนคงเหลือ:{product.attribute}</h6>
+                            )
+                        )}
+                      </div>
+                      <br />
 
                       {/* amount stock */}
                       {f_product.map(
                         (product) =>
                           product.id === productData.id && (
-                            <h6>จำนวนคงเหลือ:{product.quantity}</h6>
+                            <h6>จำนวนคงเหลือ:{product.quantity} ชิ้น</h6>
                           )
                       )}
-
-                      {/* real time price */}
-                      <div>
-                        {(e) =>
-                          setProductData({
-                            ...productData,
-                            price: e.target.value,
-                          })
-                        }
-                        <h5>ราคา:{productData.price * select_qrt}บาท</h5>
-                      </div>
+                      <br /><br />
 
                       {/* quantity form */}
                       <Form.Group>
-                        <Form.Label>Quantity</Form.Label>
                         <Form.Control
                           type="number"
-                          placeholder="Quantity"
+                          placeholder="เพิ่มในรถเข็น"
                           value={select_qrt}
                           onChange={(e) => setselect_qrt(e.target.value)}
+                          min={1}
                         />
                       </Form.Group>
 
-                      <br />
                       <Button
                         variant="warning"
                         className="contact_form_submit"
@@ -196,14 +178,28 @@ function Product_detail() {
                   </div>
                 </Col>
 
-                
-                <Col md={3}>
-                  <Image
-                    className="resize5"
-                    src={imageList.find((url) =>
-                      url.includes(productData.image)
-                    )}
-                  />
+
+                <Col md={3}  >
+                  <div style={{ textAlign: 'center' }} >
+                    <Image
+                      className="resize5"
+                      src={imageList.find((url) =>
+                        url.includes(productData.image)
+                      )}
+                    />
+                  </div>
+                  <div style={{ textAlign: 'center', marginTop: '5%' }} >
+                    {/* real time price */}
+                    <div>
+                      {(e) =>
+                        setProductData({
+                          ...productData,
+                          price: e.target.value,
+                        })
+                      }
+                      <h5 style={{fontWeight:'bold', fontSize:'28px'}} >{(productData.price * select_qrt).toLocaleString()} บาท</h5>
+                    </div>
+                  </div>
                 </Col>
 
 
@@ -212,7 +208,7 @@ function Product_detail() {
                   <div className="right_conatct_social_icon d-flex align-items-end"></div>
                 </Col>
 
-             
+
               </Row>
             </div>
           </Col>

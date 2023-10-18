@@ -3,16 +3,7 @@ import { Container, Card, Image, Button, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  orderBy,
-  doc,
-  updateDoc,
-  getDoc, // Add this import for getDoc
-} from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy, doc, updateDoc, getDoc } from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 import Footer from "./Footer";
@@ -179,6 +170,7 @@ function Home() {
                 target="_blank"
               >
                 <div className="card-container">
+                  {/* show top product */}
                   <Row className="box">
                     <Card style={{ height: "280px" }}>
                       <center>
@@ -201,6 +193,7 @@ function Home() {
           ))}
         </Row>
         <center>
+          {/* search */}
           <Form.Group className="search_group">
             <Form.Control
               className="search_bar"
@@ -212,6 +205,7 @@ function Home() {
           </Form.Group>
         </center>
 
+        {/* select */}
         <Form.Group>
           <Form.Select
             className="dropdown-small select_productType"
@@ -219,7 +213,7 @@ function Home() {
             onChange={(e) => setSelect(e.target.value)}
             required
           >
-            <option value={""}>ค้นหาด้วยประเภทสินค้า &#8595;</option>
+            <option value={""}>ค้นหาด้วยประเภทสินค้า;</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
                 <span className="option-icon">👉🏼</span>
@@ -247,6 +241,7 @@ function Home() {
                   )}&price=${encodeURIComponent(product.price)}`}
                   target="_blank"
                 >
+                  {/* show all product */}
                   <Card className="card_content" style={{ height: "570px" }}>
                     <div class="card_background">
                       <Image

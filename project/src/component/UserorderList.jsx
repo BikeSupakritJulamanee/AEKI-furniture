@@ -36,6 +36,16 @@ function UserorderList() {
   const [imageList, setImageList] = useState([]);
   const [buyStatus, setBuyStatus] = useState(false)
 
+  const [transportCost, setTransportCost] = useState('');
+
+  const handleSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    const [id, cost] = selectedValue.split('|'); // Assuming values are joined with '|'
+
+    setTransportID(id);
+    setTransportCost(cost);
+  };
+
   useEffect(() => {
     fetchData();
   }, [user]);
@@ -155,7 +165,12 @@ function UserorderList() {
     setBuyStatus(false)
   }
 
-  const handlePay = async () => {
+  const handlePay = async (e) => {
+    e.preventDefault();
+    if (matchingProducts.length == 0) {
+      alert('ไม่มีรายการสินค้า')
+      return;
+    }
 
     try {
       const user_uid = f_user[0].id;
@@ -182,11 +197,12 @@ function UserorderList() {
     } catch (error) {
       console.error("Error updating product quantities:", error);
     }
+
     const order_user = await addDoc(collection(db, "order"), {
       product_id: orderUser[0].product_id,
       quantityPerProductID: orderUser[0].qauntityPerProductID,
       email: user.email,
-      amount: price,
+      amount: price + parseInt(transportCost),
       Date: serverTimestamp(),
     });
 
@@ -320,7 +336,7 @@ function UserorderList() {
         </Table>
 
         <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-        <Form >
+        <Form onSubmit={(e)=>handlePay(e)} >
           {/* select address */}
           <Form.Control
             as="select"
@@ -346,14 +362,16 @@ function UserorderList() {
               className="dropdown-small"
               placeholder="Type"
               style={{ width: "225.333334px", marginBottom: "10px" }}
-              onChange={(e) => setTransportID(e.target.value)}
+              onChange={handleSelectChange}
               required
             >
-              <option value={""}>เลือกขนส่ง</option>
+              <option value="">เลือกขนส่ง</option>
               {transportList.map((typeObj, index) => (
-                <option key={index} value={typeObj.id}>
-                  {typeObj.transportCompanyName} /ราคา: {typeObj.shippingCost}{" "}
-                  บาท
+                <option
+                  key={index}
+                  value={`${typeObj.id}|${typeObj.shippingCost}`}
+                >
+                  {typeObj.transportCompanyName} / ราคา: {typeObj.shippingCost} บาท
                 </option>
               ))}
             </Form.Control>
@@ -369,19 +387,17 @@ function UserorderList() {
           </Button>
 
           <div>
-            <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {price} บาท</div>
+            <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {transportCost ? price + parseInt(transportCost) : price} บาท</div>
+            <div style={{ float: 'right' }}>
+              <Button type="submit" className="hvr_grow"
+                style={{ width: "160px", paddingRight: "20px" }}>ยืนยันการซื้อ
+                <img
+                  className="hvr-icon"
+                  src={confirmation}
+                  style={{ marginBottom: "3px" }}
+                />
 
-
-
-            <div style={{ float: 'right' }}><Button onClick={handlePay} className="hvr_grow"
-              style={{ width: "160px", paddingRight: "20px" }}>ยืนยันการซื้อ
-              <img
-                className="hvr-icon"
-                src={confirmation}
-                style={{ marginBottom: "3px" }}
-              />
-
-            </Button></div>
+              </Button></div>
           </div>
         </Form>
       </Container>
