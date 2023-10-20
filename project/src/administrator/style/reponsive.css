@@ -1,0 +1,14 @@
+@media screen and (min-width: 300px) and (max-width: 1400px) {
+  .custom-button {
+    width: 200px;
+  }
+  .input-small {
+    width: 200px;
+  }
+  .res_po {
+    width: 200px;
+  }
+  .resize5 {
+    display: none;
+  }
+}

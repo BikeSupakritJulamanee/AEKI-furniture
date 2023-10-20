@@ -35,7 +35,6 @@ header {
 .logout_bt {
   border: none;
   color: #1325e8;
-
   width: 10%;
   margin-top: 25px;
   border-radius: 35px;
@@ -87,8 +86,28 @@ header {
   transform: scaleX(0);
 }
 @media screen and (min-width: 300px) and (max-width: 1000px) {
-  .respon3{
-      padding-right: 65px;
+  .logout_bt {
+    border: none;
+    color: #1325e8;
+    width: 10%;
+    margin-top: 25px;
+    border-radius: 35px;
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: fixed;
+    top: 596px;
+    right: 30px;
+    z-index: 2;
+    background: #fcda05;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
   }
-
 }

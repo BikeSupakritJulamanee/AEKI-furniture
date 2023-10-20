@@ -8,9 +8,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./style/Login.css";
 import img1 from "./image/img1.jpg";
-import img2 from "./image/img2.jpg"
-import img3 from "./image/img3.jpg"
-import img4 from "./image/img4.jpg"
+import img2 from "./image/img2.jpg";
+import img3 from "./image/img3.jpg";
+import img4 from "./image/img4.jpg";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ function Login() {
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
     setError("");
     try {
@@ -33,7 +33,7 @@ function Login() {
       );
     } catch (err) {
       setError(err.message);
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -41,45 +41,14 @@ function Login() {
     <Container>
       <br />
       <br />
+
       <Row>
-        <Col>
-          <Row>
-            <Col className="size" md={5}>
-              <Row>
-                <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img1} alt="Image 1" className="resize" />
-                  </div>
-                </Col>
-                <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img2} alt="Image 2" className="resize" />
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img3} alt="Image 3" className="resize" />
-                  </div>
-                </Col>
-                <Col md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img4} alt="Image 4" className="resize" />
-                  </div>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Col>
         <Col>
           <Row>
             <Col className="block">
               <br />
 
-              <h2 className="mb-3">
-                เข้าสู่ระบบ
-              </h2>
+              <h2 className="mb-3">เข้าสู่ระบบ</h2>
               <h6 className="mb-3">
                 เข้าสู่ระบบหรือสมัครสมาชิก IKEA Family
                 วันนี้เพื่อพบกับประสบการณ์ที่เป็นส่วนตัวยิ่งขึ้น
@@ -109,8 +78,13 @@ function Login() {
                 </Form.Group>
 
                 <div className="d-grid gap-2 justify-content-center">
-                  <Button variant="warning" className="custom-button-style" type="submit" disabled={isLoading}  >
-                    {isLoading ? 'Loading…' : 'Sign in'}
+                  <Button
+                    variant="warning"
+                    className="custom-button-style"
+                    type="submit"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Loading…" : "Sign in"}
                   </Button>
                 </div>
               </Form>
@@ -119,6 +93,38 @@ function Login() {
                 Don't have an account?
                 <Link to="/register">Sign up</Link>
               </div>
+            </Col>
+          </Row>
+        </Col>
+
+        <Col>
+          <Row style={{ margin: "20px" }}>
+            <Col className="size" sm={5} md={5}>
+              <Row>
+                <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                  <div className="aspect-ratio-box">
+                    <Image src={img1} alt="Image 1" className="resize" />
+                  </div>
+                </Col>
+                <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                  <div className="aspect-ratio-box">
+                    <Image src={img2} alt="Image 2" className="resize" />
+                  </div>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                  <div className="aspect-ratio-box">
+                    <Image src={img3} alt="Image 3" className="resize" />
+                  </div>
+                </Col>
+                <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
+                  <div className="aspect-ratio-box">
+                    <Image src={img4} alt="Image 4" className="resize" />
+                  </div>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Col>

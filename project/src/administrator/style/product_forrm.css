@@ -101,15 +101,14 @@ button.contact_form_submit2 {
   padding: 40px;
   border-radius: 68px 0 0 62px;
 }
-.resize5{
+.resize5 {
   display: flex;
   align-items: center;
   width: 290px;
   height: 300px;
   margin-top: 90px;
-  border-radius: 87% 13% 81% 19% / 29% 75% 25% 71% ;
+  border-radius: 87% 13% 81% 19% / 29% 75% 25% 71%;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
-
 }
 
 .button {

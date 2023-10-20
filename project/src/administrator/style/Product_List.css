@@ -13,6 +13,21 @@
   background-color: var(--table-background);
 }
 
+.sticky-right3 {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  right: 80px;
+  background-color: var(--table-background);
+}
+.sticky-right4 {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  right: -5px;
+  background-color: var(--table-background);
+}
+
 @-webkit-keyframes hvr-wobble-horizontal {
   16.65% {
     -webkit-transform: translateX(8px);
@@ -80,7 +95,6 @@
   border: none;
   cursor: pointer;
   transition: all 0s ease-in-out;
-  
 
   display: inline-block;
   vertical-align: middle;
