@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { query, collection, getDocs, doc, deleteDoc, writeBatch } from "firebase/firestore";
+import {
+  query,
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  writeBatch,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import Nav from "./Nav";
 import "./style/product_forrm.css";
+import "./style/reponsive.css";
 import { db, storageRef } from "../firebase";
-
 
 function EditProducts() {
   const location = useLocation();
@@ -42,17 +49,20 @@ function EditProducts() {
 
   const fetchType = async () => {
     try {
-      const q = query(collection(db, 'type'));
+      const q = query(collection(db, "type"));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setProductTypeList(newData);
     } catch (error) {
-      console.error('Error fetching account data:', error);
+      console.error("Error fetching account data:", error);
     }
   };
 
   const handleUpdate = async (e) => {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
 
     const batch = writeBatch(db);
@@ -79,7 +89,7 @@ function EditProducts() {
     try {
       await batch.commit(); // Commit all updates in the batch
       alert("เเก้ไขข้อมูลผลิตภัณฑ์สำเร็จ");
-      setLoading(true)
+      setLoading(true);
       window.close();
     } catch (error) {
       console.error("Error updating fields:", error);
@@ -122,8 +132,7 @@ function EditProducts() {
                     <div className="contact_field">
                       <h3>แก้ไขผลิตภัณฑ์</h3>
                       <p>ทำการแก้ไขสินค้า</p>
-                      <Form onSubmit={handleUpdate}>
-
+                      <Form className="res_po" onSubmit={handleUpdate}>
                         {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
@@ -132,7 +141,10 @@ function EditProducts() {
                             placeholder="Name"
                             value={productData.name}
                             onChange={(e) =>
-                              setProductData({ ...productData, name: e.target.value })
+                              setProductData({
+                                ...productData,
+                                name: e.target.value,
+                              })
                             }
                             required
                             pattern="[a-zA-Zก-๙]+"
@@ -147,7 +159,10 @@ function EditProducts() {
                             placeholder="Description"
                             value={productData.description}
                             onChange={(e) =>
-                              setProductData({ ...productData, description: e.target.value })
+                              setProductData({
+                                ...productData,
+                                description: e.target.value,
+                              })
                             }
                             required
                           />
@@ -161,7 +176,10 @@ function EditProducts() {
                             placeholder="Quantity"
                             value={productData.quantity}
                             onChange={(e) =>
-                              setProductData({ ...productData, quantity: e.target.value })
+                              setProductData({
+                                ...productData,
+                                quantity: e.target.value,
+                              })
                             }
                             required
                           />
@@ -175,7 +193,10 @@ function EditProducts() {
                             placeholder="Price"
                             value={productData.price}
                             onChange={(e) =>
-                              setProductData({ ...productData, price: e.target.value })
+                              setProductData({
+                                ...productData,
+                                price: e.target.value,
+                              })
                             }
                             required
                           />
@@ -190,7 +211,10 @@ function EditProducts() {
                             placeholder="Type"
                             value={productData.type}
                             onChange={(e) =>
-                              setProductData({ ...productData, type: e.target.value })
+                              setProductData({
+                                ...productData,
+                                type: e.target.value,
+                              })
                             }
                             required
                           >
@@ -222,21 +246,29 @@ function EditProducts() {
                             value={productData.attribute}
                             required
                             style={{
-                              height: '150px',
+                              height: "150px",
                             }}
                             onChange={(e) =>
-                              setProductData({ ...productData, attribute: e.target.value })
+                              setProductData({
+                                ...productData,
+                                attribute: e.target.value,
+                              })
                             }
                           />
                         </Form.Group>
 
                         <br />
-                        <Button variant="success" className="contact_form_submit" type="submit" disabled={isLoading}>
-                          {isLoading ? 'Loading…' : 'Update'}
+                        <Button
+                          variant="success"
+                          className="contact_form_submit"
+                          type="submit"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Loading…" : "Update"}
                         </Button>
                         <Button
                           onClick={handleDelete}
-                          className="contact_form_submit2"
+                          className="contact_form_submit2 "
                           variant="danger"
                         >
                           Delete
@@ -246,10 +278,12 @@ function EditProducts() {
                   </div>
                 </Col>
 
-                <Col md={3} >
+                <Col md={3}>
                   <Image
                     className="resize5"
-                    src={imageList.find((url) => url.includes(productData.image))}
+                    src={imageList.find((url) =>
+                      url.includes(productData.image)
+                    )}
                   />
                 </Col>
 

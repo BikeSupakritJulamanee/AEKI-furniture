@@ -2,8 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Container, Image, Button, Form, Modal, Card } from "react-bootstrap";
 import Nav from "./Nav";
 import { storageRef, db } from "../firebase";
-import { getDocs, collection, query, addDoc, updateDoc, doc, deleteDoc, } from "firebase/firestore";
-import { ref, getDownloadURL, uploadBytes, listAll, deleteObject } from "firebase/storage";
+import {
+  getDocs,
+  collection,
+  query,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import {
+  ref,
+  getDownloadURL,
+  uploadBytes,
+  listAll,
+  deleteObject,
+} from "firebase/storage";
 
 function Transportation() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -14,7 +28,8 @@ function Transportation() {
   const [fileName, setFileName] = useState("");
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
-  const [selectedTransportCompany, setSelectedTransportCompany] = useState(null);
+  const [selectedTransportCompany, setSelectedTransportCompany] =
+    useState(null);
   const [isLoading, setLoading] = useState(false);
   const [fetchTransportCompanies, setFetchTransportCompanies] = useState([]);
   const handleShowAddModal = () => setShowAddModal(true);
@@ -177,7 +192,7 @@ function Transportation() {
     <>
       <Nav />
       <Container>
-        <div className="d-grid gap-2">
+        <div className=" btn-sm">
           <Button
             variant="outline-primary"
             size="lg"
@@ -195,7 +210,6 @@ function Transportation() {
           </Modal.Header>
           <Modal.Body>
             <Form onSubmit={handleAddSubmit}>
-
               <Form.Group>
                 <div className="contact_field_modal">
                   <Form.Control
@@ -290,7 +304,14 @@ function Transportation() {
 
         {/* Display Transportation Companies */}
         {fetchTransportCompanies.map((company, index) => (
-          <span key={index} style={{ display: 'inline-flex', placeItems: 'center', minHeight: '70vh', }}>
+          <span
+            key={index}
+            style={{
+              display: "inline-flex",
+              placeItems: "center",
+              minHeight: "-3vh",
+            }}
+          >
             <Card>
               <Image
                 onClick={() => handleShowEditModal(company)}

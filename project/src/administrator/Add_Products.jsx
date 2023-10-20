@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Form,
+  Row,
+  Col,
+  Image,
+  Modal,
+} from "react-bootstrap";
 import { db, storageRef } from "../firebase";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -11,9 +19,8 @@ import img1 from "./image/add.jpg";
 //import style.css
 import "./style/product_forrm.css";
 import "./style/Button_style.css";
-
+import "./style/reponsive.css";
 function Add_Products() {
-  
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -124,7 +131,6 @@ function Add_Products() {
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
             <div className="contact_field_modal">
-
               {/* form product type */}
               <Form.Group>
                 <Form.Control
@@ -137,7 +143,6 @@ function Add_Products() {
                   pattern="[ก-๙]+"
                 />
               </Form.Group>
-
             </div>
 
             <Button
@@ -148,7 +153,6 @@ function Add_Products() {
             >
               {isLoading ? "Loading…" : "เพิ่มประเภท"}
             </Button>
-
           </Form>
         </Modal.Body>
       </Modal>
@@ -163,7 +167,6 @@ function Add_Products() {
                     <div className="contact_field">
                       <h3>เพิ่มผลิตภัณฑ์</h3>
                       <div className="d-grid gap-2">
-
                         <Button
                           variant="outline-primary"
                           size="lg"
@@ -172,12 +175,10 @@ function Add_Products() {
                         >
                           &#43;เพิ่มประเภทสินค้า
                         </Button>
-
                       </div>
                       <p>ทำการเพิ่มรายละเอียดของสินค้า</p>
 
-                      <Form onSubmit={handleSubmit}>
-
+                      <Form className="res_po" onSubmit={handleSubmit}>
                         {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
@@ -282,15 +283,13 @@ function Add_Products() {
 
                         <Button
                           variant="success"
-                          className="contact_form_submit"
+                          className="contact_form_submit "
                           type="submit"
                           disabled={isLoading}
                         >
                           {isLoading ? "Loading…" : "เพิ่มผลิตภัณฑ์"}
                         </Button>
-
                       </Form>
-
                     </div>
                   </div>
                 </Col>
