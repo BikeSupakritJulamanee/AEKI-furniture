@@ -103,7 +103,7 @@ header {
     position: fixed;
     top: 596px;
     right: 30px;
-    z-index: 2;
+    z-index: 3;
     background: #fcda05;
     -webkit-transition-property: color;
     transition-property: color;

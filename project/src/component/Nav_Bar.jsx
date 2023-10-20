@@ -1,7 +1,15 @@
 import { useState } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useUserAuth } from "../context/UserAuthContext";
-import { Container, Badge, Navbar, Button, Col, Stack, Nav } from "react-bootstrap";
+import {
+  Container,
+  Badge,
+  Navbar,
+  Button,
+  Col,
+  Stack,
+  Nav,
+} from "react-bootstrap";
 
 import menuImage from "../image/menu.png";
 import cart_icon from "./image/shopping-cart.png";
@@ -32,7 +40,7 @@ function Nav_Bar() {
         &#10166;บริการผ่อนชำระ 0% &#10166;จัดส่งเริ่มต้นที่ 99 บาท
         &#10166;นโยบายเปลี่ยนคืนสินค้าใน 365 วัน
       </header>
-      <Navbar className="admin_nav" >
+      <Navbar className="admin_nav">
         <Container>
           <img
             className="menu"
@@ -75,6 +83,8 @@ function Nav_Bar() {
           </Button>
         </Container>
       </Navbar>
+
+      <div class="box_nav"></div>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
