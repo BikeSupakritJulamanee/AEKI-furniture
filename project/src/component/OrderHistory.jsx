@@ -160,7 +160,12 @@ function OrderHistory() {
         </Table>
         <center>
           <Link to="/home">
-            <Button> กลับหน้าเเรก</Button>
+            <Button
+              className="hvr_grow"
+              style={{ width: "160px", paddingRight: "20px" }}
+            >
+              กลับหน้าเเรก
+            </Button>
           </Link>
         </center>
       </Container>

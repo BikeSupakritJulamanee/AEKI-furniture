@@ -7,16 +7,24 @@ import { Link } from "react-router-dom";
 //firebase
 import { db, storageRef } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp, } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+  addDoc,
+  getDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import "./style/UserorderList.css";
 
 //image
 import shopping_cart from "./image/shopping-cart.png";
 import confirmation from "./image/confirmation.png";
 
-
 function UserorderList() {
-
   const { user } = useUserAuth();
   const [showAddModal, setShowAddModal] = useState(false);
   const [orderUser, setOrderUser] = useState([]);
@@ -34,13 +42,13 @@ function UserorderList() {
   const handleShowAddModal = () => setShowAddModal(true);
   const imageListRef = ref(storageRef, "products/");
   const [imageList, setImageList] = useState([]);
-  const [buyStatus, setBuyStatus] = useState(false)
+  const [buyStatus, setBuyStatus] = useState(false);
 
-  const [transportCost, setTransportCost] = useState('');
+  const [transportCost, setTransportCost] = useState("");
 
   const handleSelectChange = (e) => {
     const selectedValue = e.target.value;
-    const [id, cost] = selectedValue.split('|'); // Assuming values are joined with '|'
+    const [id, cost] = selectedValue.split("|"); // Assuming values are joined with '|'
 
     setTransportID(id);
     setTransportCost(cost);
@@ -90,9 +98,12 @@ function UserorderList() {
 
   const fetchprice = async () => {
     const sum = matchingProducts.reduce((total, price) => {
-      return total + orderUser.reduce((subtotal, even) => {
-        return subtotal + price.price * even.qauntityPerProductID[price.id];
-      }, 0);
+      return (
+        total +
+        orderUser.reduce((subtotal, even) => {
+          return subtotal + price.price * even.qauntityPerProductID[price.id];
+        }, 0)
+      );
     }, 0);
 
     setprice(sum);
@@ -100,12 +111,20 @@ function UserorderList() {
 
   const fetchproduct = async () => {
     const querySnapshot = await getDocs(collection(db, "products"));
-    const newDataproducts = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+    const newDataproducts = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
 
     if (newDataproducts.length > 0 && orderUser.length > 0) {
       const matching = orderUser[0].product_id
-        .filter((cartProductId) => newDataproducts.some((product) => product.id === cartProductId))
-        .map((cartProductId) => ({ ...newDataproducts.find((product) => product.id === cartProductId), cartProductId }));
+        .filter((cartProductId) =>
+          newDataproducts.some((product) => product.id === cartProductId)
+        )
+        .map((cartProductId) => ({
+          ...newDataproducts.find((product) => product.id === cartProductId),
+          cartProductId,
+        }));
 
       if (matching.length !== matchingProducts.length) {
         setMatchingProducts(matching);
@@ -118,7 +137,10 @@ function UserorderList() {
       if (!user || !user.email) return;
       const q = query(collection(db, "cart"), where("email", "==", user.email));
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setOrderUser(newData);
     } catch (error) {
       console.error(error);
@@ -130,7 +152,10 @@ function UserorderList() {
     const q = query(collection(db, "user"), where("email", "==", user.email));
     try {
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setf_user(newData);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -139,10 +164,16 @@ function UserorderList() {
 
   const fetchAdress = async () => {
     if (!user || !user.email) return;
-    const q = query(collection(db, "recipientAddy"), where("email", "==", user.email));
+    const q = query(
+      collection(db, "recipientAddy"),
+      where("email", "==", user.email)
+    );
     try {
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setaddress_user(newData);
     } catch (error) {
       console.error("Error fetching address:", error);
@@ -154,7 +185,10 @@ function UserorderList() {
 
     try {
       const querySnapshot = await getDocs(q);
-      const newData = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setTransportList(newData);
     } catch (error) {
       console.error("Error fetching transportation:", error);
@@ -162,13 +196,13 @@ function UserorderList() {
   };
 
   const changByStatus = () => {
-    setBuyStatus(false)
-  }
+    setBuyStatus(false);
+  };
 
   const handlePay = async (e) => {
     e.preventDefault();
     if (matchingProducts.length == 0) {
-      alert('ไม่มีรายการสินค้า')
+      alert("ไม่มีรายการสินค้า");
       return;
     }
 
@@ -217,15 +251,15 @@ function UserorderList() {
     });
 
     if (orderUser[0].id) {
-      const docRef = doc(db, 'cart', orderUser[0].id); // Assuming 'cart' is your collection name
+      const docRef = doc(db, "cart", orderUser[0].id); // Assuming 'cart' is your collection name
       try {
         await updateDoc(docRef, {
           product_id: [],
           qauntityPerProductID: {},
         });
         console.log("Document updated successfully.");
-        fetchCart()
-        setBuyStatus(true)
+        fetchCart();
+        setBuyStatus(true);
       } catch (error) {
         console.error("Error updating document:", error);
       }
@@ -287,7 +321,7 @@ function UserorderList() {
         </div>
 
         {/* order table */}
-        <Table hover>
+        <Table hover responsive>
           <thead>
             <tr>
               <th>ผลิตภัณฑ์</th>
@@ -335,8 +369,16 @@ function UserorderList() {
           </tbody>
         </Table>
 
-        <div style={{ textAlign: 'right', marginBottom: "10px", fontWeight: "bold" }}>ที่อยู่ในการจัดส่ง</div>
-        <Form onSubmit={(e) => handlePay(e)} >
+        <div
+          style={{
+            textAlign: "right",
+            marginBottom: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          ที่อยู่ในการจัดส่ง
+        </div>
+        <Form onSubmit={(e) => handlePay(e)}>
           {/* select address */}
           <Form.Control
             as="select"
@@ -371,7 +413,8 @@ function UserorderList() {
                   key={index}
                   value={`${typeObj.id}|${typeObj.shippingCost}`}
                 >
-                  {typeObj.transportCompanyName} / ราคา: {typeObj.shippingCost} บาท
+                  {typeObj.transportCompanyName} / ราคา: {typeObj.shippingCost}{" "}
+                  บาท
                 </option>
               ))}
             </Form.Control>
@@ -387,16 +430,24 @@ function UserorderList() {
           </Button>
 
           <div>
-            <div style={{ textAlign: 'right', padding: "20px" }}>ยอดรวม: {transportCost ? price + parseInt(transportCost) : price} บาท</div>
-            <div style={{ float: 'right' }}>
-              <Button type="submit" className="hvr_grow"
-                style={{ width: "160px", paddingRight: "20px" }}>ยืนยันการซื้อ
+            <div style={{ textAlign: "right", padding: "20px" }}>
+              ยอดรวม: {transportCost ? price + parseInt(transportCost) : price}{" "}
+              บาท
+            </div>
+            <div style={{ float: "right" }}>
+              <Button
+                type="submit"
+                className="hvr_grow"
+                style={{ width: "160px", paddingRight: "20px" }}
+              >
+                ยืนยันการซื้อ
                 <img
                   className="hvr-icon"
                   src={confirmation}
                   style={{ marginBottom: "3px" }}
                 />
-              </Button></div>
+              </Button>
+            </div>
           </div>
         </Form>
       </Container>
@@ -407,7 +458,6 @@ function UserorderList() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
-
             <Form.Group>
               <div className="contact_field_modal">
                 <Form.Control
@@ -433,7 +483,6 @@ function UserorderList() {
                   pattern="^0{1}[6-9]{1}[0-9]{8}"
                 />
               </div>
-
             </Form.Group>
 
             <Form.Group>
@@ -458,16 +507,19 @@ function UserorderList() {
             >
               {isLoading ? "Loading…" : "เพิ่มช่องทางการขนส่ง"}
             </Button>
-
           </Form>
         </Modal.Body>
       </Modal>
 
       <Modal show={buyStatus} centered onHide={changByStatus}>
-        <Modal.Header style={{ textAlign: 'center' }} closeButton>
+        <Modal.Header style={{ textAlign: "center" }} closeButton>
           <Modal.Title>คำสั่งซื้อสำเร็จ</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ fontSize: '100px', textAlign: 'center' }} >&#10004;</Modal.Body>
+        <Modal.Body
+          style={{ fontSize: "300px", textAlign: "center", color: "green" }}
+        >
+          <div className="swing-in-top-fwd">&#10004;</div>
+        </Modal.Body>
       </Modal>
     </>
   );
