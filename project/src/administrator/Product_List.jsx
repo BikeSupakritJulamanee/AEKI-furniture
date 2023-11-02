@@ -1,33 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
-import {
-  Container,
-  Table,
-  Button,
-  Form,
-  Row,
-  Col,
-  Stack,
-} from "react-bootstrap";
+import { Container, Table, Button, Form, Row, Col, Stack } from "react-bootstrap";
 import { db } from "../firebase";
-import {
-  query,
-  collection,
-  where,
-  getDocs,
-  deleteDoc,
-  doc,
-  orderBy,
-} from "firebase/firestore";
+import { query, collection, where, getDocs, deleteDoc, doc, orderBy } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import "./style/Product_List.css";
+import classNames from "classnames";
+import ProductListCSS from "./style/Product_List.module.css"
 
 function Product_List() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [select, setSelect] = useState("");
   const [productTypeList, setProductTypeList] = useState([]);
-
   const [ifOrderBySales, setIfOrderBySales] = useState();
 
   useEffect(() => {
@@ -103,9 +87,9 @@ function Product_List() {
         </center>
 
         <center>
-          <Form.Group className="search_group">
+          <Form.Group>
             <Form.Control
-              className="search_bar"
+              className={ProductListCSS.search_bar}
               type="text"
               placeholder="ค้นหาด้วยชื่อผลิตภัณฑ์"
               value={searchTerm}
@@ -122,7 +106,7 @@ function Product_List() {
               <Col>
                 <Form.Group>
                   <Form.Select
-                    className="dropdown-small select_productType"
+                    className={ProductListCSS.select_productType}
                     placeholder="Type"
                     onChange={(e) => setSelect(e.target.value)}
                     required
@@ -142,12 +126,11 @@ function Product_List() {
               <Col>
                 <Form.Group>
                   <Form.Select
-                    className="dropdown-small select_productType"
+                    className={ProductListCSS.select_productType}
                     placeholder="Type"
-                    // onChange={(e) => setIfOrderBySales(e.target.value)}
                     onChange={(e) =>
                       setIfOrderBySales(e.target.value === "true")
-                    } // Convert the value to a boolean
+                    }
                     required
                   >
                     <option>จัดเรียงด้วยยอดขาย</option>
@@ -172,8 +155,8 @@ function Product_List() {
               <th>คลัง</th>
               {/* <th>Type</th> */}
               <th>ยอดขาย</th>
-              <th className="sticky-right">#</th>
-              <th className="sticky-right2">#</th>
+              <th className={ProductListCSS.sticky_right} >#</th>
+              <th className={ProductListCSS.sticky_right2} >#</th>
             </tr>
           </thead>
           <tbody>
@@ -186,7 +169,7 @@ function Product_List() {
                 <td>{product.quantity}</td>
                 {/* <td>{product.type}</td> */}
                 <td>{product.salses}</td>
-                <td className="sticky-right">
+                <td className={ProductListCSS.sticky_right}>
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
                       product.id
@@ -205,14 +188,15 @@ function Product_List() {
                     )}&attribute=${encodeURIComponent(product.attribute)}`}
                     target="_blank"
                   >
-                    <Button className="bt btn--primary" variant="info">
+                    <Button
+                      className={classNames(ProductListCSS.bt, 'btn--primary')} variant="info">
                       Edit
                     </Button>
                   </Link>
                 </td>
                 <td className="sticky-right2">
                   <Button
-                    className="bt btn--primary"
+                    className={classNames(ProductListCSS.bt, 'btn--primary')}
                     variant="danger"
                     onClick={() => handleDelete(product.id)}
                   >
@@ -223,7 +207,7 @@ function Product_List() {
             ))}
           </tbody>
         </Table>
-      </Container>
+      </Container >
     </>
   );
 }

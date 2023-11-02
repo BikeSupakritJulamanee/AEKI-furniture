@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import {
-  query,
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  writeBatch,
-} from "firebase/firestore";
+import { query, collection, getDocs, doc, deleteDoc, writeBatch } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import Nav from "./Nav";
-import "./style/product_forrm.css";
-import "./style/reponsive.css";
+import ProductFormCSS from "./style/product_form.module.css"
 import { db, storageRef } from "../firebase";
+import classNames from "classnames";
 
 function EditProducts() {
   const location = useLocation();
@@ -124,15 +117,15 @@ function EditProducts() {
       <Nav />
       <Container>
         <Row>
-          <Col md={10} className="sizecon">
-            <div className="contact_inner">
+          <Col md={10} className={ProductFormCSS.sizecon}>
+            <div className={ProductFormCSS.contact_inner}>
               <Row>
                 <Col md={7}>
-                  <div className="contact_form_inner">
-                    <div className="contact_field">
+                  <div className={ProductFormCSS.contact_form_inner}>
+                    <div className={ProductFormCSS.contact_field}>
                       <h3>แก้ไขผลิตภัณฑ์</h3>
                       <p>ทำการแก้ไขสินค้า</p>
-                      <Form className="res_po" onSubmit={handleUpdate}>
+                      <Form className={ProductFormCSS.res_po} onSubmit={handleUpdate}>
                         {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
@@ -207,7 +200,7 @@ function EditProducts() {
                           <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
                             as="select"
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Type"
                             value={productData.type}
                             onChange={(e) =>
@@ -230,7 +223,7 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             type="file"
                             onChange={handleFileChange}
                           />
@@ -240,7 +233,7 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>คุณลักษณะ</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Attribute"
                             as="textarea"
                             value={productData.attribute}
@@ -260,7 +253,7 @@ function EditProducts() {
                         <br />
                         <Button
                           variant="success"
-                          className="contact_form_submit"
+                          className={ProductFormCSS.contact_form_submit}
                           type="submit"
                           disabled={isLoading}
                         >
@@ -268,7 +261,7 @@ function EditProducts() {
                         </Button>
                         <Button
                           onClick={handleDelete}
-                          className="contact_form_submit2 "
+                          className={ProductFormCSS.contact_form_submit}
                           variant="danger"
                         >
                           Delete
@@ -280,7 +273,7 @@ function EditProducts() {
 
                 <Col md={3}>
                   <Image
-                    className="resize5"
+                    className={ProductFormCSS.resize5}
                     src={imageList.find((url) =>
                       url.includes(productData.image)
                     )}
@@ -288,7 +281,7 @@ function EditProducts() {
                 </Col>
 
                 <Col md={2}>
-                  <div className="right_conatct_social_icon d-flex align-items-end"></div>
+                  <div className={classNames(ProductFormCSS.right_conatct_social_icon, 'd-flex', ' align-items-end')}></div>
                 </Col>
               </Row>
             </div>
@@ -298,5 +291,4 @@ function EditProducts() {
     </>
   );
 }
-
 export default EditProducts;

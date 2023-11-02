@@ -1,4 +1,4 @@
-.input-small {
+.input_small {
   border-radius: 1px;
 }
 .sizecon {
@@ -126,4 +126,19 @@ button.contact_form_submit2 {
   display: flex;
   justify-content: center;
   transition: all 1s ease-in;
+}
+
+@media screen and (min-width: 300px) and (max-width: 1400px) {
+  .custom-button {
+    width: 200px;
+  }
+  .input_small {
+    width: 200px;
+  }
+  .res_po {
+    width: 200px;
+  }
+  .resize5 {
+    display: none;
+  }
 }

@@ -7,18 +7,11 @@ import { Link } from "react-router-dom";
 //firebase
 import { db, storageRef } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  doc,
-  updateDoc,
-  addDoc,
-  getDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-import "./style/UserorderList.css";
+import { getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp, } from "firebase/firestore";
+
+
+import UserorderListCSS from "./style/UserorderList.module.css"
+
 
 //image
 import shopping_cart from "./image/shopping-cart.png";
@@ -307,12 +300,12 @@ function UserorderList() {
         <div style={{ textAlign: "right" }}>
           <Link to="/home">
             <Button
-              className="hvr_grow"
+              className={UserorderListCSS.hvr_grow}
               style={{ width: "160px", paddingRight: "20px" }}
             >
               เลือกสินค้าต่อ
               <img
-                className="hvr-icon"
+                className={UserorderListCSS.hvr_icon}
                 src={shopping_cart}
                 style={{ marginBottom: "3px" }}
               />
@@ -335,7 +328,6 @@ function UserorderList() {
               <tr key={index}>
                 <td>
                   <Image
-                    className="img"
                     src={imageList.find((url) => url.includes(price.img))}
                     style={{ width: "100px", height: "100px" }}
                   />
@@ -382,7 +374,6 @@ function UserorderList() {
           {/* select address */}
           <Form.Control
             as="select"
-            className="dropdown-small"
             placeholder="Type"
             style={{ width: "224px", marginBottom: "10px" }}
             onChange={(e) => setselectAddress(e.target.value)}
@@ -401,7 +392,6 @@ function UserorderList() {
           <Form.Group controlId="exampleForm.SelectCustom">
             <Form.Control
               as="select"
-              className="dropdown-small"
               placeholder="Type"
               style={{ width: "225.333334px", marginBottom: "10px" }}
               onChange={handleSelectChange}
@@ -437,12 +427,12 @@ function UserorderList() {
             <div style={{ float: "right" }}>
               <Button
                 type="submit"
-                className="hvr_grow"
+                className={UserorderListCSS.hvr_grow}
                 style={{ width: "160px", paddingRight: "20px" }}
               >
                 ยืนยันการซื้อ
                 <img
-                  className="hvr-icon"
+                  className={UserorderListCSS.hvr_icon}
                   src={confirmation}
                   style={{ marginBottom: "3px" }}
                 />
@@ -459,7 +449,7 @@ function UserorderList() {
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
             <Form.Group>
-              <div className="contact_field_modal">
+              <div className={UserorderListCSS.contact_field_modal}>
                 <Form.Control
                   type="text"
                   placeholder="ที่อยู่"
@@ -472,7 +462,7 @@ function UserorderList() {
             </Form.Group>
 
             <Form.Group>
-              <div className="contact_field_modal">
+              <div className={UserorderListCSS.contact_field_modal}>
                 <Form.Control
                   type="text"
                   placeholder="เบอร์โทร"
@@ -486,7 +476,7 @@ function UserorderList() {
             </Form.Group>
 
             <Form.Group>
-              <div className="contact_field_modal">
+              <div className={UserorderListCSS.contact_field_modal}>
                 <Form.Control
                   type="text"
                   placeholder="ชื่อผู้รับ"
@@ -502,7 +492,7 @@ function UserorderList() {
             <Button
               variant="success"
               type="submit"
-              className="contact_form_submit"
+              className={UserorderListCSS.contact_form_submit}
               disabled={isLoading}
             >
               {isLoading ? "Loading…" : "เพิ่มช่องทางการขนส่ง"}
@@ -518,7 +508,7 @@ function UserorderList() {
         <Modal.Body
           style={{ fontSize: "300px", textAlign: "center", color: "green" }}
         >
-          <div className="swing-in-top-fwd">&#10004;</div>
+          <div className={UserorderListCSS.swing_in_top_fwd}>&#10004;</div>
         </Modal.Body>
       </Modal>
     </>

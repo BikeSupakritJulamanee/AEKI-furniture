@@ -1,9 +1,3 @@
-/* *{
-        font-family: "Sarabun";
-        src: local("Sarabun-Regular"), url("./Sarabun-Regular.ttf") format("truetype");
-        font-weight: normal;
-} */
-
 @import url("https://fonts.googleapis.com/css2?family=Sarabun&display=swap");
 
 * {
@@ -22,7 +16,7 @@
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
-.aspect-ratio-box {
+.aspect_ratio_box {
   position: relative;
   width: 100%;
   padding-bottom: 100%;
@@ -34,14 +28,14 @@
   width: 600px;
 }
 
-.aspect-ratio-box img {
+.aspect_ratio_box img {
   position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.custom-button-style {
+.custom_button_style {
   width: 391px;
   height: 45px;
   color: black;
@@ -50,6 +44,6 @@
   border-radius: 50px;
 }
 
-.input-small {
+.input_small {
   border-radius: 1px;
 }

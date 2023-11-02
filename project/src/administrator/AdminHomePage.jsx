@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
-import "./style/AdminHomePage.css";
+import classnames from 'classnames';
+import AdminHomePageCSS from "./style/AdminHomePage.module.css"
 
 // Image imports
 import user_icon from "./image/group.png";
@@ -149,13 +150,13 @@ function Home() {
       <Container>
         <Container>
           <center><h4><Badge bg="info">Dash Board</Badge></h4></center>
-          <div class="con">
-            <div class="item board" data-order="1">
-              <Card className="card-po">
+          <div className={AdminHomePageCSS.con}>
+            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="1">
+              <Card className={AdminHomePageCSS.card_po} >
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')} >
                         New Users
                       </Card.Subtitle>
                       <Card.Text>
@@ -165,7 +166,7 @@ function Home() {
                   </Col>
                   <Col md={4} sm={6} xs={6} className="res">
                     <Image
-                      className="img"
+                      className={AdminHomePageCSS.img}
                       src={user_icon}
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -173,12 +174,12 @@ function Home() {
                 </Row>
               </Card>
             </div>
-            <div className="item board" data-order="2">
-              <Card className="card-po">
+            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="2">
+              <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
                         Orders
                       </Card.Subtitle>
                       <Card.Text>
@@ -188,7 +189,7 @@ function Home() {
                   </Col>
                   <Col md={4} sm={6} xs={6} className="res">
                     <Image
-                      className="img"
+                      className={AdminHomePageCSS.img}
                       src={order_icon}
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -196,12 +197,12 @@ function Home() {
                 </Row>
               </Card>
             </div>
-            <div className="item board" data-order="3">
-              <Card className="card-po ">
+            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="3">
+              <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
                         Success
                       </Card.Subtitle>
                       <Card.Text>
@@ -211,7 +212,7 @@ function Home() {
                   </Col>
                   <Col md={4} sm={6} xs={6} className="res">
                     <Image
-                      className="img"
+                      className={AdminHomePageCSS.img}
                       src={success_icon}
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -219,12 +220,13 @@ function Home() {
                 </Row>
               </Card>
             </div>
-            <div className="item board" data-order="4">
-              <Card className="card-po">
+
+            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="4">
+              <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
                         <p className="size_font">Transportation</p>
                       </Card.Subtitle>
                       <Card.Text>
@@ -234,7 +236,7 @@ function Home() {
                   </Col>
                   <Col md={4} sm={6} xs={6} className="res">
                     <Image
-                      className="img"
+                      className={AdminHomePageCSS.img}
                       src={transport_icon}
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -242,12 +244,13 @@ function Home() {
                 </Row>
               </Card>
             </div>
-            <div className="item board" data-order="5">
-              <Card className="card-po">
+
+            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="5">
+              <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className="mb-2 text-muted">
+                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')} >
                         Product
                       </Card.Subtitle>
                       <Card.Text>
@@ -257,7 +260,7 @@ function Home() {
                   </Col>
                   <Col md={4} sm={6} xs={6} className="res">
                     <Image
-                      className="img"
+                      className={AdminHomePageCSS.img}
                       src={product_icon}
                       style={{ width: "50px", height: "50px" }}
                     />
@@ -268,9 +271,9 @@ function Home() {
           </div>
         </Container>
         <center>
-          <Form.Group className="search_group">
+          <Form.Group>
             <Form.Control
-              className="search_bar"
+              className={AdminHomePageCSS.search_bar}
               type="text"
               placeholder="ค้นหาด้วยชื่อสินค้า"
               value={searchTerm}
@@ -281,7 +284,7 @@ function Home() {
 
         <Form.Group>
           <Form.Select
-            className="dropdown-small select_productType"
+            className={classnames(AdminHomePageCSS.dropdown_small, AdminHomePageCSS.select_productType)}
             placeholder="Type"
             onChange={(e) => setSelect(e.target.value)}
             required
@@ -289,7 +292,7 @@ function Home() {
             <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
-                <span className="option-icon">👉🏼</span>
+                👉🏼
                 {typeObj.productType}
               </option>
             ))}
@@ -297,10 +300,10 @@ function Home() {
         </Form.Group>
 
         <Container>
-          <div className="card-container">
+          <div className={AdminHomePageCSS.card_container}>
             <Row className="box">
               {products.map((product, index) => (
-                <div key={index} className="card-wrapper">
+                <div key={index} className={AdminHomePageCSS.card_wrapper}>
                   <Link
                     to={`/edit_products?id=${encodeURIComponent(
                       product.id
@@ -320,10 +323,10 @@ function Home() {
           `}
                     target="_blank"
                   >
-                    <Card className="card_content">
-                      <div class="card_background">
+                    <Card className={AdminHomePageCSS.card_container} >
+                      <div className={AdminHomePageCSS.card_background}>
                         <Image
-                          className="img"
+                          className={AdminHomePageCSS.img}
                           src={imageList.find((url) =>
                             url.includes(product.img)
                           )}
@@ -331,28 +334,25 @@ function Home() {
                         />
                       </div>
 
-                      <Card.Body class="card_body">
-                        <div className="product_name">{product.name}</div>
-
+                      <Card.Body className={AdminHomePageCSS.card_body} >
+                        <div className={AdminHomePageCSS.product_name}>{product.name}</div>
                         <div>
-                          <span className="product_price">
+                          <spanc className={AdminHomePageCSS.product_price}>
                             {product.price.toLocaleString()}
-                          </span>
-                          <b className="bath"> บาท</b>
+                          </spanc>
+                          <b className={AdminHomePageCSS.bath}> บาท</b>
                         </div>
 
-                        <div className="product_description">
+                        <div className={AdminHomePageCSS.product_description}>
                           {product.description}
                         </div>
-                        {/* <div class="action_bottom_bar">
-                          <Button className="bt2">rr</Button>
-                        </div> */}
                       </Card.Body>
+
                     </Card>
                   </Link>
                 </div>
               ))}
-              <hr className="hr-text" data-content="IKEA"></hr>
+              <hr className={AdminHomePageCSS.hr_text} data-content="IKEA"></hr>
             </Row>
           </div>
         </Container>

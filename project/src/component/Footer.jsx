@@ -1,14 +1,14 @@
 import React from "react";
 
-import "./style/Footer.css";
+import FooterCSS from "./style/Footer.module.css"
 
 function Footer() {
   return (
     <>
-      <div class="footer-line"></div>
-      <div class="footer-wrapper">
-        <section class="footer-top">
-          <div class="footer-headline">
+      <div className={FooterCSS.footer_line}></div>
+      <div className={FooterCSS.footer_wrapper}>
+        <section className={FooterCSS.footer_top}>
+          <div className={FooterCSS.footer_headline}>
             <h2>Topics Details</h2>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -18,11 +18,9 @@ function Footer() {
             </p>
           </div>
         </section>
-        <div class="footer-columns">
-          <section class="footer-logo">
-            {/* <Image src="" alt=""> */}
-
-            <h2 class="hide">IKEA</h2>
+        <div className={FooterCSS.footer_columns}>
+          <section className={FooterCSS.footer_logo}>
+            <h2 className="hide">IKEA</h2>
           </section>
           <section></section>
           <section></section>
@@ -58,9 +56,9 @@ function Footer() {
             </ul>
           </section>
         </div>
-        <div class="footer-bottom">
+        <div className={FooterCSS.footer_bottom}>
           <small>© My Company Ltd. 2023, All rights reserved</small>
-          <span class="social-links">
+          <span className="social-links">
             <a href="#" title="Link1">
               {/* <Image src=" " alt='LINK_ICON'> */}
             </a>

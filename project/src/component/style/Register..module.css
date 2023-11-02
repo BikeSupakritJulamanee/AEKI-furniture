@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Sarabun&display=swap");
+
+* {
+  font-family: "Sarabun", sans-serif;
+}
+
+.block_2 {
+  margin-top: 5px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.block {
+  margin-top: 105px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.aspect_ratio_box {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  /* สัดส่วน 1:1 (100% ของความกว้าง) */
+  overflow: hidden;
+}
+
+.size {
+  width: 600px;
+}
+
+.aspect_ratio_box img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.custom_button_style {
+  width: 391px;
+  height: 45px;
+  color: black;
+  font-weight: 20px;
+  font-size: 20px;
+  border-radius: 50px;
+}
+
+.input_small {
+  border-radius: 1px;
+}

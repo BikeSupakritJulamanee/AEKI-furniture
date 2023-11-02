@@ -7,7 +7,7 @@ import { getDocs, collection, query, where, orderBy, doc, updateDoc, getDoc } fr
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 import Footer from "./Footer";
-import "./style/Home.css";
+import HomeCSS from "./style/Home.module.css"
 
 function Home() {
   const { user } = useUserAuth();
@@ -149,12 +149,12 @@ function Home() {
       <Nav_Bar />
       <Container>
         <center>
-          <b className="animation_text">สินค้าขายดี</b>
+          <b className={HomeCSS.animation_text}>สินค้าขายดี</b>
         </center>
 
         <Row>
           {topProductList.map((product, index) => (
-            <div key={index} className="card-wrapper">
+            <div key={index} className={HomeCSS.card_wrapper}>
               <Link
                 to={`/product_detail?id=${encodeURIComponent(
                   product.id
@@ -169,13 +169,12 @@ function Home() {
                 )}&price=${encodeURIComponent(product.price)}`}
                 target="_blank"
               >
-                <div className="card-container">
+                <div className={HomeCSS.card_container}>
                   {/* show top product */}
                   <Row className="box">
                     <Card style={{ height: "280px" }}>
                       <center>
                         <Image
-                          className="img"
                           src={imageList.find((url) =>
                             url.includes(product.img)
                           )}
@@ -183,7 +182,7 @@ function Home() {
                         />
                       </center>
                       <Card.Body>
-                        <div className="product_name">{product.name}</div>
+                        <div className={HomeCSS.product_name}>{product.name}</div>
                       </Card.Body>
                     </Card>
                   </Row>
@@ -194,9 +193,9 @@ function Home() {
         </Row>
         <center>
           {/* search */}
-          <Form.Group className="search_group">
+          <Form.Group>
             <Form.Control
-              className="search_bar"
+              className={HomeCSS.search_bar}
               type="text"
               placeholder="คุณกำลังมองหาอะไรอยู่"
               value={searchTerm}
@@ -223,10 +222,10 @@ function Home() {
           </Form.Select>
         </Form.Group>
 
-        <div className="card-container">
+        <div className={HomeCSS.card_container}>
           <Row className="box">
             {products.map((product, index) => (
-              <div key={index} className="card-wrapper">
+              <div key={index} className={HomeCSS.card_wrapper}>
                 <Link
                   to={`/product_detail?id=${encodeURIComponent(
                     product.id
@@ -242,24 +241,23 @@ function Home() {
                   target="_blank"
                 >
                   {/* show all product */}
-                  <Card className="card_content" style={{ height: "570px" }}>
-                    <div class="card_background">
+                  <Card className={HomeCSS.card_content} style={{ height: "570px" }}>
+                    <div className={HomeCSS.card_background}>
                       <Image
-                        className="img"
                         src={imageList.find((url) => url.includes(product.img))}
                         style={{ width: "290px", height: "300px" }}
                       />
                     </div>
-                    <Card.Body className="card_body">
-                      <div className="product_name">{product.name}</div>
-                      <div className="product_description">
+                    <Card.Body className={HomeCSS.card_body}>
+                      <div className={HomeCSS.product_name}>{product.name}</div>
+                      <div className={HomeCSS.product_description}>
                         {product.description}
                       </div>
                       <div>
-                        <span className="product_price">
+                        <span className={HomeCSS.product_price}>
                           {product.price.toLocaleString()}
                         </span>
-                        <b className="bath"> บาท</b>
+                        <b className={HomeCSS.bath}> บาท</b>
                         <span style={{ marginLeft: "2rem" }}>
                           คงเหลือ: {product.quantity} ชิ้น
                         </span>
@@ -268,10 +266,10 @@ function Home() {
                   </Card>
                 </Link>
                 <div>
-                  <div className="button_back">
+                  <div className={HomeCSS.button_back}>
                     <Button
                       variant="warning"
-                      className="contact_form"
+                      className={HomeCSS.contact_form}
                       disabled={isLoading}
                       onClick={() => handlebuy(product.id, 1)}
                     >
@@ -286,7 +284,7 @@ function Home() {
 
 
       </Container>
-      <hr className="hr-text" data-content="IKEA"></hr>
+      <hr className={HomeCSS.hr_text} data-content="IKEA"></hr>
       <Footer />
     </>
   );

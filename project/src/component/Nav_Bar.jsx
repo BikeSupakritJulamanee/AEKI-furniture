@@ -1,22 +1,16 @@
 import { useState } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useUserAuth } from "../context/UserAuthContext";
-import {
-  Container,
-  Badge,
-  Navbar,
-  Button,
-  Col,
-  Stack,
-  Nav,
-} from "react-bootstrap";
+import { Container, Badge, Navbar, Button, Col, Stack, Nav } from "react-bootstrap";
 
 import menuImage from "../image/menu.png";
 import cart_icon from "./image/shopping-cart.png";
 import history_icon from "./image/file.png";
 import AEKI from "./image/ikea-logo.png";
 
-import "./style/Nav_Bar.css";
+import NavBarCSS from "./style/Nav_Bar.module.css";
+
+import classnames from 'classnames';
 
 function Nav_Bar() {
   const { user } = useUserAuth();
@@ -40,10 +34,10 @@ function Nav_Bar() {
         &#10166;บริการผ่อนชำระ 0% &#10166;จัดส่งเริ่มต้นที่ 99 บาท
         &#10166;นโยบายเปลี่ยนคืนสินค้าใน 365 วัน
       </header>
-      <Navbar className="admin_nav">
+      <Navbar className={NavBarCSS.admin_nav}>
         <Container>
           <img
-            className="menu"
+            className={NavBarCSS.menu}
             src={menuImage}
             alt="Menu"
             onClick={handleShow}
@@ -66,25 +60,25 @@ function Nav_Bar() {
           <Col>
             <Nav className="justify-content-end flex-grow-1 pe-5">
               <a href="/userorderlist" className="respon1">
-                <img className="menu" src={cart_icon} />
+                <img className={NavBarCSS.menu} src={cart_icon} />
               </a>
 
               <a href="/order_history" className="respon2">
-                <img className="menu" src={history_icon} />
+                <img className={NavBarCSS.menu} src={history_icon} />
               </a>
             </Nav>
           </Col>
           <Button
             onClick={handleLogout}
             style={{ marginBottom: "20px" }}
-            className="logout_bt respon3"
+            className={classnames(NavBarCSS.logout_bt, NavBarCSS.respon3)}
           >
             Logout
           </Button>
         </Container>
       </Navbar>
 
-      <div class="box_nav"></div>
+      <div class={NavBarCSS.box_nav}></div>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
@@ -93,15 +87,15 @@ function Nav_Bar() {
         <Offcanvas.Body>
           <Navbar.Brand href="/home">
             {" "}
-            <div className="Brand">หน้าหลัก</div>
+            <div className={NavBarCSS.Brand}>หน้าหลัก</div>
           </Navbar.Brand>
           <Navbar.Brand href="/userorderlist">
             {" "}
-            <div className="Brand">สินค้าในตะกร้า</div>
+            <div className={NavBarCSS.Brand}>สินค้าในตะกร้า</div>
           </Navbar.Brand>
           <Navbar.Brand href="/order_history">
             {" "}
-            <div className="Brand">ประวัติการสั่งซื้อ</div>
+            <div className={NavBarCSS.Brand}>ประวัติการสั่งซื้อ</div>
           </Navbar.Brand>
         </Offcanvas.Body>
       </Offcanvas>

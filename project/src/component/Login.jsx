@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Alert, Button, Image } from "react-bootstrap";
 import { useUserAuth } from "../context/UserAuthContext";
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "./style/Login.css";
 import img1 from "./image/img1.jpg";
 import img2 from "./image/img2.jpg";
 import img3 from "./image/img3.jpg";
 import img4 from "./image/img4.jpg";
+import LoginCSS from "./style/Login.module.css"
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -45,7 +44,7 @@ function Login() {
       <Row>
         <Col>
           <Row>
-            <Col className="block">
+            <Col className={LoginCSS.block}>
               <br />
 
               <h2 className="mb-3">เข้าสู่ระบบ</h2>
@@ -62,7 +61,7 @@ function Login() {
                     placeholder="Email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="input-small"
+                    className={LoginCSS.input_small}
                   />
                 </Form.Group>
 
@@ -73,14 +72,14 @@ function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-small "
+                    className={LoginCSS.input_small}
                   />
                 </Form.Group>
 
                 <div className="d-grid gap-2 justify-content-center">
                   <Button
                     variant="warning"
-                    className="custom-button-style"
+                    className={LoginCSS.custom_button_style}
                     type="submit"
                     disabled={isLoading}
                   >
@@ -102,26 +101,26 @@ function Login() {
             <Col className="size" sm={5} md={5}>
               <Row>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img1} alt="Image 1" className="resize" />
+                  <div className={LoginCSS.aspect_ratio_box}>
+                    <Image src={img1} alt="Image 1" className={LoginCSS.resize} />
                   </div>
                 </Col>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img2} alt="Image 2" className="resize" />
+                  <div className={LoginCSS.aspect_ratio_box}>
+                    <Image src={img2} alt="Image 2" className={LoginCSS.resize} />
                   </div>
                 </Col>
               </Row>
 
               <Row>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img3} alt="Image 3" className="resize" />
+                  <div className={LoginCSS.aspect_ratio_box}>
+                    <Image src={img3} alt="Image 3" className={LoginCSS.resize} />
                   </div>
                 </Col>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
-                  <div className="aspect-ratio-box">
-                    <Image src={img4} alt="Image 4" className="resize" />
+                  <div className={LoginCSS.aspect_ratio_box}>
+                    <Image src={img4} alt="Image 4" className={LoginCSS.resize} />
                   </div>
                 </Col>
               </Row>

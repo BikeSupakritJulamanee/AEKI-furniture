@@ -1,11 +1,12 @@
-.sticky-right {
+.sticky_right {
   position: sticky;
   z-index: 1;
   top: 0;
   right: 80px;
   background-color: var(--table-background);
 }
-.sticky-right2 {
+
+.sticky_right2 {
   position: sticky;
   z-index: 2;
   top: 0;
@@ -13,14 +14,15 @@
   background-color: var(--table-background);
 }
 
-.sticky-right3 {
+.sticky_right3 {
   position: sticky;
   z-index: 2;
   top: 0;
   right: 80px;
   background-color: var(--table-background);
 }
-.sticky-right4 {
+
+.sticky_right4 {
   position: sticky;
   z-index: 2;
   top: 0;
@@ -33,48 +35,59 @@
     -webkit-transform: translateX(8px);
     transform: translateX(8px);
   }
+
   33.3% {
     -webkit-transform: translateX(-6px);
     transform: translateX(-6px);
   }
+
   49.95% {
     -webkit-transform: translateX(4px);
     transform: translateX(4px);
   }
+
   66.6% {
     -webkit-transform: translateX(-2px);
     transform: translateX(-2px);
   }
+
   83.25% {
     -webkit-transform: translateX(1px);
     transform: translateX(1px);
   }
+
   100% {
     -webkit-transform: translateX(0);
     transform: translateX(0);
   }
 }
+
 @keyframes hvr-wobble-horizontal {
   16.65% {
     -webkit-transform: translateX(8px);
     transform: translateX(8px);
   }
+
   33.3% {
     -webkit-transform: translateX(-6px);
     transform: translateX(-6px);
   }
+
   49.95% {
     -webkit-transform: translateX(4px);
     transform: translateX(4px);
   }
+
   66.6% {
     -webkit-transform: translateX(-2px);
     transform: translateX(-2px);
   }
+
   83.25% {
     -webkit-transform: translateX(1px);
     transform: translateX(1px);
   }
+
   100% {
     -webkit-transform: translateX(0);
     transform: translateX(0);
@@ -117,4 +130,16 @@
   animation-timing-function: ease-in-out;
   -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
+}
+
+
+.search_bar {
+  font-family: "Kanit", sans-serif;
+}
+
+.select_productType {
+  width: 195px;
+  border: 0px;
+  font-weight: bold;
+  font-size: 14px;
 }

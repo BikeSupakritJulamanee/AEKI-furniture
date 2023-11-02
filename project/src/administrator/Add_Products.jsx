@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Button,
-  Form,
-  Row,
-  Col,
-  Image,
-  Modal,
-} from "react-bootstrap";
+import { Container, Button, Form, Row, Col, Image, Modal } from "react-bootstrap";
 import { db, storageRef } from "../firebase";
 import { collection, addDoc, query, getDocs } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -17,9 +9,11 @@ import Nav from "./Nav";
 import img1 from "./image/add.jpg";
 
 //import style.css
-import "./style/product_forrm.css";
+
+import ProductFormCSS from "./style/product_form.module.css"
 import "./style/Button_style.css";
-import "./style/reponsive.css";
+import classNames from "classnames";
+
 function Add_Products() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -130,12 +124,12 @@ function Add_Products() {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddSubmit}>
-            <div className="contact_field_modal">
+            <div className={ProductFormCSS.contact_field_modal} >
               {/* form product type */}
               <Form.Group>
                 <Form.Control
                   type="text"
-                  className="input-small"
+                  className={ProductFormCSS.input_small}
                   placeholder="ประเภทสินค้า"
                   value={productType}
                   onChange={(e) => setProductType(e.target.value)}
@@ -149,7 +143,7 @@ function Add_Products() {
               type="submit"
               disabled={isLoading}
               variant="success"
-              className="contact_form_submit"
+              className={ProductFormCSS.contact_form_submit}
             >
               {isLoading ? "Loading…" : "เพิ่มประเภท"}
             </Button>
@@ -159,12 +153,13 @@ function Add_Products() {
 
       <Container>
         <Row>
-          <Col md={10} className="sizecon">
-            <div className="contact_inner">
+          <Col md={10} className={ProductFormCSS.sizecon} >
+            <div className={ProductFormCSS.contact_inner}>
               <Row>
                 <Col md={7}>
-                  <div className="contact_form_inner">
-                    <div className="contact_field">
+
+                  <div > {/* className="contact_form_inner" */}
+                    <div className={ProductFormCSS.contact_field}>
                       <h3>เพิ่มผลิตภัณฑ์</h3>
                       <div className="d-grid gap-2">
                         <Button
@@ -178,13 +173,13 @@ function Add_Products() {
                       </div>
                       <p>ทำการเพิ่มรายละเอียดของสินค้า</p>
 
-                      <Form className="res_po" onSubmit={handleSubmit}>
+                      <Form className={ProductFormCSS.res_po} onSubmit={handleSubmit}>
                         {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
                             type="text"
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -198,7 +193,7 @@ function Add_Products() {
                           <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
                             type="text"
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -210,7 +205,7 @@ function Add_Products() {
                         <Form.Group>
                           <Form.Label>จำนวน</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Quantity"
                             type="number"
                             value={quantity}
@@ -223,7 +218,7 @@ function Add_Products() {
                         <Form.Group>
                           <Form.Label>ราคา</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Price"
                             type="number"
                             value={price}
@@ -237,7 +232,7 @@ function Add_Products() {
                           <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
                             as="select"
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Type"
                             value={type}
                             onChange={(e) => setType(e.target.value)}
@@ -258,7 +253,7 @@ function Add_Products() {
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             type="file"
                             onChange={handleFileChange}
                             required
@@ -269,7 +264,7 @@ function Add_Products() {
                         <Form.Group>
                           <Form.Label>คุณลักษณะ</Form.Label>
                           <Form.Control
-                            className="input-small"
+                            className={ProductFormCSS.input_small}
                             placeholder="Attribute"
                             as="textarea"
                             value={attribute}
@@ -283,7 +278,7 @@ function Add_Products() {
 
                         <Button
                           variant="success"
-                          className="contact_form_submit "
+                          className={ProductFormCSS.contact_form_submit}
                           type="submit"
                           disabled={isLoading}
                         >
@@ -295,10 +290,10 @@ function Add_Products() {
                 </Col>
 
                 <Col md={3}>
-                  <Image src={img1} alt="Image 1" className="resize5" />
+                  <Image src={img1} alt="Image 1" className={ProductFormCSS.resize5} />
                 </Col>
                 <Col md={2}>
-                  <div className="right_conatct_social_icon d-flex align-items-end"></div>
+                  <div className={classNames(ProductFormCSS.right_conatct_social_icon, 'd-flex', 'align-items-end')} ></div>
                 </Col>
               </Row>
             </div>

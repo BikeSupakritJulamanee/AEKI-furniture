@@ -5,8 +5,7 @@ import { useUserAuth } from '../context/UserAuthContext'; //useContext
 import { db } from '../firebase'; //database
 import { collection, addDoc } from 'firebase/firestore'; //firestore
 import { Container, Row, Col } from "react-bootstrap";
-
-import "./style/Login.css";
+import RegisterCSS from "./style/Register..module.css"
 import img5 from "./image/img5.jpg";
 import img6 from "./image/img6.jpg"
 import img7 from "./image/img7.jpg"
@@ -15,7 +14,6 @@ function Register() {
 
   const [error, setError] = useState('');
   const { signUp } = useUserAuth();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -95,7 +93,7 @@ function Register() {
         </Row></Col>
         <Col>
           <Row>
-            <Col className="block_2">
+            <Col className={RegisterCSS.block_2}>
               <br />
               <h2 className="mb-3">สมัครสมาชิก</h2>
               <h6 className="mb-3">
@@ -117,7 +115,7 @@ function Register() {
                     type="email"
                     placeholder="Email address"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="input-small "
+                    className={RegisterCSS.input_small}
                   />
                 </Form.Group>
 
@@ -128,7 +126,7 @@ function Register() {
                     type="text"
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
-                    className="input-small "
+                    className={RegisterCSS.input_small}
                     pattern="[a-zA-Z0-9ก-๙]+"
                   />
                 </Form.Group>
@@ -140,7 +138,7 @@ function Register() {
                     type="text"
                     placeholder="Phone number"
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="input-small"
+                    className={RegisterCSS.input_small}
                     pattern='^0{1}[6-9]{1}[0-9]{8}'
                   />
                 </Form.Group>
@@ -155,7 +153,7 @@ function Register() {
                     type="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
-                    className="input-small "
+                    className={RegisterCSS.input_small}
                   />
                 </Form.Group>
 
@@ -177,5 +175,4 @@ function Register() {
     </Container >
   );
 }
-
 export default Register;
