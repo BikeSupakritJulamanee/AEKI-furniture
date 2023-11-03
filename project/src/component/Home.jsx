@@ -3,11 +3,20 @@ import { Container, Card, Image, Button, Form, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
-import { getDocs, collection, query, where, orderBy, doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 import Footer from "./Footer";
-import HomeCSS from "./style/Home.module.css"
+import HomeCSS from "./style/Home.module.css";
 import classNames from "classnames";
 
 function Home() {
@@ -144,54 +153,57 @@ function Home() {
       console.error("Error fetching account data:", error);
     }
   };
-  
+
   return (
     <>
       <Nav_Bar />
       <Container>
-        <div className={HomeCSS.avs} >
-        <center>
-          <b className={HomeCSS.animation_text}>สินค้าขายดี</b>
-        </center>
-        <Row>
-          {topProductList.map((product, index) => (
-            <div key={index} className={HomeCSS.card_wrapper}>
-              <Link
-                to={`/product_detail?id=${encodeURIComponent(
-                  product.id
-                )}&name=${encodeURIComponent(
-                  product.name
-                )}&quantity=${encodeURIComponent(
-                  product.quantity
-                )}&description=${encodeURIComponent(
-                  product.description
-                )}&image=${encodeURIComponent(
-                  product.img
-                )}&price=${encodeURIComponent(product.price)}`}
-                target="_blank"
-              >
-                <div className={HomeCSS.card_container}>
-                  {/* show top product */}
-                  <Row className="box">
-                    <Card className={HomeCSS.avs} style={{ height: "280px" }}>
-                      <center>
-                        <Image
-                          src={imageList.find((url) =>
-                            url.includes(product.img)
-                          )}
-                          style={{ width: "200px", height: "200px" }}
-                        />
-                      
-                      <Card.Body>
-                        <div className={HomeCSS.product_name}>{product.name}</div>
-                      </Card.Body></center>
-                    </Card>
-                  </Row>
-                </div>
-              </Link>
-            </div>
-          ))}
-        </Row>
+        <div className={HomeCSS.avs}>
+          <center>
+            <b className={HomeCSS.animation_text}>สินค้าขายดี</b>
+          </center>
+          <Row>
+            {topProductList.map((product, index) => (
+              <div key={index} className={HomeCSS.card_wrapper}>
+                <Link
+                  to={`/product_detail?id=${encodeURIComponent(
+                    product.id
+                  )}&name=${encodeURIComponent(
+                    product.name
+                  )}&quantity=${encodeURIComponent(
+                    product.quantity
+                  )}&description=${encodeURIComponent(
+                    product.description
+                  )}&image=${encodeURIComponent(
+                    product.img
+                  )}&price=${encodeURIComponent(product.price)}`}
+                  target="_blank"
+                >
+                  <div className={HomeCSS.card_container}>
+                    {/* show top product */}
+                    <Row className="box">
+                      <Card className={HomeCSS.avs} style={{ height: "280px" }}>
+                        <center>
+                          <Image
+                            src={imageList.find((url) =>
+                              url.includes(product.img)
+                            )}
+                            style={{ width: "200px", height: "200px" }}
+                          />
+
+                          <Card.Body>
+                            <div className={HomeCSS.product_name}>
+                              {product.name}
+                            </div>
+                          </Card.Body>
+                        </center>
+                      </Card>
+                    </Row>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </Row>
         </div>
 
         <center>
@@ -206,12 +218,14 @@ function Home() {
             />
           </Form.Group>
         </center>
-        
 
         {/* select */}
         <Form.Group>
           <Form.Select
-            className={classNames(HomeCSS.dropdown_small, HomeCSS.select_productType)}
+            className={classNames(
+              HomeCSS.dropdown_small,
+              HomeCSS.select_productType
+            )}
             placeholder="Type"
             onChange={(e) => setSelect(e.target.value)}
             required
@@ -245,12 +259,19 @@ function Home() {
                   target="_blank"
                 >
                   {/* show all product */}
-                  <Card className={HomeCSS.card_content}>
+                  <Card
+                    className={HomeCSS.card_content}
+                    style={{ height: "530px" }}
+                  >
                     <div className={HomeCSS.card_background}>
-                      <center><Image
-                        src={imageList.find((url) => url.includes(product.img))}
-                        style={{ width: "16rem", height: "16rem" }}
-                      /></center>
+                      <center>
+                        <Image
+                          src={imageList.find((url) =>
+                            url.includes(product.img)
+                          )}
+                          style={{ width: "16rem", height: "16rem" }}
+                        />
+                      </center>
                     </div>
                     <Card.Body className={HomeCSS.card_body}>
                       <div className={HomeCSS.product_name}>{product.name}</div>

@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { storageRef, db } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { getDocs, collection, query, where, orderBy } from "firebase/firestore";
-import classnames from 'classnames';
-import AdminHomePageCSS from "./style/AdminHomePage.module.css"
+import classnames from "classnames";
+import AdminHomePageCSS from "./style/AdminHomePage.module.css";
 
 // Image imports
 import user_icon from "./image/group.png";
@@ -148,18 +148,26 @@ function Home() {
     <>
       <Nav />
       <Container>
-
         {/* dash */}
         <main>
-          <center><h4><Badge bg="info">Dash Board</Badge></h4></center>
+          <center>
+            <h4>
+              <Badge bg="info">Dash Board</Badge>
+            </h4>
+          </center>
 
           <div className={AdminHomePageCSS.con}>
-            <div className={AdminHomePageCSS.item} >
-              <Card className={AdminHomePageCSS.card_po} >
+            <div className={AdminHomePageCSS.item}>
+              <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')} >
+                      <Card.Subtitle
+                        className={classnames(
+                          AdminHomePageCSS.text_muted,
+                          "mb-2"
+                        )}
+                      >
                         New Users
                       </Card.Subtitle>
                       <Card.Text>
@@ -178,12 +186,17 @@ function Home() {
               </Card>
             </div>
 
-            <div className={AdminHomePageCSS.item} >
+            <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
+                      <Card.Subtitle
+                        className={classnames(
+                          AdminHomePageCSS.text_muted,
+                          "mb-2"
+                        )}
+                      >
                         Orders
                       </Card.Subtitle>
                       <Card.Text>
@@ -202,12 +215,17 @@ function Home() {
               </Card>
             </div>
 
-            <div className={AdminHomePageCSS.item} >
+            <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
+                      <Card.Subtitle
+                        className={classnames(
+                          AdminHomePageCSS.text_muted,
+                          "mb-2"
+                        )}
+                      >
                         Success
                       </Card.Subtitle>
                       <Card.Text>
@@ -226,12 +244,17 @@ function Home() {
               </Card>
             </div>
 
-            <div className={AdminHomePageCSS.item} >
+            <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
+                      <Card.Subtitle
+                        className={classnames(
+                          AdminHomePageCSS.text_muted,
+                          "mb-2"
+                        )}
+                      >
                         <p className="size_font">Transport</p>
                       </Card.Subtitle>
                       <Card.Text>
@@ -250,12 +273,17 @@ function Home() {
               </Card>
             </div>
 
-            <div className={AdminHomePageCSS.item} >
+            <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
-                      <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')} >
+                      <Card.Subtitle
+                        className={classnames(
+                          AdminHomePageCSS.text_muted,
+                          "mb-2"
+                        )}
+                      >
                         Product
                       </Card.Subtitle>
                       <Card.Text>
@@ -295,7 +323,10 @@ function Home() {
         <div>
           <Form.Group>
             <Form.Select
-              className={classnames(AdminHomePageCSS.dropdown_small, AdminHomePageCSS.select_productType)}
+              className={classnames(
+                AdminHomePageCSS.dropdown_small,
+                AdminHomePageCSS.select_productType
+              )}
               placeholder="Type"
               onChange={(e) => setSelect(e.target.value)}
               required
@@ -311,9 +342,9 @@ function Home() {
           </Form.Group>
         </div>
 
-        <section >
+        <section>
           <div className={AdminHomePageCSS.card_container}>
-            <Row >
+            <Row>
               {products.map((product, index) => (
                 <div key={index} className={AdminHomePageCSS.card_wrapper}>
                   <Link
@@ -335,7 +366,7 @@ function Home() {
           `}
                     target="_blank"
                   >
-                    <Card className={AdminHomePageCSS.card_container} >
+                    <Card className={AdminHomePageCSS.card_container}>
                       <div>
                         <Image
                           className={AdminHomePageCSS.img}
@@ -347,7 +378,9 @@ function Home() {
                       </div>
 
                       <Card.Body>
-                        <div className={AdminHomePageCSS.product_name}>{product.name}</div>
+                        <div className={AdminHomePageCSS.product_name}>
+                          {product.name}
+                        </div>
                         <div>
                           <spanc className={AdminHomePageCSS.product_price}>
                             {product.price.toLocaleString()}
@@ -355,7 +388,6 @@ function Home() {
                           <b className={AdminHomePageCSS.bath}> บาท</b>
                         </div>
                       </Card.Body>
-
                     </Card>
                   </Link>
                 </div>

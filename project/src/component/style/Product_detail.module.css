@@ -1,0 +1,109 @@
+.sizecon {
+  width: 1500px;
+}
+.contact_inner {
+  background-color: #fff;
+  position: relative;
+  box-shadow: 20px 22px 44px #cccc;
+  border-radius: 25px;
+}
+
+.contact_field h3 {
+  color: #000;
+  font-size: 40px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.contact_field p {
+  color: #000;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-bottom: 35px;
+}
+.contact_field .form-control {
+  border-radius: 0px;
+  border-bottom: 1px solid #ccc;
+}
+.contact_field .form-control:focus {
+  box-shadow: none;
+  border-bottom: 2px solid #1325e8;
+}
+.contact_field .form-control::placeholder {
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.contact_field_modal .form-control:focus {
+  box-shadow: none;
+  border-bottom: 2px solid #1325e8;
+}
+.contact_field {
+  padding: 42px 195px 102px 85px;
+}
+
+button.contact_form_submit {
+  background: #fcda05;
+  border: none;
+  color: #040404;
+  padding: 10px 15px;
+  width: 100%;
+  margin-top: 25px;
+  border-radius: 35px;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+.resize5 {
+  align-items: center;
+  width: 290px;
+  height: 300px;
+  margin-top: 90px;
+  border-radius: 87% 13% 81% 19% / 29% 75% 25% 71%;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+}
+
+.right_conatct_social_icon {
+  background: linear-gradient(to top right, #1325e8 -6%, #fcda05 100%);
+}
+.right_conatct_social_icon {
+  height: 100%;
+}
+
+/* tabet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .right_conatct_social_icon {
+    display: none;
+  }
+  .resize5 {
+    display: none;
+  }
+  .contact_form_submit {
+    width: 100%;
+  }
+  .input_small {
+    width: 100%;
+  }
+  .contact_field {
+    width: 150%;
+  }
+}
+/* mobile */
+@media screen and (max-width: 768px) {
+  .right_conatct_social_icon {
+    display: none;
+  }
+  .resize5 {
+    display: none;
+  }
+  .contact_form_submit {
+    width: 100%;
+  }
+  .input_small {
+    width: 87%;
+  }
+  .contact_field {
+    width: 139%;
+  }
+}
