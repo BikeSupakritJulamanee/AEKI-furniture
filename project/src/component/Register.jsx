@@ -63,7 +63,7 @@ function Register() {
       <br />
       <br />
       <Row>
-        <Col md={6}>
+        <Col className={RegisterCSS.posi} md={6}>
           <Row>
             <Col className={RegisterCSS.block_2}>
               <br />

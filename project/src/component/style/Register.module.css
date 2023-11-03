@@ -12,12 +12,12 @@
   .input_small {
     width: 16rem;
   }
-
+  .posi {
+    margin: 200px;
+  }
   .image_resize {
     position: relative;
-    top: 148px;
-    right: 20px;
-    width: 100%;
+    width: 200%;
   }
 }
 /* moblie */
