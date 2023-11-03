@@ -182,7 +182,15 @@ function Home() {
                   <div className={HomeCSS.card_container}>
                     {/* show top product */}
                     <Row className="box">
-                      <Card className={HomeCSS.avs} style={{ height: "280px" }}>
+                      <Card
+                        className={HomeCSS.avs} style={{ height: "280px" }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0)'; 
+                        }}
+                      >
                         <center>
                           <Image
                             src={imageList.find((url) =>
@@ -214,7 +222,15 @@ function Home() {
               type="text"
               placeholder="คุณกำลังมองหาอะไรอยู่"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              onKeyUp={(e) => {
+                e.currentTarget.style.backgroundColor = 'white';
+              }}
+              onKeyDown={(e) => {
+                e.currentTarget.style.backgroundColor = 'lightgray';
+              }}
             />
           </Form.Group>
         </center>

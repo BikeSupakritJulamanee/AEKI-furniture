@@ -14,6 +14,10 @@ function OrderHistory() {
   const [MatchingProducts, setMatchingProducts] = useState([]);
   const { user } = useUserAuth();
 
+  // Define pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Change this value to set the number of items per page
+
   useEffect(() => {
     fetchOrder();
     fetchProduct();
@@ -70,7 +74,7 @@ function OrderHistory() {
         ...doc.data(),
         id: doc.id,
       }));
-      if (newData.length != user_cart.length) {
+      if (newData.length !== user_cart.length) {
         setuser_cart(newData);
       }
     } catch (error) {
@@ -116,6 +120,16 @@ function OrderHistory() {
     }
   };
 
+  // Function to change the current page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Calculate the index of the first and last item on the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentOrders = user_order.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <div>
       <Nav_Bar />
@@ -132,14 +146,16 @@ function OrderHistory() {
             </tr>
           </thead>
           <tbody>
-            {user_order.map((order, index) => (
-              <tr>
+            {currentOrders.map((order, index) => (
+              <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>
                   {MatchingProducts.map(
                     (productInfo) =>
                       productInfo.orderId === order.id && (
-                        <div>{productInfo.productName}</div>
+                        <div key={productInfo.productName}>
+                          {productInfo.productName}
+                        </div>
                       )
                   )}
                 </td>
@@ -147,7 +163,9 @@ function OrderHistory() {
                   {MatchingProducts.map(
                     (productInfo) =>
                       productInfo.orderId === order.id && (
-                        <div>{productInfo.productQuantity}</div>
+                        <div key={productInfo.productQuantity}>
+                          {productInfo.productQuantity}
+                        </div>
                       )
                   )}
                 </td>
@@ -158,6 +176,22 @@ function OrderHistory() {
             ))}
           </tbody>
         </Table>
+
+        {/* Pagination component */}
+        <ul className="pagination">
+          {Array(Math.ceil(user_order.length / itemsPerPage))
+            .fill()
+            .map((_, index) => (
+              <li
+                key={index}
+                className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
+              >
+                <button onClick={() => paginate(index + 1)} className="page-link">
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+        </ul>
         <center>
           <Link to="/home">
             <Button
