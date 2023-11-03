@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap");
+
+* {
+  font-family: "Kanit", sans-serif;
+}
+
+.card_display{
+    width: 19rem;
+    display: inline-block;
+}
+
+/* tabet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  /* dash board */
+  .con {
+    display: block;
+  }
+  /* search */
+  .search_bar {
+    width: 100%;
+  }
+}
+/* mobile */
+@media screen and (max-width: 768px) {
+  /* dash board */
+  .con {
+    display: block;
+  }
+  /* search */
+  .search_bar {
+    width: 100%;
+  }
+}

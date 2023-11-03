@@ -10,6 +10,8 @@ import { db, storageRef } from "../firebase";
 //component
 import Nav from "./Nav";
 
+import OutOfStockCSS from './style/OutOfStock.module.css'
+
 function OutOfStock() {
   const [out_of_stock, setOut_Of_Stock] = useState([]);
   const [imageList, setImageList] = useState([]);
@@ -57,7 +59,7 @@ function OutOfStock() {
         </center>
 
         {out_of_stock.map((i, index) => (
-          <div key={index} style={{ display: "inline" }}>
+          <div key={index} className={OutOfStockCSS.card_display} >
             {/* link to /edit_products with variable */}
             <Link
               to={`/edit_products?id=${encodeURIComponent(
@@ -76,23 +78,25 @@ function OutOfStock() {
               target="_blank"
             >
               {/* show products is out of stock */}
-              <Card className="card" style={{ width: "300px" }}>
-                <Image
-                  className="img"
-                  src={imageList.find((url) => url.includes(i.img))}
-                  style={{ width: "290px", height: "300px" }}
-                />
-                <Card.Body>
-                  <div className="product_name">{i.name}</div>
-                  <div className="product_description">{i.description}</div>
-                  <div>
-                    <span className="product_price">
-                      {i.price.toLocaleString()}
-                    </span>
-                    <b className="bath"> บาท</b>
-                  </div>
-                </Card.Body>
-              </Card>
+              <div >
+                <Card>
+                  <Image
+                    className={OutOfStockCSS.img}
+                    src={imageList.find((url) => url.includes(i.img))}
+                    style={{ width: "290px", height: "300px" }}
+                  />
+                  <Card.Body>
+                    <div>{i.name}</div>
+                    <div>{i.description}</div>
+                    <div>
+                      <span>
+                        {i.price.toLocaleString()}
+                      </span>
+                      <b> บาท</b>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </div>
             </Link>
           </div>
         ))}

@@ -148,10 +148,13 @@ function Home() {
     <>
       <Nav />
       <Container>
-        <Container>
+
+        {/* dash */}
+        <main>
           <center><h4><Badge bg="info">Dash Board</Badge></h4></center>
+
           <div className={AdminHomePageCSS.con}>
-            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="1">
+            <div className={AdminHomePageCSS.item} >
               <Card className={AdminHomePageCSS.card_po} >
                 <Row>
                   <Col md={8} sm={6} xs={6}>
@@ -164,17 +167,18 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} sm={6} xs={6} className="res">
+                  <Col md={4} sm={6} xs={6}>
                     <Image
                       className={AdminHomePageCSS.img}
                       src={user_icon}
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "3rem", height: "3rem" }}
                     />
                   </Col>
                 </Row>
               </Card>
             </div>
-            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="2">
+
+            <div className={AdminHomePageCSS.item} >
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
@@ -187,17 +191,18 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} sm={6} xs={6} className="res">
+                  <Col md={4} sm={6} xs={6}>
                     <Image
                       className={AdminHomePageCSS.img}
                       src={order_icon}
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "3rem", height: "3rem" }}
                     />
                   </Col>
                 </Row>
               </Card>
             </div>
-            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="3">
+
+            <div className={AdminHomePageCSS.item} >
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
@@ -210,42 +215,42 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} sm={6} xs={6} className="res">
+                  <Col md={4} sm={6} xs={6}>
                     <Image
                       className={AdminHomePageCSS.img}
                       src={success_icon}
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "3rem", height: "3rem" }}
                     />
                   </Col>
                 </Row>
               </Card>
             </div>
 
-            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="4">
+            <div className={AdminHomePageCSS.item} >
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
                     <Card.Body>
                       <Card.Subtitle className={classnames(AdminHomePageCSS.text_muted, 'mb-2')}>
-                        <p className="size_font">Transportation</p>
+                        <p className="size_font">Transport</p>
                       </Card.Subtitle>
                       <Card.Text>
                         <Badge bg="success">{transport.length} company</Badge>
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} sm={6} xs={6} className="res">
+                  <Col md={4} sm={6} xs={6}>
                     <Image
                       className={AdminHomePageCSS.img}
                       src={transport_icon}
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "3rem", height: "3rem" }}
                     />
                   </Col>
                 </Row>
               </Card>
             </div>
 
-            <div className={classnames(AdminHomePageCSS.item, 'board')} data-order="5">
+            <div className={AdminHomePageCSS.item} >
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
                   <Col md={8} sm={6} xs={6}>
@@ -258,50 +263,57 @@ function Home() {
                       </Card.Text>
                     </Card.Body>
                   </Col>
-                  <Col md={4} sm={6} xs={6} className="res">
+                  <Col md={4} sm={6} xs={6}>
                     <Image
                       className={AdminHomePageCSS.img}
                       src={product_icon}
-                      style={{ width: "50px", height: "50px" }}
+                      style={{ width: "3rem", height: "3rem" }}
                     />
                   </Col>
                 </Row>
               </Card>
             </div>
           </div>
-        </Container>
-        <center>
+        </main>
+
+        {/* search */}
+        <div>
+          <center>
+            <Form.Group>
+              <Form.Control
+                className={AdminHomePageCSS.search_bar}
+                type="text"
+                placeholder="ค้นหาด้วยชื่อสินค้า"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Form.Group>
+          </center>
+        </div>
+
+        {/* select */}
+        <div>
           <Form.Group>
-            <Form.Control
-              className={AdminHomePageCSS.search_bar}
-              type="text"
-              placeholder="ค้นหาด้วยชื่อสินค้า"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <Form.Select
+              className={classnames(AdminHomePageCSS.dropdown_small, AdminHomePageCSS.select_productType)}
+              placeholder="Type"
+              onChange={(e) => setSelect(e.target.value)}
+              required
+            >
+              <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
+              {productTypeList.map((typeObj, index) => (
+                <option key={index} value={typeObj.productType}>
+                  👉🏼
+                  {typeObj.productType}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
-        </center>
+        </div>
 
-        <Form.Group>
-          <Form.Select
-            className={classnames(AdminHomePageCSS.dropdown_small, AdminHomePageCSS.select_productType)}
-            placeholder="Type"
-            onChange={(e) => setSelect(e.target.value)}
-            required
-          >
-            <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
-            {productTypeList.map((typeObj, index) => (
-              <option key={index} value={typeObj.productType}>
-                👉🏼
-                {typeObj.productType}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-
-        <Container>
+        <section >
           <div className={AdminHomePageCSS.card_container}>
-            <Row className="box">
+            <Row >
               {products.map((product, index) => (
                 <div key={index} className={AdminHomePageCSS.card_wrapper}>
                   <Link
@@ -324,27 +336,23 @@ function Home() {
                     target="_blank"
                   >
                     <Card className={AdminHomePageCSS.card_container} >
-                      <div className={AdminHomePageCSS.card_background}>
+                      <div>
                         <Image
                           className={AdminHomePageCSS.img}
                           src={imageList.find((url) =>
                             url.includes(product.img)
                           )}
-                          style={{ width: "290px", height: "300px" }}
+                          style={{ width: "16rem", height: "16rem" }}
                         />
                       </div>
 
-                      <Card.Body className={AdminHomePageCSS.card_body} >
+                      <Card.Body>
                         <div className={AdminHomePageCSS.product_name}>{product.name}</div>
                         <div>
                           <spanc className={AdminHomePageCSS.product_price}>
                             {product.price.toLocaleString()}
                           </spanc>
                           <b className={AdminHomePageCSS.bath}> บาท</b>
-                        </div>
-
-                        <div className={AdminHomePageCSS.product_description}>
-                          {product.description}
                         </div>
                       </Card.Body>
 
@@ -355,7 +363,7 @@ function Home() {
               <hr className={AdminHomePageCSS.hr_text} data-content="IKEA"></hr>
             </Row>
           </div>
-        </Container>
+        </section>
       </Container>
     </>
   );

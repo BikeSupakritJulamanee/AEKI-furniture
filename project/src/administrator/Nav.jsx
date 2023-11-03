@@ -47,9 +47,6 @@ function Nav() {
               </div>
             </Stack>
           </Col>
-          <Button onClick={handleLogout} className={classNames(NavCSS.logout_bt, NavCSS.respon3)}>
-            Logout
-          </Button>
         </Container>
       </Navbar>
 
@@ -86,6 +83,9 @@ function Nav() {
             {" "}
             <div className={NavCSS.Brand}>ลูกค้าดีเด่น</div>
           </Navbar.Brand>
+          <Button onClick={handleLogout} className={classNames(NavCSS.logout_bt, NavCSS.respon3)}>
+            Logout
+          </Button>
         </Offcanvas.Body>
       </Offcanvas>
     </>

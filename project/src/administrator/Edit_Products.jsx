@@ -271,7 +271,7 @@ function EditProducts() {
                   </div>
                 </Col>
 
-                <Col md={3}>
+                <Col md={3} className={ProductFormCSS.imageCol} >
                   <Image
                     className={ProductFormCSS.resize5}
                     src={imageList.find((url) =>

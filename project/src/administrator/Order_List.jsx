@@ -102,7 +102,7 @@ function Order_List() {
 
         <br />
         <br />
-        <Table hover responsive>
+        <Table hover responsive={'sm'}>
           <thead>
             <tr>
               <th>รหัสคำสั่งซื้อ</th>
