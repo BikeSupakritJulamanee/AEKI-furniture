@@ -9,7 +9,7 @@ import img1 from "./image/img1.jpg";
 import img2 from "./image/img2.jpg";
 import img3 from "./image/img3.jpg";
 import img4 from "./image/img4.jpg";
-import LoginCSS from "./style/Login.module.css"
+import LoginCSS from "./style/Login.module.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -37,12 +37,12 @@ function Login() {
   };
 
   return (
-    <Container>
+    <Container className={LoginCSS.flex_container}>
       <br />
       <br />
 
       <Row>
-        <Col>
+        <Col md={6}>
           <Row>
             <Col className={LoginCSS.block}>
               <br />
@@ -96,18 +96,18 @@ function Login() {
           </Row>
         </Col>
 
-        <Col>
-          <Row style={{ margin: "20px" }}>
-            <Col className="size" sm={5} md={5}>
+        <Col md={6}>
+          <Row style={{ margin: "60px" }}>
+            <Col className={LoginCSS.size} sm={5} md={5}>
               <Row>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
                   <div className={LoginCSS.aspect_ratio_box}>
-                    <Image src={img1} alt="Image 1" className={LoginCSS.resize} />
+                    <Image src={img1} alt="Image 1" />
                   </div>
                 </Col>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
                   <div className={LoginCSS.aspect_ratio_box}>
-                    <Image src={img2} alt="Image 2" className={LoginCSS.resize} />
+                    <Image src={img2} alt="Image 2" />
                   </div>
                 </Col>
               </Row>
@@ -115,12 +115,20 @@ function Login() {
               <Row>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
                   <div className={LoginCSS.aspect_ratio_box}>
-                    <Image src={img3} alt="Image 3" className={LoginCSS.resize} />
+                    <Image
+                      src={img3}
+                      alt="Image 3"
+                      className={LoginCSS.resize}
+                    />
                   </div>
                 </Col>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
                   <div className={LoginCSS.aspect_ratio_box}>
-                    <Image src={img4} alt="Image 4" className={LoginCSS.resize} />
+                    <Image
+                      src={img4}
+                      alt="Image 4"
+                      className={LoginCSS.resize}
+                    />
                   </div>
                 </Col>
               </Row>
