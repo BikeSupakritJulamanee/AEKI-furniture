@@ -3,10 +3,20 @@ import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { db } from "../firebase";
 import Nav_Bar from "../component/Nav_Bar";
-import { getDocs, collection, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
+import classNames from "classnames";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
+import Product_detailCSS from "./style/Product_detail.module.css";
 
 function Product_detail() {
   const location = useLocation();
@@ -127,12 +137,12 @@ function Product_detail() {
       <Container>
         <div style={{ textAlign: "right" }}></div>
         <Row>
-          <Col md={10} className="sizecon">
-            <div className="contact_inner">
+          <Col md={10} className={Product_detailCSS.sizecon}>
+            <div className={Product_detailCSS.contact_inner}>
               <Row>
                 <Col md={7}>
-                  <div className="contact_form_inner">
-                    <div className="contact_field">
+                  <div className={Product_detailCSS.contact_form_inner}>
+                    <div className={Product_detailCSS.contact_field}>
                       <h3>{productData.name}</h3>
                       <div>{productData.description}</div>
                       <br />
@@ -153,12 +163,22 @@ function Product_detail() {
                             <h6>จำนวนคงเหลือ:{product.quantity} ชิ้น</h6>
                           )
                       )}
-                      <br /><br />
-
+                      <br />
+                      <br />
+                      <h5
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "28px",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        {(productData.price * select_qrt).toLocaleString()} บาท
+                      </h5>
                       {/* quantity form */}
                       <Form.Group>
                         <Form.Control
                           type="number"
+                          className={Product_detailCSS.input_small}
                           placeholder="เพิ่มในรถเข็น"
                           value={select_qrt}
                           onChange={(e) => setselect_qrt(e.target.value)}
@@ -168,7 +188,7 @@ function Product_detail() {
 
                       <Button
                         variant="warning"
-                        className="contact_form_submit"
+                        className={Product_detailCSS.contact_form_submit}
                         disabled={isLoading}
                         onClick={() => handlebuy(productData.id, select_qrt)}
                       >
@@ -178,17 +198,16 @@ function Product_detail() {
                   </div>
                 </Col>
 
-
-                <Col md={3}  >
-                  <div style={{ textAlign: 'center' }} >
+                <Col md={3}>
+                  <div style={{ textAlign: "center" }}>
                     <Image
-                      className="resize5"
+                      className={Product_detailCSS.resize5}
                       src={imageList.find((url) =>
                         url.includes(productData.image)
                       )}
                     />
                   </div>
-                  <div style={{ textAlign: 'center', marginTop: '5%' }} >
+                  <div style={{ textAlign: "center", marginTop: "5%" }}>
                     {/* real time price */}
                     <div>
                       {(e) =>
@@ -197,18 +216,19 @@ function Product_detail() {
                           price: e.target.value,
                         })
                       }
-                      <h5 style={{fontWeight:'bold', fontSize:'28px'}} >{(productData.price * select_qrt).toLocaleString()} บาท</h5>
                     </div>
                   </div>
                 </Col>
 
-
-
                 <Col md={2}>
-                  <div className="right_conatct_social_icon d-flex align-items-end"></div>
+                  <div
+                    className={classNames(
+                      Product_detailCSS.right_conatct_social_icon,
+                      "d-flex",
+                      "align-items-end"
+                    )}
+                  ></div>
                 </Col>
-
-
               </Row>
             </div>
           </Col>
