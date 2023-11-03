@@ -17,6 +17,8 @@
   .image_resize {
     position: relative;
     top: 148px;
+    right: 20px;
+    width: 100%;
   }
 }
 /* tabet */
