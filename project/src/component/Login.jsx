@@ -42,7 +42,7 @@ function Login() {
       <br />
 
       <Row>
-        <Col md={6}>
+        <Col className={LoginCSS.posi2} md={6}>
           <Row>
             <Col className={LoginCSS.block}>
               <br />
@@ -96,7 +96,7 @@ function Login() {
           </Row>
         </Col>
 
-        <Col md={6}>
+        <Col className={LoginCSS.posi} md={6}>
           <Row style={{ margin: "60px" }} className={LoginCSS.image_resize}>
             <Col className={LoginCSS.size} sm={5} md={5}>
               <Row>

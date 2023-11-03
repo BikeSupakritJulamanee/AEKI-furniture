@@ -13,12 +13,13 @@
   .input_small {
     width: 16rem;
   }
-
+  .posi2 {
+    margin: 200px;
+  }
   .image_resize {
     position: relative;
-    top: 148px;
-    right: 20px;
-    width: 100%;
+    right: 50px;
+    width: 200%;
   }
 }
 /* tabet */
@@ -27,7 +28,7 @@
     width: 18rem;
   }
   .custom_button_style {
-    width: 18rem;
+    width: 16rem;
   }
 }
 .block_2 {
