@@ -97,7 +97,7 @@ function Login() {
         </Col>
 
         <Col md={6}>
-          <Row style={{ margin: "60px" }}>
+          <Row style={{ margin: "60px" }} className={LoginCSS.image_resize}>
             <Col className={LoginCSS.size} sm={5} md={5}>
               <Row>
                 <Col sm={6} md={6} style={{ paddingLeft: 0, paddingRight: 0 }}>
