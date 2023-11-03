@@ -7,13 +7,16 @@
 .input_small {
   border-radius: 1px;
 }
+
 /* tabet */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .input_small {
     width: 16rem;
   }
-  .custom_button_style {
-    width: 16rem;
+
+  .image_resize {
+    position: relative;
+    top: 148px;
   }
 }
 /* tabet */
@@ -22,7 +25,7 @@
     width: 18rem;
   }
   .custom_button_style {
-    width: 16rem;
+    width: 18rem;
   }
 }
 .block_2 {
@@ -57,7 +60,7 @@
 }
 
 .custom_button_style {
-  width: 391px;
+  width: 18rem;
   height: 45px;
   color: black;
   font-weight: 20px;

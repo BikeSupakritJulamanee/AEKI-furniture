@@ -4,6 +4,30 @@
   font-family: "Sarabun", sans-serif;
 }
 
+.input_small {
+  border-radius: 1px;
+}
+/* tabet */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .input_small {
+    width: 16rem;
+  }
+
+  .image_resize {
+    position: relative;
+    top: 148px;
+  }
+}
+/* moblie */
+@media screen and (max-width: 768px) {
+  .input_small {
+    width: 18rem;
+  }
+  .custom_button_style {
+    width: 18rem;
+  }
+}
+
 .block_2 {
   margin-top: 5px;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
@@ -36,14 +60,10 @@
 }
 
 .custom_button_style {
-  width: 391px;
+  width: 18rem;
   height: 45px;
   color: black;
   font-weight: 20px;
   font-size: 20px;
   border-radius: 50px;
-}
-
-.input_small {
-  border-radius: 1px;
 }
