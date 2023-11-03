@@ -8,6 +8,7 @@ import { useUserAuth } from "../context/UserAuthContext";
 import Nav_Bar from "../component/Nav_Bar";
 import Footer from "./Footer";
 import HomeCSS from "./style/Home.module.css"
+import classNames from "classnames";
 
 function Home() {
   const { user } = useUserAuth();
@@ -143,15 +144,15 @@ function Home() {
       console.error("Error fetching account data:", error);
     }
   };
-
+  
   return (
     <>
       <Nav_Bar />
       <Container>
+        <div className={HomeCSS.avs} >
         <center>
           <b className={HomeCSS.animation_text}>สินค้าขายดี</b>
         </center>
-
         <Row>
           {topProductList.map((product, index) => (
             <div key={index} className={HomeCSS.card_wrapper}>
@@ -172,7 +173,7 @@ function Home() {
                 <div className={HomeCSS.card_container}>
                   {/* show top product */}
                   <Row className="box">
-                    <Card style={{ height: "280px" }}>
+                    <Card className={HomeCSS.avs} style={{ height: "280px" }}>
                       <center>
                         <Image
                           src={imageList.find((url) =>
@@ -180,10 +181,10 @@ function Home() {
                           )}
                           style={{ width: "200px", height: "200px" }}
                         />
-                      </center>
+                      
                       <Card.Body>
                         <div className={HomeCSS.product_name}>{product.name}</div>
-                      </Card.Body>
+                      </Card.Body></center>
                     </Card>
                   </Row>
                 </div>
@@ -191,6 +192,8 @@ function Home() {
             </div>
           ))}
         </Row>
+        </div>
+
         <center>
           {/* search */}
           <Form.Group>
@@ -203,16 +206,17 @@ function Home() {
             />
           </Form.Group>
         </center>
+        
 
         {/* select */}
         <Form.Group>
           <Form.Select
-            className="dropdown-small select_productType"
+            className={classNames(HomeCSS.dropdown_small, HomeCSS.select_productType)}
             placeholder="Type"
             onChange={(e) => setSelect(e.target.value)}
             required
           >
-            <option value={""}>ค้นหาด้วยประเภทสินค้า;</option>
+            <option value={""}>ค้นหาด้วยประเภทสินค้า</option>
             {productTypeList.map((typeObj, index) => (
               <option key={index} value={typeObj.productType}>
                 <span className="option-icon">👉🏼</span>
@@ -241,12 +245,12 @@ function Home() {
                   target="_blank"
                 >
                   {/* show all product */}
-                  <Card className={HomeCSS.card_content} style={{ height: "570px" }}>
+                  <Card className={HomeCSS.card_content}>
                     <div className={HomeCSS.card_background}>
-                      <Image
+                      <center><Image
                         src={imageList.find((url) => url.includes(product.img))}
-                        style={{ width: "290px", height: "300px" }}
-                      />
+                        style={{ width: "16rem", height: "16rem" }}
+                      /></center>
                     </div>
                     <Card.Body className={HomeCSS.card_body}>
                       <div className={HomeCSS.product_name}>{product.name}</div>
@@ -281,8 +285,6 @@ function Home() {
             ))}
           </Row>
         </div>
-
-
       </Container>
       <hr className={HomeCSS.hr_text} data-content="IKEA"></hr>
       <Footer />

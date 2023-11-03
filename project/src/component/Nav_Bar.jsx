@@ -30,10 +30,6 @@ function Nav_Bar() {
 
   return (
     <>
-      <header>
-        &#10166;บริการผ่อนชำระ 0% &#10166;จัดส่งเริ่มต้นที่ 99 บาท
-        &#10166;นโยบายเปลี่ยนคืนสินค้าใน 365 วัน
-      </header>
       <Navbar className={NavBarCSS.admin_nav}>
         <Container>
           <img
@@ -68,17 +64,8 @@ function Nav_Bar() {
               </a>
             </Nav>
           </Col>
-          <Button
-            onClick={handleLogout}
-            style={{ marginBottom: "20px" }}
-            className={classnames(NavBarCSS.logout_bt, NavBarCSS.respon3)}
-          >
-            Logout
-          </Button>
         </Container>
       </Navbar>
-
-      <div class={NavBarCSS.box_nav}></div>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
@@ -97,6 +84,13 @@ function Nav_Bar() {
             {" "}
             <div className={NavBarCSS.Brand}>ประวัติการสั่งซื้อ</div>
           </Navbar.Brand>
+          <Button
+            onClick={handleLogout}
+            style={{ marginBottom: "20px" }}
+            className={classnames(NavBarCSS.logout_bt)}
+          >
+            Logout
+          </Button>
         </Offcanvas.Body>
       </Offcanvas>
     </>
