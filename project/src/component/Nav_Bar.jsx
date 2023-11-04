@@ -1,7 +1,15 @@
 import { useState } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useUserAuth } from "../context/UserAuthContext";
-import { Container, Badge, Navbar, Button, Col, Stack, Nav } from "react-bootstrap";
+import {
+  Container,
+  Badge,
+  Navbar,
+  Button,
+  Col,
+  Stack,
+  Nav,
+} from "react-bootstrap";
 
 import menuImage from "../image/menu.png";
 import cart_icon from "./image/shopping-cart.png";
@@ -10,7 +18,7 @@ import AEKI from "./image/ikea-logo.png";
 
 import NavBarCSS from "./style/Nav_Bar.module.css";
 
-import classnames from 'classnames';
+import classnames from "classnames";
 
 function Nav_Bar() {
   const { user } = useUserAuth();
@@ -55,11 +63,11 @@ function Nav_Bar() {
 
           <Col>
             <Nav className="justify-content-end flex-grow-1 pe-5">
-              <a href="/userorderlist" className="respon1">
+              <a href="/userorderlist" className={NavBarCSS.respon1}>
                 <img className={NavBarCSS.menu} src={cart_icon} />
               </a>
 
-              <a href="/order_history" className="respon2">
+              <a href="/order_history" className={NavBarCSS.respon2}>
                 <img className={NavBarCSS.menu} src={history_icon} />
               </a>
             </Nav>
