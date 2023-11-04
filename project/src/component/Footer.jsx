@@ -1,6 +1,6 @@
 import React from "react";
 
-import FooterCSS from "./style/Footer.module.css"
+import FooterCSS from "./style/Footer.module.css";
 
 function Footer() {
   return (
@@ -29,28 +29,18 @@ function Footer() {
             <h3>รายระเอียดหัวข้อ</h3>
             <ul>
               <li>
-                <a href="#" title="Terms and services">
-                  ผลิตภัณฑ์ของคุณ
+                <a href="/home" title="Main">
+                  หน้าหลัก
                 </a>
               </li>
               <li>
-                <a href="#" title="Privacy Policy">
-                  เพิ่มผลิตภัณฑ์
+                <a href="/userorderlist" title="Cast_product">
+                  สินค้าในตะกร้า
                 </a>
               </li>
               <li>
-                <a href="#" title="Cookies">
-                  รายการสินค้าทั้งหมด
-                </a>
-              </li>
-              <li>
-                <a href="#" title="Licenses">
-                  รายการสั่งซื้อ
-                </a>
-              </li>
-              <li>
-                <a href="#" title="Cookies">
-                  บริษัทขนส่ง
+                <a href="/order_history" title="History">
+                  ประวัติการสั่งซื้อ
                 </a>
               </li>
             </ul>
