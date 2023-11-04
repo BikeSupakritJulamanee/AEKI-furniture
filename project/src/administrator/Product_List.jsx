@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
-import { Container, Table, Button, Form, Row, Col, Stack } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Button,
+  Form,
+  Row,
+  Col,
+  Stack,
+} from "react-bootstrap";
 import { db } from "../firebase";
-import { query, collection, where, getDocs, deleteDoc, doc, orderBy } from "firebase/firestore";
+import {
+  query,
+  collection,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+  orderBy,
+} from "firebase/firestore";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
-import ProductListCSS from "./style/Product_List.module.css"
+import ProductListCSS from "./style/Product_List.module.css";
 
 function Product_List() {
   const [products, setProducts] = useState([]);
@@ -155,8 +171,8 @@ function Product_List() {
               <th>คลัง</th>
               {/* <th>Type</th> */}
               <th>ยอดขาย</th>
-              <th className={ProductListCSS.sticky_right} >#</th>
-              <th className={ProductListCSS.sticky_right2} >#</th>
+              <th className={ProductListCSS.sticky_right}>#</th>
+              <th className={ProductListCSS.sticky_right2}>#</th>
             </tr>
           </thead>
           <tbody>
@@ -189,14 +205,17 @@ function Product_List() {
                     target="_blank"
                   >
                     <Button
-                      className={classNames(ProductListCSS.bt, 'btn--primary')} variant="info">
+                      className={classNames(ProductListCSS.bt, "btn--primary")}
+                      variant="info"
+                    >
                       Edit
                     </Button>
                   </Link>
                 </td>
-                <td className="sticky-right2">
+
+                <td className={ProductListCSS.sticky_right2}>
                   <Button
-                    className={classNames(ProductListCSS.bt, 'btn--primary')}
+                    className={classNames(ProductListCSS.bt, "btn--primary")}
                     variant="danger"
                     onClick={() => handleDelete(product.id)}
                   >
@@ -207,7 +226,7 @@ function Product_List() {
             ))}
           </tbody>
         </Table>
-      </Container >
+      </Container>
     </>
   );
 }
