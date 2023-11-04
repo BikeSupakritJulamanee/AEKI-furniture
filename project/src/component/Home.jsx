@@ -226,7 +226,7 @@ function Home() {
                 setSearchTerm(e.target.value);
               }}
               onKeyUp={(e) => {
-                e.currentTarget.style.backgroundColor = 'white';
+                e.currentTarget.style.backgroundColor = 'lightgray';
               }}
               onKeyDown={(e) => {
                 e.currentTarget.style.backgroundColor = 'lightgray';
