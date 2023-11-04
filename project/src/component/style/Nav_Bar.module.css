@@ -97,3 +97,12 @@ header {
   -webkit-transform: scaleX(0);
   transform: scaleX(0);
 }
+
+@media screen and (max-width: 768px) {
+  .respon1 {
+    display: none;
+  }
+  .respon2 {
+    display: none;
+  }
+}
