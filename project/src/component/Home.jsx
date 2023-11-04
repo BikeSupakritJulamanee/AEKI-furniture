@@ -139,7 +139,7 @@ function Home() {
       setTopProductList(data);
     }
   };
-
+  
   const fetchType = async () => {
     try {
       const q = query(collection(db, "type"), orderBy("productType"));

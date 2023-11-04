@@ -4,19 +4,12 @@ import { useLocation } from "react-router-dom";
 import { db } from "../firebase";
 import Nav_Bar from "../component/Nav_Bar";
 import classNames from "classnames";
-import {
-  getDocs,
-  collection,
-  query,
-  where,
-  doc,
-  updateDoc,
-  getDoc,
-} from "firebase/firestore";
+import {getDocs,collection,query,where,doc,updateDoc,getDoc} from "firebase/firestore";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { storageRef } from "../firebase";
 import { useUserAuth } from "../context/UserAuthContext";
 import Product_detailCSS from "./style/Product_detail.module.css";
+import Footer from './Footer'
 
 function Product_detail() {
   const location = useLocation();
@@ -234,6 +227,8 @@ function Product_detail() {
           </Col>
         </Row>
       </Container>
+      <div style={{marginBottom:'1rem' }} ></div>
+      <Footer/>
     </div>
   );
 }

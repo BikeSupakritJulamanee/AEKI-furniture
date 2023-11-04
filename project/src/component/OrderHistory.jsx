@@ -6,6 +6,7 @@ import { query, collection, where, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 import { format } from "date-fns";
+import Footer from "./Footer";
 
 function OrderHistory() {
   const [user_order, setuser_order] = useState([]);
@@ -203,8 +204,10 @@ function OrderHistory() {
           </Link>
         </center>
       </Container>
+
+      <div style={{marginBottom:'8rem'}} ></div>
+      <Footer/>
     </div>
   );
 }
-
 export default OrderHistory;

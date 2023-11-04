@@ -124,15 +124,12 @@ function Home() {
   const fetchProducts = async () => {
     try {
       let q = collection(db, "products");
-
       if (select !== "") {
         q = query(q, where("type", "==", select));
       }
-
       if (searchTerm !== "") {
         q = query(q, where("name", ">=", searchTerm), orderBy("name"));
       }
-
       const querySnapshot = await getDocs(q);
       const newData = querySnapshot.docs.map((doc) => ({
         ...doc.data(),
@@ -243,7 +240,7 @@ function Home() {
                 </Row>
               </Card>
             </div>
-
+            
             <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>

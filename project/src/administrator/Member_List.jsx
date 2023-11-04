@@ -26,7 +26,7 @@ function Member_List() {
     }));
     setMemberList(newData);
   };
-
+  
   return (
     <>
       <Nav />

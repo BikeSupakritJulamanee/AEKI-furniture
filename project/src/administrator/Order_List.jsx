@@ -2,17 +2,8 @@ import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { Container, Table, Form, Button, Modal } from "react-bootstrap";
 import { db } from "../firebase";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import {collection,query,where,getDocs,doc,getDoc,updateDoc} from "firebase/firestore";
 import { Link } from "react-router-dom";
-
 import { format } from "date-fns";
 
 function Order_List() {

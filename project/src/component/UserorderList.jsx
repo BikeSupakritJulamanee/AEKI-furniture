@@ -3,19 +3,16 @@ import React, { useState, useEffect } from "react";
 import Nav_Bar from "../component/Nav_Bar";
 import { Container, Table, Button, Modal, Form, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 //firebase
 import { db, storageRef } from "../firebase";
 import { ref, getDownloadURL, listAll } from "firebase/storage";
 import { getDocs, collection, query, where, doc, updateDoc, addDoc, getDoc, serverTimestamp, } from "firebase/firestore";
-
-
 import UserorderListCSS from "./style/UserorderList.module.css"
-
-
 //image
 import shopping_cart from "./image/shopping-cart.png";
 import confirmation from "./image/confirmation.png";
+
+import Footer from "./Footer";
 
 function UserorderList() {
   const { user } = useUserAuth();
@@ -36,7 +33,6 @@ function UserorderList() {
   const imageListRef = ref(storageRef, "products/");
   const [imageList, setImageList] = useState([]);
   const [buyStatus, setBuyStatus] = useState(false);
-
   const [transportCost, setTransportCost] = useState("");
 
   const handleSelectChange = (e) => {
@@ -441,6 +437,8 @@ function UserorderList() {
           </div>
         </Form>
       </Container>
+      <div style={{ marginBottom: '4rem' }} ></div>
+      <Footer />
 
       <Modal show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>

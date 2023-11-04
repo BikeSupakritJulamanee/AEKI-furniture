@@ -9,13 +9,8 @@ function Footer() {
       <div className={FooterCSS.footer_wrapper}>
         <section className={FooterCSS.footer_top}>
           <div className={FooterCSS.footer_headline}>
-            <h2>Topics Details</h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Assumenda, ab iusto modi quo, at vel suscipit distinctio impedit
-              tempore non et adipisci molestiae quasi dolores rem repellat
-              aliquam! Est, illo.
-            </p>
+            <h2>Furniture and home decorations</h2>
+            <p> ช้อปเอกิออนไลน์ได้ตลอด 24 ชม. ง่าย ปลอดภัย และสะดวก พร้อมบริการหลากหลาย เรารับประกัน </p>
           </div>
         </section>
         <div className={FooterCSS.footer_columns}>
@@ -48,23 +43,6 @@ function Footer() {
         </div>
         <div className={FooterCSS.footer_bottom}>
           <small>© My Company Ltd. 2023, All rights reserved</small>
-          <span className="social-links">
-            <a href="#" title="Link1">
-              {/* <Image src=" " alt='LINK_ICON'> */}
-            </a>
-            <a href="#" title="Link1">
-              {/* <Image src=" " alt='LINK_ICON'> */}
-            </a>
-            <a href="#" title="Link1">
-              {/* <Image src=" " alt='LINK_ICON'> */}
-            </a>
-            <a href="#" title="Link1">
-              {/* <Image src=" " alt='LINK_ICON'> */}
-            </a>
-            <a href="#" title="Link1">
-              {/* <Image src=" " alt='LINK_ICON'> */}
-            </a>
-          </span>
         </div>
       </div>
     </>
