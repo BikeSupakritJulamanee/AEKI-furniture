@@ -240,7 +240,7 @@ function Home() {
                 </Row>
               </Card>
             </div>
-            
+
             <div className={AdminHomePageCSS.item}>
               <Card className={AdminHomePageCSS.card_po}>
                 <Row>
@@ -360,8 +360,9 @@ function Home() {
                     )}&type=${encodeURIComponent(
                       product.type
                     )}&attribute=${encodeURIComponent(product.attribute)}
-          `}
+                    `}
                     target="_blank"
+
                   >
                     <Card className={AdminHomePageCSS.card_container}>
                       <div>

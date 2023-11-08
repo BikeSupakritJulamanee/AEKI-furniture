@@ -11,6 +11,8 @@ import img3 from "./image/img3.jpg";
 import img4 from "./image/img4.jpg";
 import LoginCSS from "./style/Login.module.css";
 
+import classNames from "classnames";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -61,7 +63,10 @@ function Login() {
                     placeholder="Email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={LoginCSS.input_small}
+                    className={classNames(
+                      LoginCSS.input_small,
+                      LoginCSS.form_control
+                    )}
                   />
                 </Form.Group>
 
@@ -72,7 +77,10 @@ function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={LoginCSS.input_small}
+                    className={classNames(
+                      LoginCSS.input_small,
+                      LoginCSS.form_control
+                    )}
                   />
                 </Form.Group>
 

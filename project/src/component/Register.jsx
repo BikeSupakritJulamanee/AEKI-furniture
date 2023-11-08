@@ -10,6 +10,7 @@ import img5 from "./image/img5.jpg";
 import img6 from "./image/img6.jpg";
 import img7 from "./image/img7.jpg";
 import img8 from "./image/img8.jpg";
+import classNames from "classnames";
 
 function Register() {
   const [error, setError] = useState("");
@@ -83,7 +84,10 @@ function Register() {
                     type="email"
                     placeholder="Email address"
                     onChange={(e) => setEmail(e.target.value)}
-                    className={RegisterCSS.input_small}
+                    className={classNames(
+                      RegisterCSS.input_small,
+                      RegisterCSS.form_control
+                    )}
                   />
                 </Form.Group>
 
@@ -93,8 +97,11 @@ function Register() {
                     type="text"
                     placeholder="Username"
                     onChange={(e) => setUsername(e.target.value)}
-                    className={RegisterCSS.input_small}
-                    pattern="[a-zA-Z0-9ก-๙]+"
+                    className={classNames(
+                      RegisterCSS.input_small,
+                      RegisterCSS.form_control
+                    )}
+                    pattern="[a-zA-Z0-9ก-๏]+"
                   />
                 </Form.Group>
 
@@ -105,8 +112,11 @@ function Register() {
                     type="text"
                     placeholder="Phone number"
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className={RegisterCSS.input_small}
-                    pattern="^0{1}[6-9]{1}[0-9]{8}"
+                    className={classNames(
+                      RegisterCSS.input_small,
+                      RegisterCSS.form_control
+                    )}
+                    pattern="^0{1}(6|8|9)[0-9]{8}"
                   />
                 </Form.Group>
 
@@ -117,7 +127,10 @@ function Register() {
                     type="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
-                    className={RegisterCSS.input_small}
+                    className={classNames(
+                      RegisterCSS.input_small,
+                      RegisterCSS.form_control
+                    )}
                   />
                 </Form.Group>
 

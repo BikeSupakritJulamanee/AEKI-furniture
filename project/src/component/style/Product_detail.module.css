@@ -22,22 +22,19 @@
   letter-spacing: 1px;
   margin-bottom: 35px;
 }
-.contact_field .form-control {
+.form_control {
   border-radius: 0px;
   border-bottom: 1px solid #ccc;
 }
-.contact_field .form-control:focus {
-  box-shadow: none;
-  border-bottom: 2px solid #1325e8;
-}
-.contact_field .form-control::placeholder {
+
+.form_control::placeholder {
   font-size: 13px;
   letter-spacing: 1px;
 }
 
-.contact_field_modal .form-control:focus {
+.form_control:focus {
   box-shadow: none;
-  border-bottom: 2px solid #1325e8;
+  border-bottom: 3px solid #1325e8;
 }
 .contact_field {
   padding: 42px 195px 102px 85px;

@@ -139,7 +139,7 @@ function Home() {
       setTopProductList(data);
     }
   };
-  
+
   const fetchType = async () => {
     try {
       const q = query(collection(db, "type"), orderBy("productType"));
@@ -154,6 +154,16 @@ function Home() {
     }
   };
 
+  function Dom_search_form_1() {
+    document.getElementById('searchForm')
+    .style.backgroundColor = 'white';
+  }
+
+  function Dom_search_form_2() {
+    document.getElementById('searchForm')
+    .style.backgroundColor = 'lightgrey';
+  }
+
   return (
     <>
       <Nav_Bar />
@@ -165,7 +175,7 @@ function Home() {
           <Row>
             {topProductList.map((product, index) => (
               <div key={index} className={HomeCSS.card_wrapper}>
-                <Link
+                <Link style={{ textDecoration: 'none' }}
                   to={`/product_detail?id=${encodeURIComponent(
                     product.id
                   )}&name=${encodeURIComponent(
@@ -185,10 +195,10 @@ function Home() {
                       <Card
                         className={HomeCSS.avs} style={{ height: "280px" }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
+                          entTarget.stye.currle.boxShadow = '0 0 10px rgba(0, 0, 0, 0.5)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0)'; 
+                          e.currentTarget.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0)';
                         }}
                       >
                         <center>
@@ -217,7 +227,7 @@ function Home() {
         <center>
           {/* search */}
           <Form.Group>
-            <Form.Control
+            <Form.Control id="searchForm"
               className={HomeCSS.search_bar}
               type="text"
               placeholder="คุณกำลังมองหาอะไรอยู่"
@@ -225,12 +235,8 @@ function Home() {
               onChange={(e) => {
                 setSearchTerm(e.target.value);
               }}
-              onKeyUp={(e) => {
-                e.currentTarget.style.backgroundColor = 'lightgray';
-              }}
-              onKeyDown={(e) => {
-                e.currentTarget.style.backgroundColor = 'lightgray';
-              }}
+              onKeyUp={() => { Dom_search_form_1() }}
+              onKeyDown={() => { Dom_search_form_2() }}
             />
           </Form.Group>
         </center>
@@ -260,7 +266,7 @@ function Home() {
           <Row className="box">
             {products.map((product, index) => (
               <div key={index} className={HomeCSS.card_wrapper}>
-                <Link
+                <Link style={{ textDecoration: 'none' }}
                   to={`/product_detail?id=${encodeURIComponent(
                     product.id
                   )}&name=${encodeURIComponent(
@@ -272,7 +278,6 @@ function Home() {
                   )}&image=${encodeURIComponent(
                     product.img
                   )}&price=${encodeURIComponent(product.price)}`}
-                  target="_blank"
                 >
                   {/* show all product */}
                   <Card

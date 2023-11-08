@@ -451,7 +451,6 @@ function UserorderList() {
                 <Form.Control
                   type="text"
                   placeholder="ที่อยู่"
-                  className="input-small"
                   value={transportCompanyName}
                   onChange={(e) => setTransportCompanyName(e.target.value)}
                   required
@@ -464,11 +463,10 @@ function UserorderList() {
                 <Form.Control
                   type="text"
                   placeholder="เบอร์โทร"
-                  className="input-small"
                   value={phone}
                   onChange={(e) => setphone(e.target.value)}
                   required
-                  pattern="^0{1}[6-9]{1}[0-9]{8}"
+                  pattern="^0{1}(6|8|9)[0-9]{8}"
                 />
               </div>
             </Form.Group>
@@ -478,11 +476,10 @@ function UserorderList() {
                 <Form.Control
                   type="text"
                   placeholder="ชื่อผู้รับ"
-                  className="input-small"
                   value={recipname}
                   onChange={(e) => setrecipname(e.target.value)}
                   required
-                  pattern="[a-zA-Zก-๙]+"
+                  pattern="[a-zA-Zก-๏]+"
                 />
               </div>
             </Form.Group>

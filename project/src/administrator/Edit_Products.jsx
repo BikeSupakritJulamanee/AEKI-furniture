@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, Form, Image, Row, Col } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { query, collection, getDocs, doc, deleteDoc, writeBatch } from "firebase/firestore";
+import {
+  query,
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  writeBatch,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import Nav from "./Nav";
-import ProductFormCSS from "./style/product_form.module.css"
+import ProductFormCSS from "./style/product_form.module.css";
 import { db, storageRef } from "../firebase";
 import classNames from "classnames";
 
@@ -125,11 +132,15 @@ function EditProducts() {
                     <div className={ProductFormCSS.contact_field}>
                       <h3>แก้ไขผลิตภัณฑ์</h3>
                       <p>ทำการแก้ไขสินค้า</p>
-                      <Form className={ProductFormCSS.res_po} onSubmit={handleUpdate}>
+                      <Form
+                        className={ProductFormCSS.res_po}
+                        onSubmit={handleUpdate}
+                      >
                         {/* form product name */}
                         <Form.Group>
                           <Form.Label>ชื่อสินค้า</Form.Label>
                           <Form.Control
+                            className={ProductFormCSS.form_control}
                             type="text"
                             placeholder="Name"
                             value={productData.name}
@@ -140,7 +151,7 @@ function EditProducts() {
                               })
                             }
                             required
-                            pattern="[a-zA-Zก-๙]+"
+                            pattern="[a-zA-Zก-๏]+"
                           />
                         </Form.Group>
 
@@ -148,6 +159,7 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>คำอธิบาย</Form.Label>
                           <Form.Control
+                            className={ProductFormCSS.form_control}
                             type="text"
                             placeholder="Description"
                             value={productData.description}
@@ -165,6 +177,7 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>จำนวน</Form.Label>
                           <Form.Control
+                            className={ProductFormCSS.form_control}
                             type="number"
                             placeholder="Quantity"
                             value={productData.quantity}
@@ -182,6 +195,7 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>ราคา</Form.Label>
                           <Form.Control
+                            className={ProductFormCSS.form_control}
                             type="number"
                             placeholder="Price"
                             value={productData.price}
@@ -200,7 +214,10 @@ function EditProducts() {
                           <Form.Label>ประเภทสินค้า</Form.Label>
                           <Form.Control
                             as="select"
-                            className={ProductFormCSS.input_small}
+                            className={classNames(
+                              ProductFormCSS.input_small,
+                              ProductFormCSS.form_control
+                            )}
                             placeholder="Type"
                             value={productData.type}
                             onChange={(e) =>
@@ -223,7 +240,10 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>รูปภาพสินค้า</Form.Label>
                           <Form.Control
-                            className={ProductFormCSS.input_small}
+                            className={classNames(
+                              ProductFormCSS.input_small,
+                              ProductFormCSS.form_control
+                            )}
                             type="file"
                             onChange={handleFileChange}
                           />
@@ -233,7 +253,10 @@ function EditProducts() {
                         <Form.Group>
                           <Form.Label>คุณลักษณะ</Form.Label>
                           <Form.Control
-                            className={ProductFormCSS.input_small}
+                            className={classNames(
+                              ProductFormCSS.input_small,
+                              ProductFormCSS.form_control
+                            )}
                             placeholder="Attribute"
                             as="textarea"
                             value={productData.attribute}
@@ -271,7 +294,7 @@ function EditProducts() {
                   </div>
                 </Col>
 
-                <Col md={3} className={ProductFormCSS.imageCol} >
+                <Col md={3} className={ProductFormCSS.imageCol}>
                   <Image
                     className={ProductFormCSS.resize5}
                     src={imageList.find((url) =>
@@ -281,7 +304,13 @@ function EditProducts() {
                 </Col>
 
                 <Col md={2}>
-                  <div className={classNames(ProductFormCSS.right_conatct_social_icon, 'd-flex', ' align-items-end')}></div>
+                  <div
+                    className={classNames(
+                      ProductFormCSS.right_conatct_social_icon,
+                      "d-flex",
+                      " align-items-end"
+                    )}
+                  ></div>
                 </Col>
               </Row>
             </div>

@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Image, Card, Table } from "react-bootstrap";
+import { Container, Table } from "react-bootstrap";
 
-//firebase
+// Firebase
 import { collection, query, getDocs, orderBy } from "firebase/firestore";
 import { db } from "../firebase";
 
-//component
+// Component
 import Nav from "./Nav";
 
 function Member_List() {
   const [memberList, setMemberList] = useState([]);
-
-  // call read_member()
-  useEffect(() => {
-    read_member();
-  }, []);
-
-  // read member order by member point
   const read_member = async () => {
     const q = query(collection(db, "user"), orderBy("member_point", "desc"));
     const querySnapshot = await getDocs(q);
@@ -24,9 +17,15 @@ function Member_List() {
       ...doc.data(),
       id: doc.id,
     }));
-    setMemberList(newData);
+    const jsonData = JSON.stringify(newData); // Convert to JSON string
+    console.log(jsonData);
+    setMemberList(JSON.parse(jsonData)); // Convert the JSON string to an array
   };
-  
+
+  useEffect(() => {
+    read_member();
+  }, []);
+
   return (
     <>
       <Nav />
@@ -36,31 +35,31 @@ function Member_List() {
           <h1>ลูกค้าดีเด่น</h1>
         </center>
         <br />
-        {/* show member sort by member point */}
         <Table responsive="sm">
           <thead>
             <tr>
               <th>#</th>
-              <th>email,gmail</th>
+              <th>email, gmail</th>
               <th>ID สมาชิก</th>
               <th>หมายเลขโทรศัพท์</th>
               <th>เเต้มสมาชิก</th>
             </tr>
           </thead>
-          {memberList.map((i, index) => (
-            <tbody key={index}>
-              <tr>
+          <tbody>
+            {memberList.map((i, index) => (
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{i.email}</td>
                 <td>{i.id}</td>
                 <td>{i.phone_number}</td>
                 <td>{i.member_point}</td>
               </tr>
-            </tbody>
-          ))}
+            ))}
+          </tbody>
         </Table>
       </Container>
     </>
   );
 }
+
 export default Member_List;

@@ -2,9 +2,20 @@ import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import { Container, Table, Form, Button, Modal } from "react-bootstrap";
 import { db } from "../firebase";
-import {collection,query,where,getDocs,doc,getDoc,updateDoc} from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { Link } from "react-router-dom";
+
 import { format } from "date-fns";
+import classNames from "classnames";
+import ProductListCSS2 from "./style/Product_List.module.css";
 
 function Order_List() {
   const [shipping, setShipping] = useState([]);
@@ -93,15 +104,15 @@ function Order_List() {
 
         <br />
         <br />
-        <Table hover responsive={'sm'}>
+        <Table hover responsive={"sm"}>
           <thead>
             <tr>
               <th>รหัสคำสั่งซื้อ</th>
               <th>ผู้สั่งซื้อ</th>
               <th>ยอดต้องชำระ (บาท)</th>
               <th>เวลา</th>
-              <th className="sticky-right3">เปลี่ยนสถานะ</th>
-              <th className="sticky-right4">#</th>
+              <th className={ProductListCSS2.sticky_right3}>เปลี่ยนสถานะ</th>
+              <th className={ProductListCSS2.sticky_right4}>#</th>
             </tr>
           </thead>
           <tbody>
@@ -113,9 +124,9 @@ function Order_List() {
                 <td>{s.order.email}</td>
                 <td>{s.order.amount}</td>
                 <td>{formatTimestamp(s.order.Date?.seconds * 1000)}</td>
-                <td className="sticky-right3">
+                <td className={ProductListCSS2.sticky_right3}>
                   <Button
-                    className="bt btn--primary"
+                    className={classNames(ProductListCSS2.bt, "btn--primary")}
                     variant="success"
                     style={{ width: "110px" }}
                     disabled={lock}
@@ -124,9 +135,9 @@ function Order_List() {
                     ทำการจัดส่ง
                   </Button>
                 </td>
-                <td className="sticky-right4">
+                <td className={ProductListCSS2.sticky_right4}>
                   <Link
-                    className="bt btn--primary"
+                    className={classNames(ProductListCSS2.bt, "btn--primary")}
                     style={{ textAlign: "center", paddingTop: "3px" }}
                     to={`/view_order?orderID=${encodeURIComponent(
                       s.order.id

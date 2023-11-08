@@ -220,7 +220,7 @@ function Transportation() {
                     value={transportCompanyName}
                     onChange={(e) => setTransportCompanyName(e.target.value)}
                     required
-                    pattern="[a-zA-Zก-๙]+"
+                    pattern="[a-zA-Zก-๏]+"
                   />
                 </div>
               </Form.Group>

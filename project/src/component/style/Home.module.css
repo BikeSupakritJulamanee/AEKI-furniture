@@ -115,7 +115,6 @@
 }
 
 .product_name {
-  text-decoration: underline;
   font-size: 18px;
   line-height: 1.55;
   font-weight: 500;
@@ -221,4 +220,8 @@
   .avs {
     display: none;
   }
+}
+
+.link{
+  text-decoration: none;
 }

@@ -24,12 +24,8 @@ footer::before {
 /*footer containers */
 
 footer {
-  position: absolute;
-  bottom: 0px;
   background-color: var(--footer_background);
   min-width: 300px;
-  width: 100vw;
-  bottom: 0px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -101,7 +97,7 @@ footer {
   margin: 0 auto;
 }
 
-.footer_columns>section {
+.footer_columns > section {
   min-width: 150px;
 }
 
@@ -114,7 +110,7 @@ footer {
   gap: 8px;
 }
 
-.footer_logo>svg {
+.footer_logo > svg {
   stroke: var(--text-color);
   stroke-width: 8px;
   width: 50px;
@@ -135,16 +131,16 @@ footer {
   justify-content: space-between;
 }
 
-.footer_bottom>small {
+.footer_bottom > small {
   font-size: 16px;
   margin: 0 4px;
 }
 
-.footer_headline>h2 {
+.footer_headline > h2 {
   margin: 0px;
 }
 
-.footer_headline>p {
+.footer_headline > p {
   margin: 12px 0px;
 }
 
